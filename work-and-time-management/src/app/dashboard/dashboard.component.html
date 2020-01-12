@@ -1,7 +1,9 @@
 <header>
-  <div class="name">
-    John Doe
-  </div>
+  <ng-container *ngIf="user$ | async as user">
+    <div class="name">
+      {{ user.name }}
+    </div>
+  </ng-container>
   <div class="setting">
     <i>ss</i>
   </div>
