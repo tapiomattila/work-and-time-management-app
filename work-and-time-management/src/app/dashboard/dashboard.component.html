@@ -1,1 +1,26 @@
-<p>dashboard works!</p>
+<header>
+  <div class="name">
+    John Doe
+  </div>
+  <div class="setting">
+    <i>ss</i>
+  </div>
+</header>
+
+<div style="margin-left: 10px;">
+  <span *ngFor="let day of days" class="day-hours">
+    <app-day-hours [day]="day"></app-day-hours>
+  </span>
+</div>
+
+<div class="card">
+  <app-card-template></app-card-template>
+</div>
+
+<div class="card">
+  <app-card-template></app-card-template>
+</div>
+
+<div class="card">
+  <app-card-template></app-card-template>
+</div>
