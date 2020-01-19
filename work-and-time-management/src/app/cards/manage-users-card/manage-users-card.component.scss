@@ -1,3 +1,9 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+// TODO, global styles
 .side {
     grid-column: left-side-color-start / left-side-color-end;
     grid-row: 1 / -1;

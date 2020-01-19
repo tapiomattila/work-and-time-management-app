@@ -1,34 +1,25 @@
-<div class="container">
-  <header>
-    <ng-container *ngIf="user$ | async as user">
-      <div class="name">
-        {{ user.name }}
-      </div>
-    </ng-container>
-    <div class="setting">
-      <i>ss</i>
-    </div>
-  </header>
-
-  <div class="days">
-    <span *ngFor="let day of days" class="day-hours">
-      <app-day-hours [day]="day"></app-day-hours>
-    </span>
+<div class="container" *ngIf="!hideRouterDashBoard">
+  <div class="card">
+    <app-current-worksite-card
+      (click)="navigateToCardContent('dashboard')"
+    ></app-current-worksite-card>
   </div>
 
   <div class="card">
-    <app-current-worksite-card></app-current-worksite-card>
+    <app-worksites-card
+      (click)="navigateToCardContent('worksites')"
+    ></app-worksites-card>
   </div>
 
   <div class="card">
-    <app-worksites-card></app-worksites-card>
+    <app-manage-worksites-card
+      (click)="navigateToCardContent('manage-worksites')"
+    ></app-manage-worksites-card>
   </div>
 
   <div class="card">
-    <app-manage-worksites-card></app-manage-worksites-card>
-  </div>
-
-  <div class="card">
-    <app-manage-users-card></app-manage-users-card>
+    <app-manage-users-card
+      (click)="navigateToCardContent('manage-users')"
+    ></app-manage-users-card>
   </div>
 </div>

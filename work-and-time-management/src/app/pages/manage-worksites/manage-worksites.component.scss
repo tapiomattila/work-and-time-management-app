@@ -1,0 +1,27 @@
+:host {
+  grid-column: router-outlet-start / router-outlet-end;
+  width: 100%;
+
+  @media only screen and (min-width: 768px) {
+    display: block;
+  }
+}
+
+button {
+  border: none;
+  border: 3px solid navy;
+  color: navy;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: transparent;
+  margin: 10px;
+
+  &:hover {
+      color: lightblue;
+      border: 3px solid lightblue;
+  }
+}

@@ -1,37 +1,23 @@
 :host {
   display: block;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
+// TODO, global styles
 .container {
+  grid-column: selection-start / selection-end;
   width: 100%;
 
-  @media only screen and (min-width: 600px) {
-    max-width: 75vw;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2vw 1fr 2vw;
+
+  @media only screen and (min-width: 768px) {
+    grid-template-columns: 15vw 1fr 15vw;
   }
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 15px;
-}
-
 .card {
+  grid-column: 2 / 3;
   display: flex;
-  justify-content: center;
-}
-
-.day-hours:not(:nth-child(1)) {
-  margin-left: 2px;
-}
-
-.days {
-  width: 100%;
-  max-width: 450px;
-  display: flex;
-  justify-content: space-evenly;
-  max-width: 450px;
 }

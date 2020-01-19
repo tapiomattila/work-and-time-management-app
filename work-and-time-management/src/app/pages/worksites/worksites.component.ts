@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-pagenotfound',
-  templateUrl: './pagenotfound.component.html',
-  styleUrls: ['./pagenotfound.component.scss']
+  selector: 'app-worksites',
+  templateUrl: './worksites.component.html',
+  styleUrls: ['./worksites.component.scss']
 })
-export class PagenotfoundComponent implements OnInit {
+export class WorksitesComponent implements OnInit {
 
   constructor(
     private location: Location

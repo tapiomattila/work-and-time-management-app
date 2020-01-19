@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserQuery } from '../auth/user/user.query';
-import { Observable } from 'rxjs';
-import { User } from '../auth/user/user.model';
+import { Router } from '@angular/router';
+import { WindowService } from '../services/window.service';
+import { CardService } from '../services/card.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,14 +10,25 @@ import { User } from '../auth/user/user.model';
 })
 export class DashboardComponent implements OnInit {
 
-  user$: Observable<User>;
-  days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
+  hideRouterDashBoard = false;
 
   constructor(
-    private userQuery: UserQuery
+    private router: Router,
+    public cardService: CardService,
+    public windowService: WindowService
   ) { }
 
   ngOnInit() {
-    this.user$ = this.userQuery.user$;
+    this.windowService.windowSizeObs$.subscribe(res => {
+      if (res.width >= 768) {
+        this.hideRouterDashBoard = true;
+      } else {
+        this.hideRouterDashBoard = false;
+      }
+    });
+  }
+
+  navigateToCardContent(card: string) {
+    this.router.navigate([`/${card}`]);
   }
 }
