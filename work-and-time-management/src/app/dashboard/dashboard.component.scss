@@ -4,6 +4,15 @@
   height: 100vh;
 }
 
+.container {
+  width: 100%;
+
+  @media only screen and (min-width: 600px) {
+    max-width: 75vw;
+    margin: 0 auto;
+  }
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -17,4 +26,12 @@ header {
 
 .day-hours:not(:nth-child(1)) {
   margin-left: 2px;
+}
+
+.days {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 450px;
 }

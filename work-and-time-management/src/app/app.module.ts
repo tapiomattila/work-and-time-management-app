@@ -11,9 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import { CardTemplateComponent } from './card-template/card-template.component';
-import { DayHoursComponent } from './day-hours/day-hours.component';
+import { CardTemplateComponent } from './templates/card-template/card-template.component';
+import { DayHoursComponent } from './shared/day-hours/day-hours.component';
 import { environment } from 'src/environments/environment';
+import { WorksitesCardComponent } from './cards/worksites-card/worksites-card.component';
+import { CurrentWorksiteCardComponent } from './cards/current-worksite-card/current-worksite-card.component';
+import { AddWorksiteCardComponent } from './cards/add-worksite-card/add-worksite-card.component';
+import { ManageWorksitesCardComponent } from './cards/manage-worksites-card/manage-worksites-card.component';
+import { ManageUsersCardComponent } from './cards/manage-users-card/manage-users-card.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,12 @@ import { environment } from 'src/environments/environment';
     DashboardComponent,
     PagenotfoundComponent,
     CardTemplateComponent,
-    DayHoursComponent
+    DayHoursComponent,
+    WorksitesCardComponent,
+    CurrentWorksiteCardComponent,
+    AddWorksiteCardComponent,
+    ManageWorksitesCardComponent,
+    ManageUsersCardComponent
   ],
   imports: [
     BrowserModule,
