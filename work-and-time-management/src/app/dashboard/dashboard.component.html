@@ -1,25 +1,19 @@
-<div class="container" *ngIf="!hideRouterDashBoard">
-  <div class="card">
-    <app-current-worksite-card
-      (click)="navigateToCardContent('dashboard')"
-    ></app-current-worksite-card>
-  </div>
+<ng-container *ngIf="!hideRouterDashBoard">
+  <div class="container">
+    <div class="card">
+      <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
+    </div>
 
-  <div class="card">
-    <app-worksites-card
-      (click)="navigateToCardContent('worksites')"
-    ></app-worksites-card>
-  </div>
+    <div class="card">
+      <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
+    </div>
 
-  <div class="card">
-    <app-manage-worksites-card
-      (click)="navigateToCardContent('manage-worksites')"
-    ></app-manage-worksites-card>
-  </div>
+    <div class="card">
+      <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
+    </div>
 
-  <div class="card">
-    <app-manage-users-card
-      (click)="navigateToCardContent('manage-users')"
-    ></app-manage-users-card>
+    <div class="card">
+      <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
+    </div>
   </div>
-</div>
+</ng-container>

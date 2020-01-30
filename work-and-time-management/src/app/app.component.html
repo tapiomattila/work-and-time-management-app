@@ -16,32 +16,27 @@
     </span>
   </div>
 </div>
-<router-outlet></router-outlet>
 
-<ng-container *ngIf="(windowService.windowSizeObs$ | async).width >= 768">
-  <div class="container">
-    <div class="card">
-      <app-current-worksite-card
-        (click)="navigateToCardContent('dashboard')"
-      ></app-current-worksite-card>
+<div class="main-container">
+  <div class="main-content">
+    <div class="router-container">
+      <router-outlet></router-outlet>
     </div>
-
-    <div class="card">
-      <app-worksites-card
-        (click)="navigateToCardContent('worksites')"
-      ></app-worksites-card>
-    </div>
-
-    <div class="card">
-      <app-manage-worksites-card
-        (click)="navigateToCardContent('manage-worksites')"
-      ></app-manage-worksites-card>
-    </div>
-
-    <div class="card">
-      <app-manage-users-card
-        (click)="navigateToCardContent('manage-users')"
-      ></app-manage-users-card>
-    </div>
+    <ng-container *ngIf="(windowService.windowSizeObs$ | async).width >= 768">
+      <div class="dashboard-container">
+        <div class="card">
+          <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
+        </div>
+        <div class="card">
+          <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
+        </div>
+        <div class="card">
+          <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
+        </div>
+        <div class="card">
+          <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
+        </div>
+      </div>
+    </ng-container>
   </div>
-</ng-container>
+</div>
