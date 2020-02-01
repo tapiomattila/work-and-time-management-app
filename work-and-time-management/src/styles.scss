@@ -1,22 +1,9 @@
-// /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,700&display=swap");
 
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import "./app/scss/abstract/variables";
+@import "./app/scss/abstract/colors";
 
-html {
-    width: 100vw;
-    min-width: 100vw;
-    height: 100vh;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-}
+@import "./app/scss/base/base";
+@import "./app/scss/base/typography";
 
-body {
-    background: #eee;
-}
+@import "./app/scss/layout/global";

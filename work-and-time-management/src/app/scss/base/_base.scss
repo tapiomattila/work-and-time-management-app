@@ -1,0 +1,25 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+body {
+  backface-visibility: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  ::selection {
+    background: orange;
+    color: #fff;
+  }
+}

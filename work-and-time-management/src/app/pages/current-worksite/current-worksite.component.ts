@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-current-worksite',
@@ -8,12 +8,12 @@ import { Location } from '@angular/common';
 })
 export class CurrentWorksiteComponent implements OnInit {
     constructor(
-        private location: Location
+        private router: Router
     ) { }
 
     ngOnInit() { }
 
     locationBack() {
-        this.location.back();
+        this.router.navigate(['/dashboard']);
     }
 }

@@ -7,11 +7,15 @@ import { Observable } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { Router } from '@angular/router';
+import { fadeInEnterTrigger } from './animations/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    fadeInEnterTrigger
+  ]
 })
 export class AppComponent implements OnInit {
   user$: Observable<User>;

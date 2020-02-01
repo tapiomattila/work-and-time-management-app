@@ -1,64 +1,79 @@
 :host {
   min-height: 100vh;
-  min-width: 100vw;
-  display: grid;
-  grid-template-columns: 5vw 1fr 5vw;
-  grid-template-rows: minmax(120px, min-content) 1fr;
-
-  box-sizing: border-box;
-}
-
-.header-container {
-  grid-column: 2 / 3;
-  display: grid;
-  grid-template-columns: 2vw 1fr 2vw;
-  grid-auto-rows: minmax(60px, min-content);
-
-  @media only screen and (min-width: 768px) {
-    grid-template-columns: 15vw 1fr 15vw;
-  }
-
-  header {
-    grid-column: 2 / 3;
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 10px 12px 0;
-
-    @media only screen and (min-width: 768px) {
-      padding: 12px 0;
-    }
-  }
-
-  .day-hours:not(:nth-child(1)) {
-    margin-left: 2px;
-  }
-
-  .days {
-    grid-column: 2 / 3;
-    grid-column: 2 / 3;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    @media only screen and (min-width: 768px) {
-      max-width: 450px;
-    }
-  }
-}
-
-.main-container {
-  grid-column: 2 / 3;
-  display: flex;
-  justify-content: center;
-}
-
-.main-content {
-  max-width: 1200px;
-
   display: grid;
   grid-template-columns: 1fr;
 
-  @media only screen and (min-width: 768px) {
-    grid-template-columns: 1fr minmax(450px, 35vw);
+  @media only screen and (min-width: 567px) {
+    grid-template-columns: 5vw 1fr 5vw;
+  }
+}
+
+.overlay {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  background: var(--bg-container-color);
+}
+
+.app {
+  &__container {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+   
+    display: grid;
+    grid-template-columns: 5vw 1fr 5vw;
+    grid-template-rows: minmax(120px, min-content) 1fr;
+  }
+}
+
+.header {
+  &__container {
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: 2vw 1fr 2vw;
+    grid-auto-rows: minmax(60px, min-content);
+
+    header {
+      grid-column: 2 / 3;
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 10px 12px 0;
+
+      @media only screen and (min-width: 768px) {
+        padding: 12px 0;
+      }
+    }
+
+    .day-hours:not(:nth-child(1)) {
+      margin-left: 2px;
+    }
+
+    .days {
+      grid-column: 2 / 3;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      @media only screen and (min-width: 768px) {
+        max-width: 450px;
+      }
+    }
+  }
+}
+
+.main {
+  &__container {
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: 2vw 1fr 2vw;
+  }
+
+  &__content {
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @media only screen and (min-width: 768px) {
+      grid-template-columns: 1fr minmax(350px, 35vw);
+    }
   }
 }
