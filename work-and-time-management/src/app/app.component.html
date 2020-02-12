@@ -1,4 +1,3 @@
-<div class="overlay"></div>
 <div class="app__container">
   <div class="header__container">
     <header>
@@ -25,19 +24,12 @@
         <router-outlet></router-outlet>
       </div>
       <ng-container *ngIf="(windowService.windowSizeObs$ | async).width >= 768">
-        <div @fadeInEnter>
-          <div class="card">
-            <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
-          </div>
-          <div class="card">
-            <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
-          </div>
-          <div class="card">
-            <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
-          </div>
-          <div class="card">
-            <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
-          </div>
+        <div @fadeInEnter class="desktop-dashboard">
+          <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
+          <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
+          <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
+          <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
+          <app-settings-card (click)="navigateToCardContent('settings')"></app-settings-card>
         </div>
       </ng-container>
     </div>

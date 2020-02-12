@@ -1,3 +1,6 @@
+/////////////
+// GENERAL BUTTON
+/////////////
 button {
   border: none;
   border: 3px solid navy;
@@ -17,3 +20,34 @@ button {
     cursor: pointer;
   }
 }
+
+button {
+  &.d-none {
+    display: none;
+  }
+}
+
+/////////////
+// CARD
+/////////////
+.side {
+  grid-column: left-side-color-start / left-side-color-end;
+  grid-row: 1 / -1;
+  background-color: #5772eb;
+}
+
+.heading {
+  grid-column: content-start / content-end;
+  grid-row: heading-start / heading-end;
+  text-transform: uppercase;
+  justify-self: center;
+  align-self: center;
+}
+
+.content {
+  grid-column: content-start / content-end;
+  grid-row: content-row-start / content-row-end;
+  border-top: 1px solid #ddd;
+  padding: 20px;
+}
+/////////////

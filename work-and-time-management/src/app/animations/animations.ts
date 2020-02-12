@@ -5,7 +5,7 @@ export const fadeInEnterTrigger = trigger('fadeInEnter', [
         style({
             opacity: 0
         }),
-        animate(300, style({
+        animate(900, style({
             opacity: 1
         }))
     ])

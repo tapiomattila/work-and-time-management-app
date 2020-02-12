@@ -6,6 +6,7 @@ import { ManageWorksitesCardComponent } from './manage-worksites-card/manage-wor
 import { ManageUsersCardComponent } from './manage-users-card/manage-users-card.component';
 import { CommonModule } from '@angular/common';
 import { TemplatesModule } from '../templates/templates.module';
+import { SettingsCardComponent } from './settings-card/settings-card.component';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { TemplatesModule } from '../templates/templates.module';
         AddWorksiteCardComponent,
         ManageWorksitesCardComponent,
         ManageUsersCardComponent,
+        SettingsCardComponent
     ],
     declarations: [
         WorksitesCardComponent,
@@ -25,6 +27,7 @@ import { TemplatesModule } from '../templates/templates.module';
         AddWorksiteCardComponent,
         ManageWorksitesCardComponent,
         ManageUsersCardComponent,
+        SettingsCardComponent
     ],
     providers: [],
 })

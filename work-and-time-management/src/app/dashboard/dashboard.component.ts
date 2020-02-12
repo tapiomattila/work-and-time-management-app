@@ -10,6 +10,10 @@ import { CardService } from '../services/card.service';
 })
 export class DashboardComponent implements OnInit {
 
+  /**
+   * MOBILE
+   */
+
   hideRouterDashBoard = false;
 
   constructor(

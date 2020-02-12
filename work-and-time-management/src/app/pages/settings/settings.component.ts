@@ -4,14 +4,14 @@ import { WindowService } from 'src/app/services/window.service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
-  selector: 'app-manage-users',
-  templateUrl: './manage-users.component.html',
-  styleUrls: ['./manage-users.component.scss'],
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
   animations: [
     fadeInEnterTrigger
 ]
 })
-export class ManageUsersComponent implements OnInit {
+export class SettingsComponent implements OnInit {
 
   constructor(
     private location: Location,

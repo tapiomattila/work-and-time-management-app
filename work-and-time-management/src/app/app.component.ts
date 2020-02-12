@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
     ).subscribe();
   }
 
-  // TODO, helper method, global
   navigateToCardContent(card: string) {
     this.router.navigate([`/${card}`]);
   }

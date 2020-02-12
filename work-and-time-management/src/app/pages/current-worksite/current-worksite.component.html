@@ -1,6 +1,6 @@
-<div style="background: navy; padding: 30px; color: #fff; margin: 10px;">
+<div @fadeInEnter style="background: navy; padding: 30px; color: #fff; margin: 10px;">
     CURRENT WORKSITE <br>
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis asperiores blanditiis assumenda similique
     consequatur aut, doloremque amet fugit excepturi qui ab harum aspernatur mollitia enim?
   </div>
-<button (click)="locationBack()">Back</button>
+<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width > 758}" (click)="locationBack()">Back</button>

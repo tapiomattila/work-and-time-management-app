@@ -4,6 +4,7 @@ import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.co
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { CommonModule } from '@angular/common';
 import { CurrentWorksiteComponent } from './current-worksite/current-worksite.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { CurrentWorksiteComponent } from './current-worksite/current-worksite.co
         CurrentWorksiteComponent,
         WorksitesComponent,
         ManageWorksitesComponent,
-        ManageUsersComponent
+        ManageUsersComponent,
+        SettingsComponent
     ],
     providers: [],
 })
