@@ -6,3 +6,19 @@
 .side {
   background-color: turquoise;
 }
+
+svg {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  & > * {
+    margin: 0 10px;
+  }
+}

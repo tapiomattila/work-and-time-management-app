@@ -1,7 +1,10 @@
 <ng-container *ngIf="!hideRouterDashBoard">
-  <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
-  <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
-  <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
-  <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
-  <app-settings-card (click)="navigateToCardContent('settings')"></app-settings-card>
+  <app-current-worksite-card (click)="navigationHandlerService.setCurrentNavigationRoute('current-worksite')">
+  </app-current-worksite-card>
+  <app-worksites-card (click)="navigationHandlerService.setCurrentNavigationRoute('worksites')"></app-worksites-card>
+  <app-manage-worksites-card (click)="navigationHandlerService.setCurrentNavigationRoute('manage-worksites')">
+  </app-manage-worksites-card>
+  <app-manage-users-card (click)="navigationHandlerService.setCurrentNavigationRoute('manage-users')">
+  </app-manage-users-card>
+  <app-settings-card (click)="navigationHandlerService.setCurrentNavigationRoute('settings')"></app-settings-card>
 </ng-container>

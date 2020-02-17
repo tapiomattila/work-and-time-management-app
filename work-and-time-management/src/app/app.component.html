@@ -25,11 +25,21 @@
       </div>
       <ng-container *ngIf="(windowService.windowSizeObs$ | async).width >= 768">
         <div @fadeInEnter class="desktop-dashboard">
-          <app-current-worksite-card (click)="navigateToCardContent('current-worksite')"></app-current-worksite-card>
-          <app-worksites-card (click)="navigateToCardContent('worksites')"></app-worksites-card>
-          <app-manage-worksites-card (click)="navigateToCardContent('manage-worksites')"></app-manage-worksites-card>
-          <app-manage-users-card (click)="navigateToCardContent('manage-users')"></app-manage-users-card>
-          <app-settings-card (click)="navigateToCardContent('settings')"></app-settings-card>
+          <app-current-worksite-card
+            [icon]="{ active: (navigationHandlerService.navigationObs$ | async) === 'current-worksite' }"
+            (click)="navigationHandlerService.setCurrentNavigationRoute('current-worksite')">
+          </app-current-worksite-card>
+          <app-worksites-card [icon]="{ active: (navigationHandlerService.navigationObs$ | async) === 'worksites' }"
+            (click)="navigationHandlerService.setCurrentNavigationRoute('worksites')"></app-worksites-card>
+          <app-manage-worksites-card
+            [icon]="{ active: (navigationHandlerService.navigationObs$ | async) === 'manage-worksites' }"
+            (click)="navigationHandlerService.setCurrentNavigationRoute('manage-worksites')">
+          </app-manage-worksites-card>
+          <app-manage-users-card
+            [icon]="{ active: (navigationHandlerService.navigationObs$ | async) === 'manage-users' }"
+            (click)="navigationHandlerService.setCurrentNavigationRoute('manage-users')"></app-manage-users-card>
+          <app-settings-card [icon]="{ active: (navigationHandlerService.navigationObs$ | async) === 'settings' }"
+            (click)="navigationHandlerService.setCurrentNavigationRoute('settings')"></app-settings-card>
         </div>
       </ng-container>
     </div>

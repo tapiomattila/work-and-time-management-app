@@ -1,3 +1,32 @@
+// ::-webkit-scrollbar {
+//   @media only screen and (min-width: 567px) {
+//     width: 10px;
+//   }
+// }
+
+// ::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+//   @media only screen and (min-width: 567px) {
+//     background: #f1f1f1;
+//   }
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background: rgb(172, 206, 245);
+//   // background: rgb(34, 111, 199);
+//   @media only screen and (min-width: 567px) {
+//     background: rgb(172, 206, 245);
+//   }
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//   background: rgb(185, 213, 245);
+//   // background: rgb(34, 111, 199);
+//   @media only screen and (min-width: 567px) {
+//     background: rgb(185, 213, 245);
+//   }
+// }
+
 ::-webkit-scrollbar {
   @media only screen and (min-width: 567px) {
     width: 10px;
@@ -5,22 +34,31 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
   @media only screen and (min-width: 567px) {
-    background: #f1f1f1;
+    background: transparent;
+  }
+}
+
+::-webkit-scrollbar-track:hover {
+  background: rgb(220, 234, 252);
+  @media only screen and (min-width: 567px) {
+    background: rgb(220, 234, 252);
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(172, 206, 245);
+  background: transparent;
+  transition: 1.8s all;
   // background: rgb(34, 111, 199);
   @media only screen and (min-width: 567px) {
-    background: rgb(172, 206, 245);
+    background: transparent;
   }
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(185, 213, 245);
+  background: rgb(192, 216, 245);
+  transition: 1.8s all;
   // background: rgb(34, 111, 199);
   @media only screen and (min-width: 567px) {
     background: rgb(185, 213, 245);
@@ -119,7 +157,6 @@
 .main {
   &__container {
     grid-column: 2 / 3;
-    display: grid;
 
     overflow-x: hidden;
     overflow-y: auto;
@@ -144,6 +181,9 @@
 }
 
 .desktop-dashboard {
+  overflow-x: hidden;
+  overflow-y: auto;
+
   max-height: 65vh;
   width: 100%;
   min-width: 400px;
@@ -153,4 +193,8 @@
 
   justify-content: center;
   align-items: start;
+
+  & > * {
+    width: 100%;
+  }
 }

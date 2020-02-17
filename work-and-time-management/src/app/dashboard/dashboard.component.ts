@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WindowService } from '../services/window.service';
 import { CardService } from '../services/card.service';
+import { NavigationHandlerService } from '../services/navigation-handler.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
+    public navigationHandlerService: NavigationHandlerService,
     public cardService: CardService,
     public windowService: WindowService
   ) { }
@@ -30,9 +32,5 @@ export class DashboardComponent implements OnInit {
         this.hideRouterDashBoard = false;
       }
     });
-  }
-
-  navigateToCardContent(card: string) {
-    this.router.navigate([`/${card}`]);
   }
 }

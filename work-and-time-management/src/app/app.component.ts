@@ -8,6 +8,9 @@ import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { Router } from '@angular/router';
 import { fadeInEnterTrigger } from './animations/animations';
+import { WorksitesService } from './worksites/state/worksites.service';
+import { NavigationHandlerService } from './services/navigation-handler.service';
+import { WorksitesQuery } from './worksites/state/worksites.query';
 
 @Component({
   selector: 'app-root',
@@ -28,9 +31,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
+    private worksiteService: WorksitesService,
+    private worksiteQuery: WorksitesQuery,
     private userService: UserService,
     private userQuery: UserQuery,
     private router: Router,
+    public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService
   ) { }
 
@@ -39,9 +45,14 @@ export class AppComponent implements OnInit {
     this.dataService.getUser().pipe(
       tap((user: User) => this.userService.updateUser(user.id, user.name))
     ).subscribe();
-  }
 
-  navigateToCardContent(card: string) {
-    this.router.navigate([`/${card}`]);
+    this.dataService.getWorksites()
+      .subscribe(res => {
+        this.worksiteService.setWorksites(res);
+      });
+
+      this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
+
+      this.worksiteQuery.selectRecentlyUpdateWorksite();
   }
 }

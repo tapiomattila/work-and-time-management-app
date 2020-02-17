@@ -6,3 +6,24 @@
     display: block;
   }
 }
+
+.cont {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  min-height: 140px;
+  width: 90%;
+}
+
+.side {
+  background: orangered;
+  grid-column: 1 / 2;
+}
+
+.right {
+  grid-column: 2 / 3;
+  background: #fff;
+  color: #505050;
+  padding: 10px 15px;
+}

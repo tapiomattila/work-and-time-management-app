@@ -1,6 +1,13 @@
-<div @fadeInEnter style="background: navy; padding: 30px; color: #fff; margin: 10px;">
-    CURRENT WORKSITE <br>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis asperiores blanditiis assumenda similique
-    consequatur aut, doloremque amet fugit excepturi qui ab harum aspernatur mollitia enim?
+<ng-container *ngIf="currentWorkSite$ | async as worksite">
+  <div @fadeInEnter>
+    <div class="cont">
+      <div class="side"></div>
+      <div class="right">
+        <h3>{{ worksite.nickname }}</h3>
+        <p style="color: #ccc;">{{ worksite.streetAddress }} {{ worksite.postalCode }} {{ worksite.city }}</p>
+      </div>
+    </div>
   </div>
-<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width > 758}" (click)="locationBack()">Back</button>
+</ng-container>
+<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width > 758}"
+  (click)="locationBack()">Back</button>

@@ -6,7 +6,6 @@ import { WorksitesComponent } from './pages/worksites/worksites.component';
 import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { CurrentWorksiteComponent } from './pages/current-worksite/current-worksite.component';
-import { SettingsCardComponent } from './cards/settings-card/settings-card.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
