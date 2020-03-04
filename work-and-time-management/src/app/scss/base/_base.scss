@@ -1,19 +1,17 @@
-// *,
-// *::after,
-// *::before {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: inherit;
-// }
+* {
+  margin: 0;
+  padding: 0;
+}
 
 html {
   font-size: 62.5%;
 }
 
 body {
-  // margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  min-height: 100vh;
+  background: rgb(82, 109, 82);
+
+  background-color: #157570;
 
   ::selection {
     background: orange;

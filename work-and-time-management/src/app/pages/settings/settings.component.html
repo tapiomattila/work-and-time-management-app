@@ -1,6 +1,7 @@
-<div @fadeInEnter style="background: rgb(149, 28, 197); padding: 30px; color: #fff; margin: 10px;">
-    SETTINGS <br>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis asperiores blanditiis assumenda
+<div @fadeInOutDelay class="cont">
+    <div class="infos">
+        <h3>Settings</h3>
+    </div>
 </div>
-<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width > 758}"
+<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width >= 992}"
     (click)="locationBack()">Back</button>

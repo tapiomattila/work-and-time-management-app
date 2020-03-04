@@ -3,22 +3,12 @@
 /////////////
 button {
   border: none;
-  border: 3px solid navy;
-  color: navy;
-  font-size: 18px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  padding: 8px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
-  padding: 5px 10px;
-  background-color: transparent;
-  margin: 10px;
-
-  &:hover {
-    color: lightblue;
-    border: 3px solid lightblue;
-    cursor: pointer;
-  }
 }
 
 button {
@@ -26,28 +16,3 @@ button {
     display: none;
   }
 }
-
-/////////////
-// CARD
-/////////////
-.side {
-  grid-column: left-side-color-start / left-side-color-end;
-  grid-row: 1 / -1;
-  background-color: #5772eb;
-}
-
-.heading {
-  grid-column: content-start / content-end;
-  grid-row: heading-start / heading-end;
-  text-transform: uppercase;
-  justify-self: center;
-  align-self: center;
-}
-
-.content {
-  grid-column: content-start / content-end;
-  grid-row: content-row-start / content-row-end;
-  border-top: 1px solid #ddd;
-  padding: 20px;
-}
-/////////////

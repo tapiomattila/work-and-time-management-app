@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { WindowService } from 'src/app/services/window.service';
-import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { fadeInEnterTrigger, fadeInOutDelayTrigger } from 'src/app/animations/animations';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
   animations: [
-    fadeInEnterTrigger
+    fadeInEnterTrigger,
+    fadeInOutDelayTrigger
 ]
 })
 export class SettingsComponent implements OnInit {

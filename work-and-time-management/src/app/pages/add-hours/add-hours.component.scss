@@ -1,7 +1,7 @@
 :host {
   display: grid;
   grid-template-columns:
-    [left-side-color-start] 20px
+    [left-side-color-start] 35px
     [left-side-color-end content-start] 1fr
     [content-end];
   grid-template-rows:
@@ -15,23 +15,28 @@
   color: #5a5a5a;
 }
 
+.info {
+  grid-column: content-start / content-end;
+  grid-row: heading-start / heading-end;
+  align-self: center;
+  margin: 0 20px;
+}
+
 .side {
   grid-column: left-side-color-start / left-side-color-end;
   grid-row: 1 / -1;
-  background-color: orangered;
-}
-
-.heading {
-  grid-column: content-start / content-end;
-  grid-row: heading-start / heading-end;
-  text-transform: uppercase;
-  justify-self: center;
-  align-self: center;
+  background-color: #3232b8;
 }
 
 .content {
   grid-column: content-start / content-end;
   grid-row: content-row-start / content-row-end;
-  border-top: 1px solid #ddd;
-  padding: 20px;
+
+  display: grid;
+  gap: 10px;
+}
+
+.no-content {
+  grid-column: content-start / content-end;
+  grid-row: content-row-start / content-row-end;
 }

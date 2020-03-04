@@ -5,6 +5,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { CommonModule } from '@angular/common';
 import { CurrentWorksiteComponent } from './current-worksite/current-worksite.component';
 import { SettingsComponent } from './settings/settings.component';
+import { AddHoursComponent } from './add-hours/add-hours.component';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { SettingsComponent } from './settings/settings.component';
         WorksitesComponent,
         ManageWorksitesComponent,
         ManageUsersComponent,
-        SettingsComponent
+        SettingsComponent,
+        AddHoursComponent
     ],
     providers: [],
 })

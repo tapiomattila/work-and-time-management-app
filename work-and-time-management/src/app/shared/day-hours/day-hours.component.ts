@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DayHoursComponent implements OnInit {
 
   @Input() day: string;
+  @Input() hour: number;
 
   constructor() { }
 

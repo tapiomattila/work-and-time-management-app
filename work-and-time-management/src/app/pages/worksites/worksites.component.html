@@ -1,14 +1,12 @@
 <ng-container *ngIf="worksites$ | async as worksites">
-  <div *ngFor="let worksite of worksites" @fadeInEnter>
+  <div *ngFor="let worksite of worksites" @fadeInOutDelay>
     <div class="cont">
-      <div class="side"></div>
-      <div class="right">
+      <div class="infos">
         <h3>{{ worksite.nickname }}</h3>
-        <p style="color: #ccc;">{{ worksite.streetAddress }} {{ worksite.postalCode }} {{ worksite.city }}</p>
+        <p>{{ worksite.streetAddress }} {{ worksite.postalCode }} {{ worksite.city }}</p>
       </div>
     </div>
-
   </div>
 </ng-container>
-<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width > 758}"
+<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width >= 992}"
   (click)="locationBack()">Back</button>

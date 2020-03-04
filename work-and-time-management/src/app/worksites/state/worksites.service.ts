@@ -19,4 +19,8 @@ export class WorksitesService {
         this.worksitesStore.set(worksiteArray);
     }
 
+    setActive(id: string) {
+        this.worksitesStore.setActive(id);
+    }
+
 }

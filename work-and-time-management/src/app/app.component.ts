@@ -6,7 +6,6 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
-import { Router } from '@angular/router';
 import { fadeInEnterTrigger } from './animations/animations';
 import { WorksitesService } from './worksites/state/worksites.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
@@ -23,6 +22,7 @@ import { WorksitesQuery } from './worksites/state/worksites.query';
 export class AppComponent implements OnInit {
   user$: Observable<User>;
   days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
+  selection = '';
 
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -35,24 +35,24 @@ export class AppComponent implements OnInit {
     private worksiteQuery: WorksitesQuery,
     private userService: UserService,
     private userQuery: UserQuery,
-    private router: Router,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService
   ) { }
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
-    this.dataService.getUser().pipe(
-      tap((user: User) => this.userService.updateUser(user.id, user.name))
-    ).subscribe();
+    this.dataService.loadAllWorksites().subscribe(res => console.log('show load all courses res', res));
 
-    this.dataService.getWorksites()
+    this.dataService.loadAllUsers().pipe(
+      tap((users: User[]) => this.userService.updateUser(users[0].id, users[0].firstName, users[0].lastName))
+    ).subscribe(res => console.log('users resä', res));
+
+    this.dataService.loadAllWorksites()
       .subscribe(res => {
         this.worksiteService.setWorksites(res);
       });
 
-      this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
-
-      this.worksiteQuery.selectRecentlyUpdateWorksite();
+    this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
+    this.worksiteQuery.selectRecentlyUpdateWorksite();
   }
 }

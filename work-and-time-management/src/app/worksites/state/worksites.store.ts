@@ -3,6 +3,11 @@ import { Worksite } from './worksites.model';
 import { Injectable } from '@angular/core';
 
 export interface WorksitesState extends EntityState<Worksite, ActiveState> { }
+
+const initialState = {
+    active: null
+};
+
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +16,6 @@ export interface WorksitesState extends EntityState<Worksite, ActiveState> { }
 })
 export class WorksiteStore extends EntityStore<WorksitesState> {
     constructor() {
-        super();
+        super(initialState);
     }
 }

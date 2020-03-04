@@ -1,4 +1,4 @@
-import { trigger, transition, style, animate, state } from '@angular/animations';
+import { trigger, transition, style, animate, state, animation } from '@angular/animations';
 
 export const fadeInEnterTrigger = trigger('fadeInEnter', [
     transition(':enter', [
@@ -20,6 +20,21 @@ export const fadeInEnterWithDelayTrigger = trigger('fadeInEnterWithDelay', [
             opacity: 1
         }))
     ])
+])
+
+export const fadeInOutDelayTrigger = trigger('fadeInOutDelay', [
+    transition(':enter', [
+        style({
+            opacity: 0
+        }),
+        animate('300ms 100ms')
+    ]),
+    transition(':leave', [
+        style({
+            opacity: 0
+        }),
+        animate(3000)
+    ]),
 ])
 
 export const translateXRightTrigger = trigger('translateXRight', [

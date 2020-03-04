@@ -1,21 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
+import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
 import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/worksites/state/worksites.model';
-import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
+import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
-    selector: 'app-current-worksite',
-    templateUrl: 'current-worksite.component.html',
-    styleUrls: ['current-worksite.component.scss']
+    selector: 'app-add-hours',
+    templateUrl: 'add-hours.component.html',
+    styleUrls: ['add-hours.component.scss'],
+    animations: [
+        fadeInEnterTrigger
+    ]
 })
-export class CurrentWorksiteComponent implements OnInit {
+export class AddHoursComponent implements OnInit {
 
     worksite$: Observable<Worksite>;
+
     date: Date;
 
     constructor(
-        private router: Router,
         private route: ActivatedRoute,
         private worksiteQuery: WorksitesQuery
     ) { }
@@ -26,9 +30,5 @@ export class CurrentWorksiteComponent implements OnInit {
             console.log('show params', params);
             this.worksite$ = this.worksiteQuery.selectEntity(params.worksiteid);
         });
-    }
-
-    locationBack() {
-        this.router.navigate(['/dashboard']);
     }
 }

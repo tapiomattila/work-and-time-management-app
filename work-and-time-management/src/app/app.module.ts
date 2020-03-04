@@ -3,20 +3,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
-
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './services/in-memory-data.service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 import { AppComponent } from './app.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { environment } from 'src/environments/environment';
-import { TemplatesModule } from './templates/templates.module';
 import { SharedModule } from './shared/day-hours/shared.module';
 import { PagesModule } from './pages/pages.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CardsModule } from './cards/cards.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -30,16 +28,12 @@ import { CardsModule } from './cards/cards.module';
     HttpClientModule,
     DashboardModule,
     CardsModule,
-    TemplatesModule,
     SharedModule,
     PagesModule,
 
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(),
+
     [environment.production ? [] : AkitaNgDevtools.forRoot()]
   ],
   providers: [],

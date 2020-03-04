@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { WindowService } from '../services/window.service';
 import { CardService } from '../services/card.service';
 import { NavigationHandlerService } from '../services/navigation-handler.service';
@@ -15,22 +14,12 @@ export class DashboardComponent implements OnInit {
    * MOBILE
    */
 
-  hideRouterDashBoard = false;
-
   constructor(
-    private router: Router,
     public navigationHandlerService: NavigationHandlerService,
     public cardService: CardService,
     public windowService: WindowService
   ) { }
 
   ngOnInit() {
-    this.windowService.windowSizeObs$.subscribe(res => {
-      if (res.width >= 768) {
-        this.hideRouterDashBoard = true;
-      } else {
-        this.hideRouterDashBoard = false;
-      }
-    });
   }
 }

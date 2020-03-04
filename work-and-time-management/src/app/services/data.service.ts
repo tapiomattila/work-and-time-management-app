@@ -1,23 +1,51 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { User } from '../auth/user/user.model';
-import { Worksite } from '../worksites/state/worksites.model';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { map, first } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-    private userUrl = 'api/user';
-    private worksitesUrl = 'api/worksites';
 
     constructor(
-        private http: HttpClient
+        private af: AngularFirestore
     ) { }
 
-    getUser(): Observable<User> {
-        return this.http.get<User>(this.userUrl);
+    loadAllWorksites() {
+        return this.af.collection('worksites')
+            .snapshotChanges()
+            .pipe(
+                map(snaps => {
+
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+
+                }),
+                first()
+            );
     }
 
-    getWorksites(): Observable<Partial<Worksite>[]> {
-        return this.http.get<Partial<Worksite>[]>(this.worksitesUrl);
+    loadAllUsers() {
+        return this.af.collection('users')
+            .snapshotChanges()
+            .pipe(
+                map(snaps => {
+
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+
+                }),
+                first()
+            );
     }
 }

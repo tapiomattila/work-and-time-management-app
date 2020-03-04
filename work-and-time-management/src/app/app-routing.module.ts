@@ -7,6 +7,7 @@ import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksi
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { CurrentWorksiteComponent } from './pages/current-worksite/current-worksite.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { AddHoursComponent } from './pages/add-hours/add-hours.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/current-worksite', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'manage-worksites', component: ManageWorksitesComponent },
   { path: 'manage-users', component: ManageUsersComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'add-hours/:worksiteid', component: AddHoursComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 

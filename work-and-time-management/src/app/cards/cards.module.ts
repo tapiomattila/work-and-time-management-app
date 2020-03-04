@@ -5,13 +5,11 @@ import { AddWorksiteCardComponent } from './add-worksite-card/add-worksite-card.
 import { ManageWorksitesCardComponent } from './manage-worksites-card/manage-worksites-card.component';
 import { ManageUsersCardComponent } from './manage-users-card/manage-users-card.component';
 import { CommonModule } from '@angular/common';
-import { TemplatesModule } from '../templates/templates.module';
 import { SettingsCardComponent } from './settings-card/settings-card.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        TemplatesModule
     ],
     exports: [
         WorksitesCardComponent,

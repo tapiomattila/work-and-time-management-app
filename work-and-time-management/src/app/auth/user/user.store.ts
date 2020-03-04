@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 export function createInitialState(): User {
   return {
     id: null,
-    name: ''
+    firstName: '',
+    lastName: ''
   };
 }
 

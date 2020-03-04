@@ -1,13 +1,10 @@
-<app-card-template>
-  <span class="side"></span>
-  <div class="flex">
-    <svg class="checkmark" @fadeInEnterWithDelay *ngIf="showIcon">
-      <use xlink:href="../../../assets/svg/sprite.svg#icon-checkmark2"></use>
+<div class="card-container {{ class }}">
+  <span class="side">
+    <h3>Worksites</h3>
+  </span>
+  <div class="content">
+    <svg class="dev-icon" @fadeInEnterWithDelay>
+      <use xlink:href="../../../assets/svg/sprite.svg#icon-briefcase"></use>
     </svg>
-    <span class="heading" [@translateXRight]="moved">Worksites</span>
   </div>
-  <p class="content">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quos
-    recusandae quo officiis obcaecati mollitia!
-  </p>
-</app-card-template>
+</div>

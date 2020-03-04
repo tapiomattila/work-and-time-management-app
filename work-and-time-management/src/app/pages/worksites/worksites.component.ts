@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { WindowService } from 'src/app/services/window.service';
-import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { fadeInEnterTrigger, fadeInOutDelayTrigger } from 'src/app/animations/animations';
 import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
 import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/worksites/state/worksites.model';
@@ -11,7 +11,8 @@ import { Worksite } from 'src/app/worksites/state/worksites.model';
   templateUrl: './worksites.component.html',
   styleUrls: ['./worksites.component.scss'],
   animations: [
-    fadeInEnterTrigger
+    fadeInEnterTrigger,
+    fadeInOutDelayTrigger
 ]
 })
 export class WorksitesComponent implements OnInit {

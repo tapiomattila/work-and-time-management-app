@@ -1,7 +1,6 @@
 import { QueryEntity, Order } from '@datorama/akita';
 import { WorksiteStore, WorksitesState } from './worksites.store';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Worksite } from './worksites.model';
 
