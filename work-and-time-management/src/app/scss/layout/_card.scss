@@ -17,6 +17,10 @@
   font-size: 2.2rem;
   cursor: pointer;
 
+  &:hover {
+    background-color: rgb(64, 221, 164);
+  }
+
   &.active {
     box-shadow: -1px 1px 20px rgb(16, 180, 245), 2px 3px 15px rgb(19, 190, 212);
     transform: scale(1.10);

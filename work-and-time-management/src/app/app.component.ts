@@ -21,7 +21,6 @@ import { WorksitesQuery } from './worksites/state/worksites.query';
 })
 export class AppComponent implements OnInit {
   user$: Observable<User>;
-  days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
   selection = '';
 
   @HostListener('window:resize', ['$event'])

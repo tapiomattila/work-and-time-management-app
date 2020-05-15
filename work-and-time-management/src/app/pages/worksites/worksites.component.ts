@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { WindowService } from 'src/app/services/window.service';
-import { fadeInEnterTrigger, fadeInOutDelayTrigger } from 'src/app/animations/animations';
+import { fadeInEnterTrigger, fadeInOutDelayTrigger, fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
 import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
 import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/worksites/state/worksites.model';
@@ -12,11 +12,13 @@ import { Worksite } from 'src/app/worksites/state/worksites.model';
   styleUrls: ['./worksites.component.scss'],
   animations: [
     fadeInEnterTrigger,
-    fadeInOutDelayTrigger
-]
+    fadeInOutDelayTrigger,
+    fadeInEnterWithDelayTrigger,
+  ]
 })
 export class WorksitesComponent implements OnInit {
 
+  days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
   worksites$: Observable<Worksite[]>;
 
   constructor(

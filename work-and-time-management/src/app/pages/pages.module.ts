@@ -6,10 +6,12 @@ import { CommonModule } from '@angular/common';
 import { CurrentWorksiteComponent } from './current-worksite/current-worksite.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AddHoursComponent } from './add-hours/add-hours.component';
+import { SharedModule } from '../shared/day-hours/shared.module';
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        SharedModule
     ],
     exports: [],
     declarations: [

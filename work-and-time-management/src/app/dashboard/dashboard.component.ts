@@ -10,9 +10,8 @@ import { NavigationHandlerService } from '../services/navigation-handler.service
 })
 export class DashboardComponent implements OnInit {
 
-  /**
-   * MOBILE
-   */
+  days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
+  date: string;
 
   constructor(
     public navigationHandlerService: NavigationHandlerService,
@@ -21,5 +20,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const date = new Date();
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    this.date = `${day}.${month}.${year}`;
   }
 }

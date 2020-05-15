@@ -21,6 +21,11 @@
 
   color: #6e6e6e;
 
+  @media only screen and (min-width: 340px) {
+    width: 35px;
+    height: 35px;
+  }
+
   @media only screen and (min-width: 576px) {
     width: 45px;
     height: 45px;
