@@ -48,4 +48,26 @@ export class DataService {
                 first()
             );
     }
+
+    loadHours() {
+        return this.af.collection('hours')
+            .snapshotChanges()
+            .pipe(
+                map(snaps => {
+
+                    console.log('show snaps', snaps);
+
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+
+                }),
+                first()
+            );
+    }
 }

@@ -1,101 +1,24 @@
-
-
 :host {
   padding-top: 20px;
   display: grid;
   grid-template-columns: 10px repeat(6, 1fr) 10px;
-  grid-template-rows: 45px 45px min-content 1fr;
+  grid-template-rows: 45px 65px min-content 1fr;
   gap: 15px;
 }
 
 .heading {
   grid-column: 2 / span 6;
-  display: grid;
-  grid-template-columns: 55px 1fr 45px;
-  height: 45px;
-
-  &__profile-icon {
-    width: 45px;
-    height: 45px;
-    background-color: #359A94;
-    border-radius: 50%;
-    overflow: hidden;
-
-    text-align: center;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
-      transform: translateX(-6px);
-      width: auto;
-      height: 100%;
-    }
-  }
 
   &__name {
-    margin: 0 10px;
-    background-color: #fff;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 1.6rem;
-  }
-  
-  &__settings-btn {
-    width: 35px;
-    height: 45px;
-    justify-self: flex-end;
-    
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
 }
 
 .header {
   grid-column: 2 / span 6;
-  background-color: #fff;
-  border-radius: 5px;
   font-size: 2.4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-transform: uppercase;
   text-indent: 10px;
-}
-
-.circles {
-  grid-column: 2 / span 6;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  justify-items: center;
-  align-items: center;
-
-  .circle {
-    border: 3px solid #359A94;
-    height: 45.5px;
-    width: 45.5px;
-    border-radius: 50%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &.active-circle {
-      border: 3px solid #40AF44;
-    }
-  }
-
-  .circle-plus {
-    color: #359A94;
-    font-size: 3.6rem;
-    align-self: flex-start;
-  }
 }
 
 .cards {

@@ -17,6 +17,9 @@ button {
   }
 }
 
+/////////////
+// GENERAL CARD
+/////////////
 .card {
   display: grid;
   grid-template-rows: 20px minmax(min-content, 100px);
@@ -66,5 +69,99 @@ button {
 
   &__icon {
     fill: var(--icon-fill);
+  }
+}
+
+/////////////
+// GENERAL CIRCLE
+/////////////
+.circles {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  justify-items: center;
+  align-items: center;
+
+  .circle {
+    border: 3px solid var(--primary-color);
+    height: 45.5px;
+    width: 45.5px;
+    border-radius: 50%;
+    background-color: var(--white-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.active-circle {
+      border: 3px solid var(--active-color);
+    }
+  }
+
+  .circle-plus {
+    color: #359a94;
+    font-size: 3.6rem;
+    align-self: flex-start;
+  }
+}
+
+/////////////
+// GENERAL HEADER
+/////////////
+.header {
+  background-color: var(--white-color);
+  border-radius: 5px;
+  font-size: 1.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/////////////
+// GENERAL HEADING
+/////////////
+.heading {
+  display: grid;
+  grid-template-columns: 55px 1fr 45px;
+  height: 45px;
+
+  &__profile-icon {
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    overflow: hidden;
+
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      transform: translateX(-6px);
+      width: auto;
+      height: 100%;
+    }
+  }
+
+  &__name {
+    margin: 0 10px;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+  }
+
+  &__settings-btn {
+    width: 35px;
+    height: 45px;
+    justify-self: flex-end;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

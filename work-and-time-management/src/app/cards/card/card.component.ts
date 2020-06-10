@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
 import { Observable } from 'rxjs';
-import { Worksite } from 'src/app/worksites/state/worksites.model';
-import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
-import { WorksitesService } from 'src/app/worksites/state/worksites.service';
+import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
+import { WorksitesQuery } from 'src/app/pages/worksites/state/worksites.query';
+import { WorksitesService } from 'src/app/pages/worksites/state/worksites.service';
 import { map } from 'rxjs/operators';
 
 @Component({

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { CardsModule } from '../cards/cards.module';
 import { WorksitesComponent } from './worksites/worksites.component';
+import { AddHoursComponent } from './add-hours/add-hours.component';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { WorksitesComponent } from './worksites/worksites.component';
     ],
     exports: [],
     declarations: [
-        WorksitesComponent
+        WorksitesComponent,
+        AddHoursComponent
     ],
     providers: [],
 })

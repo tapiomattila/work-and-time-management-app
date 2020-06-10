@@ -22,10 +22,14 @@
 </div>
 
 <div class="cards">
-  <app-card [name]="'Naantalin aurinkoinen'" [hours]="'52'"></app-card>
+  <ng-container *ngIf="currentWorksite$ | async as current">
+    <ng-container *ngIf="currentHours$ | async as hours">
+      <app-card (click)="navigate('current-worksite', current.id)" [name]="current.nickname" [hours]="hours"></app-card>
+    </ng-container>
+  </ng-container>
 
   <!-- Worksites -->
-  <div class="card" (click)="toWorksites()">
+  <div class="card" (click)="navigate('worksites')">
     <app-card [name]="'Worksites'" [icon]="icon-briefcase"></app-card>
   </div>
 

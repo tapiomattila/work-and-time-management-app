@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { fadeInEnterTrigger } from './animations/animations';
-import { WorksitesService } from './worksites/state/worksites.service';
+import { WorksitesService } from './pages/worksites/state/worksites.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
-import { WorksitesQuery } from './worksites/state/worksites.query';
+import { WorksitesQuery } from './pages/worksites/state/worksites.query';
 
 @Component({
   selector: 'app-root',
@@ -50,6 +50,8 @@ export class AppComponent implements OnInit {
       .subscribe(res => {
         this.worksiteService.setWorksites(res);
       });
+
+    this.dataService.loadHours().subscribe(res => console.log('show hours', res));
 
     this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
     this.worksiteQuery.selectRecentlyUpdateWorksite();

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { WindowService } from '../services/window.service';
-import { CardService } from '../services/card.service';
 import { NavigationHandlerService } from '../services/navigation-handler.service';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { User } from '../auth/user/user.model';
 import * as moment from 'moment';
+import { Worksite } from '../pages/worksites/state/worksites.model';
+import { UserQuery } from '../auth/user/user.query';
+import { WorksitesService } from '../pages/worksites/state/worksites.service';
+import { WorksitesQuery } from '../pages/worksites/state/worksites.query';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +15,9 @@ import * as moment from 'moment';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
+  currentWorksite$: Observable<Worksite>;
+  currentHours$: Observable<string>;
 
   user$: Observable<User>;
   momentDay: moment.Moment;
@@ -42,24 +47,30 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private userQuery: UserQuery,
+    private worksiteQuery: WorksitesQuery,
     public navigationHandlerService: NavigationHandlerService,
-    public cardService: CardService,
-    public windowService: WindowService,
   ) { }
 
   ngOnInit() {
-    const user: User = {
-      id: '89h9fds',
-      firstName: 'John',
-      lastName: 'Doe',
-      isAdmin: true
-    };
-    this.user$ = of(user);
-
     this.momentDay = moment();
+    this.user$ = this.userQuery.user$;
+    this.currentWorksite$ = this.worksiteQuery.selectAndSetCurrentWorksite();
+
+    this.currentWorksite$.subscribe(res => console.log('res in current', res));
+    this.currentHours$ = of('52');
+    this.userQuery.user$.subscribe(res => console.log('show res in users', res));
   }
 
   toWorksites() {
     this.router.navigate(['worksites']);
+  }
+
+  navigate(route: string, id?: string) {
+    this.navigationHandlerService.navigateToRoute(route, id);
+  }
+
+  test() {
+    console.log('show test');
   }
 }

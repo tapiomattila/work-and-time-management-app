@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardComponent } from './worksite/card.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
     imports: [

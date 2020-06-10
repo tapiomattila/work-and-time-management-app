@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { WorksitesQuery } from '../worksites/state/worksites.query';
+import { WorksitesQuery } from '../pages/worksites/state/worksites.query';
 
 @Injectable({
     providedIn: 'root'
@@ -66,5 +66,16 @@ export class NavigationHandlerService {
         const routeMod = params ? `${route}/${params}` : route;
         this.navigationSubj.next(routeMod);
         this.router.navigate([`/${routeMod}`]);
+    }
+
+    navigateToRoute(route: string, id?: string) {
+        if (id) {
+            this.router.navigate([
+                route,
+                id
+            ]);
+        } else {
+            this.router.navigate([route]);
+        }
     }
 }

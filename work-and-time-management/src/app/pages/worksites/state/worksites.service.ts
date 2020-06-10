@@ -7,7 +7,7 @@ import { Worksite, createWorksite } from './worksites.model';
 })
 export class WorksitesService {
     constructor(
-        private worksitesStore: WorksiteStore
+        private worksitesStore: WorksiteStore,
     ) { }
 
     setWorksites(worksites: Partial<Worksite>[]) {
@@ -22,5 +22,4 @@ export class WorksitesService {
     setActive(id: string) {
         this.worksitesStore.setActive(id);
     }
-
 }
