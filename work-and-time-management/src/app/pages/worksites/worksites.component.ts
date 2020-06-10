@@ -5,6 +5,8 @@ import { fadeInEnterTrigger, fadeInOutDelayTrigger, fadeInEnterWithDelayTrigger 
 import { WorksitesQuery } from 'src/app/worksites/state/worksites.query';
 import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/worksites/state/worksites.model';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-worksites',
@@ -18,21 +20,26 @@ import { Worksite } from 'src/app/worksites/state/worksites.model';
 })
 export class WorksitesComponent implements OnInit {
 
-  days = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
-  worksites$: Observable<Worksite[]>;
+  momentDay: moment.Moment;
 
   constructor(
     private location: Location,
     private worksitesQuery: WorksitesQuery,
-    public windowService: WindowService
+    private router: Router,
+    public windowService: WindowService,
+
   ) { }
 
   ngOnInit() {
-    this.worksites$ = this.worksitesQuery.selectAll();
+    this.momentDay = moment();
   }
 
   locationBack() {
     this.location.back();
+  }
+
+  backArrowPressed(event: any) {
+    this.router.navigate(['/dashboard']);
   }
 
 }

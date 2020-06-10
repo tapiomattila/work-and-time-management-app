@@ -9,12 +9,10 @@ html {
 
 body {
   min-height: 100vh;
-  background: rgb(82, 109, 82);
-
-  background-color: #157570;
+  background-color: var(--base-bg-color);
 
   ::selection {
-    background: orange;
-    color: #fff;
+    background: var(--primary-color);
+    color: var(--white-color);
   }
 }

@@ -1,25 +1,57 @@
-<ng-container>
-  <div class="heading">
-    <div class="user">
-      <h4>User</h4>
-    </div>
-    <div class="date">
-      <p>{{ date }}</p>
-    </div>
-    <div class="days">
-      <span *ngFor="let day of days; let i = index" class="day-hours">
-        <app-day-hours [day]="day" [hour]="i + 5"></app-day-hours>
-      </span>
-    </div>
+<div class="heading">
+  <div class="heading__profile-icon">
+    <img src="../../assets/img/profile-avatar-thumb.jpg" alt="avatar">
   </div>
-  <div class="dash-container">
-    <app-current-worksite-card (click)="navigationHandlerService.setCurrentNavigationRoute('add-hours')">
-    </app-current-worksite-card>
-    <app-worksites-card (click)="navigationHandlerService.setCurrentNavigationRoute('worksites')"></app-worksites-card>
-    <app-settings-card (click)="navigationHandlerService.setCurrentNavigationRoute('settings')"></app-settings-card>
-    <app-manage-worksites-card (click)="navigationHandlerService.setCurrentNavigationRoute('manage-worksites')">
-    </app-manage-worksites-card>
-    <app-manage-users-card (click)="navigationHandlerService.setCurrentNavigationRoute('manage-users')">
-    </app-manage-users-card>
+  <div class="heading__name">
+    <ng-container *ngIf="user$ | async as user">
+      <p>{{ user.firstName }} {{ user.lastName }}</p>
+    </ng-container>
   </div>
-</ng-container>
+  <div class="heading__settings-btn">
+    <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+  </div>
+</div>
+
+<div class="header">
+  <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+</div>
+
+<div class="circles">
+  <app-day-hours *ngFor="let info of infos" [hours]="info.hour" [days]="info.day"></app-day-hours>
+  <div class="circle-plus">+</div>
+</div>
+
+<div class="cards">
+  <app-card [name]="'Naantalin aurinkoinen'" [hours]="'52'"></app-card>
+
+  <!-- Worksites -->
+  <div class="card" (click)="toWorksites()">
+    <app-card [name]="'Worksites'" [icon]="icon-briefcase"></app-card>
+  </div>
+
+  <!-- Added hours -->
+  <div class="card">
+    <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
+  </div>
+
+  <!-- Manage worksites -->
+  <div class="card">
+    <app-card [name]="'Manage worksites'"></app-card>
+  </div>
+
+  <!-- Manage users -->
+  <div class="card">
+    <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+  </div>
+
+  <!-- Admin settings -->
+  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+    <div class="card">
+      <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
+    </div>
+  </ng-container>
+  <ng-template #noAdmin>
+  </ng-template>
+</div>
+
+<div class="footer"></div>

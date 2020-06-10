@@ -16,3 +16,55 @@ button {
     display: none;
   }
 }
+
+.card {
+  display: grid;
+  grid-template-rows: 20px minmax(min-content, 100px);
+  background-color: var(--white-color);
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+
+  &__ribbon {
+    background-color: var(--primary-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+
+    justify-items: center;
+    align-items: center;
+  }
+
+  &__name {
+    justify-self: flex-start;
+    margin-left: 10px;
+    grid-column: 1 / 2;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+
+    &.current-worksite {
+      font-size: 1.8rem;
+    }
+
+    &.current-worksite {
+      text-transform: initial;
+    }
+
+    &.largeFont {
+      font-size: 2.4rem;
+      text-transform: uppercase;
+    }
+  }
+
+  &__hours {
+    grid-column: 2 / 3;
+    font-size: 3.6rem;
+  }
+
+  &__icon {
+    fill: var(--icon-fill);
+  }
+}

@@ -6,7 +6,8 @@ export function createInitialState(): User {
   return {
     id: null,
     firstName: '',
-    lastName: ''
+    lastName: '',
+    isAdmin: false
   };
 }
 

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { WorksiteStore } from './worksites.store';
 import { Worksite, createWorksite } from './worksites.model';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class WorksitesService {
     constructor(
@@ -14,7 +14,7 @@ export class WorksitesService {
         const worksiteArray = new Array();
         worksites.forEach(el => {
             worksiteArray.push(createWorksite(el));
-        })
+        });
 
         this.worksitesStore.set(worksiteArray);
     }

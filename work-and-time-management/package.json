@@ -22,6 +22,7 @@
     "@angular/router": "~8.2.14",
     "@datorama/akita": "^4.17.2",
     "firebase": "^7.8.2",
+    "moment": "^2.26.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "web-animations-js": "^2.3.2",

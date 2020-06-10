@@ -1,23 +1,36 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { fadeInEnterWithDelayTrigger, fadeInEnterTrigger } from 'src/app/animations/animations';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-day-hours',
-  templateUrl: './day-hours.component.html',
-  styleUrls: ['./day-hours.component.scss'],
-  animations: [
-    fadeInEnterWithDelayTrigger,
-    fadeInEnterTrigger
-  ]
+    selector: 'app-day-hours',
+    templateUrl: './day-hours.component.html',
+    styleUrls: ['./day-hours.component.scss'],
 })
 export class DayHoursComponent implements OnInit {
 
-  @Input() day: string;
-  @Input() hour: number;
+    activeDay = false;
+    day: any;
 
-  constructor() { }
+    @Input()
+    set days(val: Date) {
+        const dayToISO = val.toISOString();
+        const dayMomentStr = moment(dayToISO);
+        const dayFormat = dayMomentStr.format('LLLL');
+        this.day = dayFormat.substring(0, 3);
 
-  ngOnInit() {
-  }
+        const current = moment();
+        const isSame = current.isSame(dayMomentStr, 'day');
 
+        if (isSame) {
+            this.activeDay = true;
+        }
+
+    }
+
+    @Input() hours: string;
+
+    constructor() { }
+
+    ngOnInit() {
+    }
 }

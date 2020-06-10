@@ -1,44 +1,26 @@
-@import url('https://fonts.googleapis.com/css?family=Changa&display=swap');
 
 :host {
-  display: inline-block;
-  font-size: 1.2rem;
+    display: block;
+    text-align: center;
 }
 
 .circle {
-  width: 30px;
-  height: 30px;
+  border: 3px solid #359a94;
+  height: 45.5px;
+  width: 45.5px;
   border-radius: 50%;
-  background-color: rgb(255, 255, 255);
-  border: 4px solid #0fb2db;
-  font-size: 2.1rem;
-
-  font-family: 'Changa';
-
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: #6e6e6e;
-
-  @media only screen and (min-width: 340px) {
-    width: 35px;
-    height: 35px;
-  }
-
-  @media only screen and (min-width: 576px) {
-    width: 45px;
-    height: 45px;
-    font-size: 2.7rem;
+  &.active-circle {
+    border: 3px solid #40af44;
   }
 }
 
-.day {
-  display: flex;
-  justify-content: center;
-  color: #fff;
-  font-size: 1.7rem;
-  margin: 0;
-  padding: 0;
-  letter-spacing: 1px;
+.circle-plus {
+  color: #359a94;
+  font-size: 3.6rem;
+  align-self: flex-start;
 }

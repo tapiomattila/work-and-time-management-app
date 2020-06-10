@@ -9,7 +9,7 @@ export const fadeInEnterTrigger = trigger('fadeInEnter', [
             opacity: 1
         }))
     ])
-])
+]);
 
 export const fadeInEnterWithDelayTrigger = trigger('fadeInEnterWithDelay', [
     transition(':enter', [
@@ -20,7 +20,7 @@ export const fadeInEnterWithDelayTrigger = trigger('fadeInEnterWithDelay', [
             opacity: 1
         }))
     ])
-])
+]);
 
 export const fadeInOutDelayTrigger = trigger('fadeInOutDelay', [
     transition(':enter', [
@@ -35,7 +35,7 @@ export const fadeInOutDelayTrigger = trigger('fadeInOutDelay', [
         }),
         animate(3000)
     ]),
-])
+]);
 
 export const translateXRightTrigger = trigger('translateXRight', [
     state('default', style({
@@ -56,4 +56,4 @@ export const translateXRightTrigger = trigger('translateXRight', [
         }),
         animate('300ms')
     ])
-])
+]);

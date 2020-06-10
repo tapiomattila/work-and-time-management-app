@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="card__ribbon"></div>
+    <div class="card__content">
+        <p class="card__name current-worksite" [ngClass]="{ 'largeFont': !hoursNum }">{{ name }}</p>
+        <p class="card__hours" *ngIf="hoursNum">{{ hours }} <span>h</span></p>
+        <div class="card__icon" *ngIf="!hoursNum">
+            <svg class="dev-icon">
+                <use [attr.xlink:href]="iconUrl"></use>
+            </svg>
+        </div>
+    </div>
+</div>

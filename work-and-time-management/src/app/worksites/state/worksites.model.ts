@@ -1,11 +1,11 @@
 export interface Worksite {
-    id: string,
-    nickname: string,
-    streetAddress: string,
-    postalCode: number,
-    city: string,
-    createdAt: Date,
-    updatedAt: Date
+    id: string;
+    nickname: string;
+    streetAddress: string;
+    postalCode: number;
+    city: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export function createWorksite(worksite: Partial<Worksite>) {

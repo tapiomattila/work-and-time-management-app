@@ -1,6 +1,8 @@
-<div class="circle">
-  <div class="hours" @fadeInEnter>{{ hour }}</div>
-</div>
-<div class="day">
-  {{ day | uppercase }}
+<div class="day-hours">
+    <div class="circle" [ngClass]="{ 'active-circle': activeDay}">
+        {{ hours }}h
+    </div>
+    <div class="date">
+        <p>{{ day }}</p>
+    </div>
 </div>

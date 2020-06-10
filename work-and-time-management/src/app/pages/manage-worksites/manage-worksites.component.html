@@ -1,7 +1,0 @@
-<div @fadeInEnter class="cont">
-  <div class="infos">
-      <h3>Manage worksites</h3>
-  </div>
-</div>
-<button @fadeInEnter [ngClass]="{'d-none': (windowService.windowSizeObs$ | async).width >= 992}"
-  (click)="locationBack()">Back</button>
