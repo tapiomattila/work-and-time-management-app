@@ -2,11 +2,15 @@
     <div class="card__ribbon"></div>
     <div class="card__content">
         <p class="card__name current-worksite" [ngClass]="{ 'largeFont': !hoursNum }">{{ name }}</p>
-        <p class="card__hours" *ngIf="hoursNum">{{ hours }} <span>h</span></p>
-        <div class="card__icon" *ngIf="!hoursNum">
-            <svg class="dev-icon">
-                <use [attr.xlink:href]="iconUrl"></use>
-            </svg>
-        </div>
+        <ng-container *ngIf="hours$ | async as hours; else noHours">
+            <p class="card__hours">{{ hours }} <span>h</span></p>
+        </ng-container>
+        <ng-template #noHours>
+            <div class="card__icon">
+                <svg class="dev-icon">
+                    <use [attr.xlink:href]="iconUrl"></use>
+                </svg>
+            </div>
+        </ng-template>
     </div>
 </div>

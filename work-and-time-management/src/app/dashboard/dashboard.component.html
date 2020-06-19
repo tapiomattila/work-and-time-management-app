@@ -24,7 +24,7 @@
 <div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">
     <ng-container *ngIf="currentHours$ | async as hours">
-      <app-card (click)="navigate('current-worksite', current.id)" [name]="current.nickname" [hours]="hours"></app-card>
+      <app-card (click)="navigate('current-worksite', current.id)" [name]="current.nickname" [worksite]="current"></app-card>
     </ng-container>
   </ng-container>
 

@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
-import { WorksitesQuery } from 'src/app/pages/worksites/state/worksites.query';
-import { WorksitesService } from 'src/app/pages/worksites/state/worksites.service';
 import { map } from 'rxjs/operators';
+import { HoursQuery } from 'src/app/auth/hours/hours.query';
 
 @Component({
   selector: 'app-card',
@@ -13,11 +12,12 @@ import { map } from 'rxjs/operators';
 })
 export class CardComponent implements OnInit {
 
-  iconUrl = '../../../assets/svg/sprite.svg#icon-briefcase';
-
   hoursNum: number;
+  hours$: Observable<number>;
+
+  iconUrl = '../../../assets/svg/sprite.svg#icon-briefcase';
   @Input() name: string;
-  @Input() hours: string;
+  @Input() worksite: Worksite;
 
   @Input()
   set icon(value: string) {
@@ -26,27 +26,20 @@ export class CardComponent implements OnInit {
     }
   }
 
-  //   @Input() class: string;
-  //   currentWorkSite$: Observable<Worksite>;
-
   constructor(
-    private worksiteQuery: WorksitesQuery,
-    private worksiteService: WorksitesService,
+    private hoursQuery: HoursQuery
   ) { }
 
   ngOnInit() {
-    if (this.hours && this.hours.length > 0) {
-      this.hoursNum = parseInt(this.hours, 0);
-    }
+    if (this.worksite) {
+      this.hours$ = this.hoursQuery.selectHoursForWorksite(this.worksite.id)
+        .pipe(
+          map(el => parseInt(el, 0))
+        );
 
-    // this.currentWorkSite$ = this.worksiteQuery.selectRecentlyUpdateWorksite()
-    //   .pipe(
-    //     map((worksites: Worksite[]) => {
-    //       if (worksites.length > 0) {
-    //         this.worksiteService.setActive(worksites[0].id);
-    //         return worksites[0];
-    //       }
-    //     })
-    //   )
+      this.hours$.subscribe(res => this.hoursNum = res);
+
+      // this.hours$ = of(14);
+    }
   }
 }

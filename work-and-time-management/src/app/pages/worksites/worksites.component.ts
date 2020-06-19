@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 
 @Component({
   selector: 'app-worksites',
@@ -20,6 +21,7 @@ import * as moment from 'moment';
 })
 export class WorksitesComponent implements OnInit {
 
+  worksites$: Observable<Worksite[]>;
   momentDay: moment.Moment;
 
   constructor(
@@ -32,6 +34,7 @@ export class WorksitesComponent implements OnInit {
 
   ngOnInit() {
     this.momentDay = moment();
+    this.worksites$ = this.worksitesQuery.selectAll();
   }
 
   locationBack() {
@@ -39,7 +42,7 @@ export class WorksitesComponent implements OnInit {
   }
 
   backArrowPressed(event: any) {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]);
   }
 
 }

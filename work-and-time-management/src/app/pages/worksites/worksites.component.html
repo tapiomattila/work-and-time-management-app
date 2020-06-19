@@ -15,10 +15,10 @@
 </div>
 
 <div class="cards">
-  <app-card [name]="'Naantalin aurinkoinen'" [hours]="'52'"></app-card>
-  <app-card [name]="'Ruissalon kylpylä'" [hours]="'16'"></app-card>
-  <app-card [name]="'Kiviranta'" [hours]="'22'"></app-card>
-  <app-card [name]="'Neilikan museo'" [hours]="'141'"></app-card>
+  <ng-container *ngIf="worksites$ | async as worksites">
+    <app-card *ngFor="let worksite of worksites" [name]="worksite.nickname" [worksite]="worksite"></app-card>
+  </ng-container>
+  
 </div>
 
 <div class="footer"></div>

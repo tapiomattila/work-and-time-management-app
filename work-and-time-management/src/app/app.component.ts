@@ -1,8 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { DataService } from './services/data.service';
 import { User } from './auth/user/user.model';
 import { UserService } from './auth/user/user.service';
-import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
@@ -10,6 +8,8 @@ import { fadeInEnterTrigger } from './animations/animations';
 import { WorksitesService } from './pages/worksites/state/worksites.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { WorksitesQuery } from './pages/worksites/state/worksites.query';
+import { HoursService } from './auth/hours/hours.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -29,31 +29,34 @@ export class AppComponent implements OnInit {
   }
 
   constructor(
-    private dataService: DataService,
     private worksiteService: WorksitesService,
     private worksiteQuery: WorksitesQuery,
     private userService: UserService,
     private userQuery: UserQuery,
+    private hoursService: HoursService,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService
   ) { }
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
-    this.dataService.loadAllWorksites().subscribe(res => console.log('show load all courses res', res));
 
-    this.dataService.loadAllUsers().pipe(
-      tap((users: User[]) => this.userService.updateUser(users[0].id, users[0].firstName, users[0].lastName))
-    ).subscribe(res => console.log('users resä', res));
+    this.userService.updateUserStore();
 
-    this.dataService.loadAllWorksites()
+    this.worksiteService.fetchAllWorksites()
       .subscribe(res => {
         this.worksiteService.setWorksites(res);
       });
 
-    this.dataService.loadHours().subscribe(res => console.log('show hours', res));
+    this.user$.pipe(
+      switchMap(res => {
+        return this.hoursService.fetchHours(res.id);
+      })
+    ).subscribe(res => {
+      this.hoursService.setHours(res);
+    });
 
-    this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
+    // this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
     this.worksiteQuery.selectRecentlyUpdateWorksite();
   }
 }

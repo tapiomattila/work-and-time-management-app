@@ -6,8 +6,10 @@ import { User } from '../auth/user/user.model';
 import * as moment from 'moment';
 import { Worksite } from '../pages/worksites/state/worksites.model';
 import { UserQuery } from '../auth/user/user.query';
-import { WorksitesService } from '../pages/worksites/state/worksites.service';
 import { WorksitesQuery } from '../pages/worksites/state/worksites.query';
+import { HoursQuery } from '../auth/hours/hours.query';
+import { map, switchMap } from 'rxjs/operators';
+import { RouterRoutesEnum } from '../enumerations/global.enums';
 
 @Component({
   selector: 'app-dashboard',
@@ -49,6 +51,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private userQuery: UserQuery,
     private worksiteQuery: WorksitesQuery,
+    private hoursQuery: HoursQuery,
     public navigationHandlerService: NavigationHandlerService,
   ) { }
 
@@ -57,20 +60,22 @@ export class DashboardComponent implements OnInit {
     this.user$ = this.userQuery.user$;
     this.currentWorksite$ = this.worksiteQuery.selectAndSetCurrentWorksite();
 
-    this.currentWorksite$.subscribe(res => console.log('res in current', res));
-    this.currentHours$ = of('52');
-    this.userQuery.user$.subscribe(res => console.log('show res in users', res));
+    this.currentWorksite$.subscribe(res => console.log('show res in cur', res));
+
+    this.currentHours$ = this.currentWorksite$.pipe(
+      map(el => el ? el.id : undefined),
+      switchMap(id => id ? this.hoursQuery.selectHoursForWorksite(id) : of('')),
+    );
+
+    this.currentHours$.subscribe(res => console.log('show cur hours', res));
   }
 
   toWorksites() {
-    this.router.navigate(['worksites']);
+    this.router.navigate([RouterRoutesEnum.WORKSITES]);
   }
 
   navigate(route: string, id?: string) {
     this.navigationHandlerService.navigateToRoute(route, id);
   }
 
-  test() {
-    console.log('show test');
-  }
 }
