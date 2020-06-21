@@ -5,16 +5,19 @@ import { Injectable } from '@angular/core';
 export function createInitialState(): User {
   return {
     id: null,
-    firstName: '',
-    lastName: '',
-    isAdmin: false
+    firstName: null,
+    lastName: null,
+    isAdmin: false,
+    profilePictureUrl: null,
+    email: null,
+    displayName: null
   };
 }
 
 @Injectable({
   providedIn: 'root'
 })
-@StoreConfig({ name: 'user' })
+@StoreConfig({ name: 'user', resettable: true })
 export class UserStore extends Store<User> {
   constructor() {
     super(createInitialState());

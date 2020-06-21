@@ -7,6 +7,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {AngularFireAuthModule} from '@angular/fire/auth';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -35,6 +36,7 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
 
     [environment.production ? [] : AkitaNgDevtools.forRoot()]
   ],

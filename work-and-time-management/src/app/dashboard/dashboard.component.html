@@ -1,16 +1,34 @@
 <div class="heading">
-  <div class="heading__profile-icon">
-    <img src="../../assets/img/profile-avatar-thumb.jpg" alt="avatar">
-  </div>
-  <div class="heading__name">
-    <ng-container *ngIf="user$ | async as user">
-      <p>{{ user.firstName }} {{ user.lastName }}</p>
-    </ng-container>
-  </div>
+  <ng-container *ngIf="user$ | async as user">
+    <div class="heading__profile-icon">
+      <ng-container *ngIf="user.profilePictureUrl">
+        <img [src]="user.profilePictureUrl" alt="avatar">
+        <!-- <img src="../../assets/img/profile-avatar-thumb.jpg" alt="avatar"> -->
+      </ng-container>
+    </div>
+    <div class="heading__name">
+      <p>{{ user.displayName }}</p>
+    </div>
+  </ng-container>
   <div class="heading__settings-btn">
-    <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+    <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn" (click)="openMenu()">
   </div>
 </div>
+
+<ng-container *ngIf="openMenuModal">
+  <div class="menu-modal">
+    <div class="menu-modal__close" (click)="closeModal()">
+      <div class="line1"></div>
+      <div class="line2"></div>
+    </div>
+    <div class="menu-modal__content">
+      <ul>
+        <li (click)="signout()">SignOut</li>
+      </ul>
+    </div>
+  </div>
+</ng-container>
+
 
 <div class="header">
   <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
@@ -24,7 +42,8 @@
 <div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">
     <ng-container *ngIf="currentHours$ | async as hours">
-      <app-card (click)="navigate('current-worksite', current.id)" [name]="current.nickname" [worksite]="current"></app-card>
+      <app-card (click)="navigate('current-worksite', current.id)" [name]="current.nickname" [worksite]="current">
+      </app-card>
     </ng-container>
   </ng-container>
 

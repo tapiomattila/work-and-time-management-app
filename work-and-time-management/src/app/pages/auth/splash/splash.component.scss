@@ -1,0 +1,27 @@
+:host {
+  min-width: 100%;
+
+  display: grid;
+  grid-template-rows: 20vh 1fr 3fr 20vh;
+  justify-items: center;
+}
+
+.welcome {
+  grid-row: 2 / 3;
+}
+
+.choice {
+  grid-row: 3 / 4;
+  justify-self: stretch;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

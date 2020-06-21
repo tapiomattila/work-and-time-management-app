@@ -1,7 +1,6 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { User } from './auth/user/user.model';
-import { UserService } from './auth/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { fadeInEnterTrigger } from './animations/animations';
@@ -10,6 +9,7 @@ import { NavigationHandlerService } from './services/navigation-handler.service'
 import { WorksitesQuery } from './pages/worksites/state/worksites.query';
 import { HoursService } from './auth/hours/hours.service';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from './auth/state/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +19,12 @@ import { switchMap } from 'rxjs/operators';
     fadeInEnterTrigger
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+
+  firebaseAuthSubs: Subscription;
+
   user$: Observable<User>;
-  selection = '';
+  // selection = '';
 
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -31,17 +34,16 @@ export class AppComponent implements OnInit {
   constructor(
     private worksiteService: WorksitesService,
     private worksiteQuery: WorksitesQuery,
-    private userService: UserService,
     private userQuery: UserQuery,
     private hoursService: HoursService,
+    private authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService
   ) { }
 
   ngOnInit() {
+    this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.user$ = this.userQuery.user$;
-
-    this.userService.updateUserStore();
 
     this.worksiteService.fetchAllWorksites()
       .subscribe(res => {
@@ -58,5 +60,11 @@ export class AppComponent implements OnInit {
 
     // this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
     this.worksiteQuery.selectRecentlyUpdateWorksite();
+  }
+
+  ngOnDestroy() {
+    if (this.firebaseAuthSubs !== undefined) {
+      this.firebaseAuthSubs.unsubscribe();
+    }
   }
 }

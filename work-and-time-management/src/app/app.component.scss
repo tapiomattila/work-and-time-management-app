@@ -1,4 +1,6 @@
 .app-container {
   display: flex;
   justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
 }

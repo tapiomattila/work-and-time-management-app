@@ -2,7 +2,7 @@ import { UserStore } from './user.store';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap } from 'rxjs/operators';
-import { User } from './user.model';
+import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 
 @Injectable({
@@ -14,8 +14,11 @@ export class UserService {
         private af: AngularFirestore
     ) { }
 
-    updateUser(userId: string, firstN: string, last: string) {
-        this.userStore.update({ id: userId, firstName: firstN, lastName: last });
+    // updateUser(userId: string, firstN: string, last: string) {
+    updateUser(user: Partial<User>) {
+
+        // this.userStore.update({ id: userId, firstName: firstN, lastName: last });
+        this.userStore.update(createUser(user));
     }
 
     fetchAllUsers() {
@@ -37,11 +40,14 @@ export class UserService {
             );
     }
 
-    updateUserStore() {
-        this.fetchAllUsers().pipe(
-            tap((users: User[]) => {
-                this.updateUser(users[0].id, users[0].firstName, users[0].lastName);
-            })
-        ).subscribe();
+    // updateUserStore() {
+    //     this.fetchAllUsers().pipe(
+    //         tap((users: User[]) => {
+    //             this.updateUser(users[0].id, users[0].firstName, users[0].lastName);
+    //         })
+    //     ).subscribe();
+    // }
+    resetStore() {
+        this.userStore.reset();
     }
 }

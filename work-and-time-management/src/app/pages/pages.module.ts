@@ -4,17 +4,23 @@ import { SharedModule } from '../shared/shared.module';
 import { CardsModule } from '../cards/cards.module';
 import { WorksitesComponent } from './worksites/worksites.component';
 import { AddHoursComponent } from './add-hours/add-hours.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { SplashComponent } from './auth/splash/splash.component';
 
 @NgModule({
     imports: [
         CommonModule,
         SharedModule,
-        CardsModule
+        CardsModule,
     ],
     exports: [],
     declarations: [
         WorksitesComponent,
-        AddHoursComponent
+        AddHoursComponent,
+        LoginComponent,
+        RegisterComponent,
+        SplashComponent
     ],
     providers: [],
 })
