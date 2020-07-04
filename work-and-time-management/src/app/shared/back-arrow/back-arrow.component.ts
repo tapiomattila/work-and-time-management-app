@@ -7,7 +7,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class BackArrowComponent implements OnInit {
 
-  @Output() backPressed = new EventEmitter();
+  @Output() backPressed = new EventEmitter<boolean>();
 
   constructor() { }
 

@@ -27,7 +27,7 @@ export class DayHoursComponent implements OnInit {
 
     }
 
-    @Input() hours: string;
+    @Input() hours: number;
 
     constructor() { }
 

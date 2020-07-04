@@ -2,8 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
 import { Observable, of } from 'rxjs';
 import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
-import { map } from 'rxjs/operators';
-import { HoursQuery } from 'src/app/auth/hours/hours.query';
+import { HoursQuery } from 'src/app/auth/hours';
 
 @Component({
   selector: 'app-card',
@@ -32,14 +31,7 @@ export class CardComponent implements OnInit {
 
   ngOnInit() {
     if (this.worksite) {
-      this.hours$ = this.hoursQuery.selectHoursForWorksite(this.worksite.id)
-        .pipe(
-          map(el => parseInt(el, 0))
-        );
-
-      this.hours$.subscribe(res => this.hoursNum = res);
-
-      // this.hours$ = of(14);
+      this.hours$ = this.hoursQuery.selectHoursForWorksite(this.worksite.id);
     }
   }
 }

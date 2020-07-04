@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HoursState, HoursStore } from './hours.store';
 import { map } from 'rxjs/operators';
 import { Hours } from './hours.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -15,13 +16,30 @@ export class HoursQuery extends QueryEntity<HoursState> {
         super(store);
     }
 
-    selectHoursForWorksite(worksiteId: string) {
+    selectHoursForWorksite(worksiteId: string): Observable<number> {
         return this.selectAll({
             filterBy: [
                 el => el.worksiteId === worksiteId
             ]
         }).pipe(
-            map((hoursArray: Hours[]) => hoursArray[0] ? hoursArray[0].markedHours.toString() : '')
+            map((hours: Hours[]) => hours.map(el => el.markedHours)),
+            map(hoursArr => {
+                return hoursArr.reduce((a, b) => a + b, 0);
+            }),
+        );
+    }
+
+    selectWorksiteHours(worksiteId: string) {
+        return this.hours$.pipe(
+            map(res => {
+                if (res) {
+                    return res.filter(el => {
+                        if (el.worksiteId === worksiteId) {
+                            return el;
+                        }
+                    });
+                }
+            })
         );
     }
 

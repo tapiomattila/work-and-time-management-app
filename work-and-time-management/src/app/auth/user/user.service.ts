@@ -4,6 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap } from 'rxjs/operators';
 import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { HoursService } from '../hours';
+import { WorksitesService } from 'src/app/pages/worksites/state';
 
 @Injectable({
     providedIn: 'root'
@@ -11,13 +13,12 @@ import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 export class UserService {
     constructor(
         private userStore: UserStore,
-        private af: AngularFirestore
+        private af: AngularFirestore,
+        private hourService: HoursService,
+        private worksiteService: WorksitesService
     ) { }
 
-    // updateUser(userId: string, firstN: string, last: string) {
     updateUser(user: Partial<User>) {
-
-        // this.userStore.update({ id: userId, firstName: firstN, lastName: last });
         this.userStore.update(createUser(user));
     }
 
@@ -40,14 +41,13 @@ export class UserService {
             );
     }
 
-    // updateUserStore() {
-    //     this.fetchAllUsers().pipe(
-    //         tap((users: User[]) => {
-    //             this.updateUser(users[0].id, users[0].firstName, users[0].lastName);
-    //         })
-    //     ).subscribe();
-    // }
     resetStore() {
         this.userStore.reset();
+    }
+
+    resetAllStores() {
+        this.userStore.reset();
+        this.worksiteService.resetStore();
+        this.hourService.resetStore();
     }
 }

@@ -4,12 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { fadeInEnterTrigger } from './animations/animations';
-import { WorksitesService } from './pages/worksites/state/worksites.service';
+import { WorksitesService } from './pages/worksites/state';
 import { NavigationHandlerService } from './services/navigation-handler.service';
-import { WorksitesQuery } from './pages/worksites/state/worksites.query';
 import { HoursService } from './auth/hours/hours.service';
-import { switchMap } from 'rxjs/operators';
-import { AuthService } from './auth/state/auth.service';
+import { Auth, AuthQuery, AuthService } from './auth/state';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
   firebaseAuthSubs: Subscription;
 
   user$: Observable<User>;
-  // selection = '';
 
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -33,10 +30,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private worksiteService: WorksitesService,
-    private worksiteQuery: WorksitesQuery,
     private userQuery: UserQuery,
     private hoursService: HoursService,
     private authService: AuthService,
+    private authQuery: AuthQuery,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService
   ) { }
@@ -45,21 +42,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.user$ = this.userQuery.user$;
 
-    this.worksiteService.fetchAllWorksites()
-      .subscribe(res => {
-        this.worksiteService.setWorksites(res);
+    this.authQuery.select()
+      .subscribe((auth: Auth) => {
+        if (auth && auth.id !== undefined) {
+          this.worksiteService.setWorksiteStore(auth.id).subscribe();
+          this.hoursService.setUserHours(auth.id).subscribe();
+        } else {
+          this.worksiteService.resetStore();
+          this.hoursService.resetStore();
+        }
       });
 
-    this.user$.pipe(
-      switchMap(res => {
-        return this.hoursService.fetchHours(res.id);
-      })
-    ).subscribe(res => {
-      this.hoursService.setHours(res);
-    });
-
-    // this.worksiteQuery.selectAll().subscribe(res => console.log('show res in store', res));
-    this.worksiteQuery.selectRecentlyUpdateWorksite();
   }
 
   ngOnDestroy() {

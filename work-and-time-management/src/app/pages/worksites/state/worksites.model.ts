@@ -6,6 +6,7 @@ export interface Worksite {
     city: string;
     createdAt: Date;
     updatedAt: Date;
+    users: string[];
 }
 
 export function createWorksite(worksite: Partial<Worksite>) {

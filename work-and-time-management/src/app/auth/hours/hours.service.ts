@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HoursStore } from './hours.store';
 import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first } from 'rxjs/operators';
+import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 
 @Injectable({
@@ -27,8 +27,24 @@ export class HoursService {
         this.hoursStore.set(hoursArray);
     }
 
+    setUserHours(userId: string) {
+        return this.fetchHours(userId)
+            .pipe(
+                tap(hours => {
+                    if (hours && hours.length) {
+                        this.setHours(hours);
+                    }
+                })
+            );
+    }
+
+    convertSecondsToDate(seconds: number) {
+        const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+        return d.setUTCSeconds(seconds);
+    }
+
     fetchHours(userId: string) {
-        return this.af.collection(`${FireBaseCollectionsEnum.USERS}/${userId}/${FireBaseCollectionsEnum.HOURS}`)
+        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`, ref => ref.where('userId', '==', userId))
             .snapshotChanges()
             .pipe(
                 map(snaps => {
@@ -46,4 +62,9 @@ export class HoursService {
                 first()
             );
     }
+
+    resetStore() {
+        this.hoursStore.reset();
+    }
+
 }

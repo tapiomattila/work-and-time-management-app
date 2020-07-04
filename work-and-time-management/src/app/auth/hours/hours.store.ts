@@ -12,7 +12,8 @@ const initialState = {
     providedIn: 'root'
 })
 @StoreConfig({
-    name: 'hours'
+    name: 'hours',
+    resettable: true
 })
 export class HoursStore extends EntityStore<HoursState> {
     constructor() {

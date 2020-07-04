@@ -12,7 +12,8 @@ const initialState = {
     providedIn: 'root'
 })
 @StoreConfig({
-    name: 'worksites'
+    name: 'worksites',
+    resettable: true
 })
 export class WorksiteStore extends EntityStore<WorksitesState> {
     constructor() {

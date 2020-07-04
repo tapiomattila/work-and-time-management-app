@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WorksiteStore } from './worksites.store';
 import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first } from 'rxjs/operators';
+import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 
 @Injectable({
@@ -27,23 +27,63 @@ export class WorksitesService {
         this.worksitesStore.setActive(id);
     }
 
+    setWorksiteStore(userId: string) {
+        return this.fetchUserWorksites(userId)
+            .pipe(
+                tap(res => {
+                    if (res && res.length) {
+                        this.setWorksites(res);
+                    }
+                }),
+            );
+    }
+
+    fetchUserWorksites(userId: string) {
+        return this.af.collection(`${FireBaseCollectionsEnum.WORKSITES}`)
+            .snapshotChanges()
+            .pipe(
+                map(snaps => {
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+                }),
+                map((worksites: Worksite[]) => {
+                    return worksites.filter(el => {
+                        if (el.users.includes(userId)) {
+                            return el;
+                        }
+                    });
+                }),
+                first()
+            );
+    }
+
     fetchAllWorksites() {
         return this.af.collection(FireBaseCollectionsEnum.WORKSITES)
-        .snapshotChanges()
-        .pipe(
-            map(snaps => {
+            .snapshotChanges()
+            .pipe(
+                map(snaps => {
 
-                return snaps.map(snap => {
-                    const id = snap.payload.doc.id;
-                    const data = snap.payload.doc.data();
-                    return {
-                        id,
-                        ...(data as object)
-                    };
-                });
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
 
-            }),
-            first()
-        );
+                }),
+                first()
+            );
+    }
+
+    resetStore() {
+        this.worksitesStore.reset();
     }
 }
