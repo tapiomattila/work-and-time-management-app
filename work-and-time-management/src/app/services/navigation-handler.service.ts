@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { WorksitesQuery } from '../pages/worksites/state/worksites.query';
+import { RouterRoutesEnum } from '../enumerations/global.enums';
+import { WorksitesQuery, WorksitesService } from '../pages/worksites/state';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ export class NavigationHandlerService {
 
     constructor(
         private router: Router,
-        private worksiteQuery: WorksitesQuery
+        private worksiteQuery: WorksitesQuery,
+        private worksiteService: WorksitesService
     ) {
         this.routeInfo();
     }
@@ -69,6 +71,11 @@ export class NavigationHandlerService {
     }
 
     navigateToRoute(route: string, id?: string) {
+
+        if (route === RouterRoutesEnum.ADD_HOURS && id) {
+            this.worksiteService.setActive(id);
+        }
+
         if (id) {
             this.router.navigate([
                 route,

@@ -1,6 +1,12 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
 .app-container {
   display: flex;
   justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
+  max-width: 450px;
 }

@@ -1,16 +1,18 @@
-import { QueryEntity, Order } from '@datorama/akita';
+import { QueryEntity } from '@datorama/akita';
 import { WorksiteStore, WorksitesState } from './worksites.store';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Worksite } from './worksites.model';
 import { map, switchMap } from 'rxjs/operators';
 import { WorksitesService } from './worksites.service';
 import { HoursQuery } from 'src/app/auth/hours/hours.query';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorksitesQuery extends QueryEntity<WorksitesState> {
+
+  active$ = this.selectActive();
+
   constructor(
     protected store: WorksiteStore,
     private worksiteService: WorksitesService,
@@ -18,25 +20,6 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   ) {
     super(store);
   }
-
-  // selectRecentlyUpdateWorksite(): Observable<Worksite[]> {
-  //     return this.selectAll({
-  //         sortBy: 'updatedAt',
-  //         sortByOrder: Order.DESC
-  //     });
-  // }
-
-  //  selectAndSetCurrentWorksite() {
-  //     return this.selectRecentlyUpdateWorksite()
-  //     .pipe(
-  //       map((worksites: Worksite[]) => {
-  //         if (worksites.length > 0) {
-  //           this.worksiteService.setActive(worksites[0].id);
-  //           return worksites[0];
-  //         }
-  //       })
-  //     );
-  // }
 
   selectWorksiteById(worksiteId: string) {
     return this.selectAll({

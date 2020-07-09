@@ -4,6 +4,7 @@ import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { WorksitesQuery } from './worksites.query';
 
 @Injectable({
     providedIn: 'root'

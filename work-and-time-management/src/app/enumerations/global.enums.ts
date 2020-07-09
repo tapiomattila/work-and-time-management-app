@@ -4,12 +4,13 @@ export enum RouterRoutesEnum {
     REGISTER = 'register',
     DASHBOARD = 'dashboard',
     WORKSITES = 'worksites',
-    CURRENT_WORKSITE = 'current-worksite'
+    CURRENT_WORKSITE = 'current-worksite',
+    ADD_HOURS = 'add-hours'
 }
 
 export enum FireBaseCollectionsEnum {
     WORKSITES = 'worksites',
     USERS = 'users',
-    HOURS = 'hours'
-
+    HOURS = 'hours',
+    WORKTYPES = 'worktypes'
 }

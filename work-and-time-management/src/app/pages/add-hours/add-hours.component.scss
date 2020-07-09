@@ -1,0 +1,136 @@
+:host {
+  width: 100%;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 10px repeat(6, 1fr) 10px;
+  grid-template-rows:
+    45px
+    65px
+    minmax(65px, min-content)
+    minmax(65px, min-content)
+    min-content 1fr;
+  gap: 15px;
+}
+
+.heading {
+  grid-column: 2 / span 6;
+
+  &__name {
+    font-size: 1.3rem;
+    padding: 2px;
+
+    @media only screen and (min-width: 321px) {
+      font-size: 1.6rem;
+      padding: 0;
+    }
+  }
+}
+
+.header {
+  grid-column: 2 / span 6;
+  font-size: 2.1rem;
+  text-transform: uppercase;
+  text-indent: 10px;
+}
+
+.cards {
+  grid-column: 2 / span 6;
+  display: grid;
+  gap: 10px;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  grid-column: 1 / -1;
+  height: 20px;
+}
+
+svg {
+  height: 65px;
+  width: 65px;
+}
+
+.address {
+  grid-column: 2 / span 6;
+  padding: 8px;
+  background-color: var(--white-color);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+}
+
+.marked-hours {
+  grid-column: 2 / span 6;
+  padding: 8px;
+  background-color: var(--white-color);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+
+  &__hours {
+    font-size: 2.4rem;
+    justify-self: center;
+    color: #1f524f;
+    text-shadow: 1px 3px 4px rgba(0, 0, 0, 0.25);
+    line-height: 2.9rem;
+  }
+}
+
+.date-picker {
+  grid-column: 2 / span 6;
+  height: 50px;
+
+  display: grid;
+  &__button {
+    height: 45px;
+    width: 100px;
+    background: #ffffff;
+    border: 2px solid #1f524f;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 4px 6px;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+    justify-items: flex-start;
+
+    &--text {
+      justify-items: flex-start;
+      padding-left: 6px;
+      font-size: 1.8rem;
+    }
+
+    &--arrow {
+      background-color: #359a94;
+      width: 69%;
+      height: 55%;
+
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      transform: rotate(90deg) translateY(-2px);
+    }
+  }
+}
+
+mat-slider {
+  width: 100%;
+}
+
+.submit {
+  width: 35%;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+  border: none;
+}
+
+// ::ng-deep .mat-accent .mat-slider-thumb,
+// .mat-accent .mat-slider-thumb-label,
+// .mat-accent .mat-slider-track-fill {
+//   background-color: green !important;
+// }

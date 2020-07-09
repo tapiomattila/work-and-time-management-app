@@ -4,10 +4,12 @@ import { Observable, Subscription } from 'rxjs';
 import { UserQuery } from './auth/user/user.query';
 import { WindowService } from './services/window.service';
 import { fadeInEnterTrigger } from './animations/animations';
-import { WorksitesService } from './pages/worksites/state';
+import { WorksitesService, WorksitesQuery } from './pages/worksites/state';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { HoursService } from './auth/hours/hours.service';
 import { Auth, AuthQuery, AuthService } from './auth/state';
+import { WorkTypeService } from './worktype/state/worktype.service';
+import { WorkTypeQuery } from './worktype/state/worktype.query';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +32,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private worksiteService: WorksitesService,
+    private worksiteQuery: WorksitesQuery,
+    private worktypeService: WorkTypeService,
+    private worktypeQuery: WorkTypeQuery,
     private userQuery: UserQuery,
     private hoursService: HoursService,
     private authService: AuthService,
@@ -46,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((auth: Auth) => {
         if (auth && auth.id !== undefined) {
           this.worksiteService.setWorksiteStore(auth.id).subscribe();
+          this.worktypeService.setWorkTypeStore().subscribe();
           this.hoursService.setUserHours(auth.id).subscribe();
         } else {
           this.worksiteService.resetStore();
@@ -53,6 +59,15 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
 
+    // this.worksiteQuery.selectAll().subscribe(res => console.log('show all', res));
+    // this.worksiteQuery.selectLast().subscribe();
+    // // this.worksiteQuery.selectActive().subscribe();
+    // this.worksiteQuery.selectActiveId().subscribe(res => console.log('show active id', res));
+
+    // this.worksiteQuery.selectActive().subscribe();
+
+
+    this.worktypeQuery.selectAll().subscribe(res => console.log('show res in worktypes', res));
   }
 
   ngOnDestroy() {
