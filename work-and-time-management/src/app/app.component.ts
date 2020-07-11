@@ -1,15 +1,13 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
-import { User } from './auth/user/user.model';
 import { Observable, Subscription } from 'rxjs';
-import { UserQuery } from './auth/user/user.query';
-import { WindowService } from './services/window.service';
 import { fadeInEnterTrigger } from './animations/animations';
-import { WorksitesService, WorksitesQuery } from './pages/worksites/state';
+import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
-import { HoursService } from './auth/hours/hours.service';
+import { User, UserQuery } from './auth/user';
+import { WorksitesService, WorksitesQuery } from './pages/worksites/state';
+import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
-import { WorkTypeService } from './worktype/state/worktype.service';
-import { WorkTypeQuery } from './worktype/state/worktype.query';
+import { WorkTypeService, WorkTypeQuery } from './worktype/state';
 
 @Component({
   selector: 'app-root',
@@ -52,9 +50,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authQuery.select()
       .subscribe((auth: Auth) => {
         if (auth && auth.id !== undefined) {
-          this.worksiteService.setWorksiteStore(auth.id).subscribe(res => console.log('show worksites', res));
+          // this.worksiteService.setWorksiteStore(auth.id).subscribe(res => console.log('show worksites', res));
           this.worktypeService.setWorkTypeStore().subscribe();
-          this.hoursService.setUserHours(auth.id).subscribe(res => console.log('show hours', res));
+          // this.hoursService.setUserHours(auth.id).subscribe(res => console.log('show hours', res));
         } else {
           this.worksiteService.resetStore();
           this.hoursService.resetStore();

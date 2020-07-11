@@ -5,9 +5,7 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkType } from 'src/app/worktype/state/worktype.model';
-import { WorkTypeQuery } from 'src/app/worktype/state/worktype.query';
-import { HoursQuery } from 'src/app/auth/hours';
+import { WorkType, WorkTypeQuery } from 'src/app/worktype/state';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -40,7 +38,6 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         private worksiteQuery: WorksitesQuery,
         private worksiteService: WorksitesService,
         private worktypeQuery: WorkTypeQuery,
-        private hoursQuery: HoursQuery,
         private route: ActivatedRoute,
         private router: Router
     ) { }
@@ -50,7 +47,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.worktypes$ = this.worktypeQuery.selectAll();
         this.initForm();
         this.momentDay = moment();
-        this.hoursQuery.setAddHoursDateSelection(new Date().getTime());
+        this.worksiteQuery.setAddHoursDateSelection(new Date().getTime());
 
         this.route.params.subscribe((params: Params) => {
             if (params.id) {
@@ -75,11 +72,11 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        console.log(this.slider);
+        // console.log(this.slider);
     }
 
     selectionDayHours() {
-        this.dayHours$ = this.hoursQuery.selectHoursForSelectedDay(this.worksiteQuery.getActiveId())
+        this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
             .pipe(
                 map(el => {
                     const frac = el % 1;
@@ -100,7 +97,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
             if (data.date) {
                 const date = data.date as Date;
-                this.hoursQuery.setAddHoursDateSelection(date.getTime());
+                this.worksiteQuery.setAddHoursDateSelection(date.getTime());
             }
         });
     }
@@ -125,7 +122,6 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     worksiteOption(worksite: Worksite) {
-        console.log('selected worksite', worksite);
         this.worksiteService.setActive(worksite.id);
     }
 
@@ -146,6 +142,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const values = this.dataForm.value;
         console.log('show values', values);
+
         const data = {
             date: new Date().toISOString(),
             worksite: values.worksite,

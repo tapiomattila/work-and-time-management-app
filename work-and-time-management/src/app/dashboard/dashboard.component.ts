@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationHandlerService } from '../services/navigation-handler.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from '../auth/user/user.model';
+import { User, UserQuery, UserService } from '../auth/user/';
 import * as moment from 'moment';
-import { Worksite } from '../pages/worksites/state/worksites.model';
-import { UserQuery } from '../auth/user/user.query';
-import { WorksitesQuery } from '../pages/worksites/state/worksites.query';
+import { Worksite, WorksitesQuery } from '../pages/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
-import { UserService } from '../auth/user/user.service';
 import { AuthService } from '../auth/state/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 
