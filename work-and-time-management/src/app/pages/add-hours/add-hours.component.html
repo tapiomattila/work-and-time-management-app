@@ -24,64 +24,60 @@
 
 <div class="marked-hours">
   <h4>Total marked hours for the day: </h4>
-  <span class="marked-hours__hours">6h 45m</span>
+  <ng-container *ngIf="dayHours$ | async as hours">
+    <span class="marked-hours__hours">{{ hours }}</span>
+  </ng-container>
 </div>
 
-<div class="date-picker">
+<form class="form" [formGroup]="dataForm">
 
-  <form [formGroup]="dataForm" style="margin-top: -40px;">
+  <mat-form-field style="visibility: hidden; height: 1px;">
+    <mat-label style="visibility: hidden;">Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" style="visibility: hidden;" formControlName="date" [max]="maxDate">
+    <mat-datepicker #picker color="primary" style="visibility: hidden;"></mat-datepicker>
+  </mat-form-field>
+  <button type="button" class="form__date" (click)="toggleDatePicker(picker)">
+    <span class="form__date--text">Date</span>
+    <span class="form__date--arrow"></span>
+  </button>
 
-    <mat-form-field style="visibility: hidden; height: 1px;">
-      <mat-label style="visibility: hidden;">Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker" style="visibility: hidden;" formControlName="date" [max]="maxDate">
-      <mat-datepicker #picker color="primary" style="visibility: hidden;"></mat-datepicker>
-    </mat-form-field>
-    <button type="button" class="date-picker__button" (click)="toggleDatePicker(picker)">
-      <span class="date-picker__button--text">Date</span>
-      <span class="date-picker__button--arrow"></span>
-    </button>
-
-    <mat-form-field appearance="fill" style="margin-top: 13px; display: block;">
-      <mat-label>Worksite selection</mat-label>
-      <mat-select [(ngModel)]="selectedWorksiteValue" name="worksite" formControlName="worksite">
-        <ng-container *ngIf="worksites$ | async as worksites">
-          <mat-option *ngFor="let worksite of worksites" [value]="worksite.nickname">
-            {{ worksite.nickname }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" style="margin-top: -6px; display: block;">
-      <mat-label>Worktype selection</mat-label>
-      <mat-select [(ngModel)]="selectedWorktypeValue" name="worktype" formControlName="worktype">
-        <ng-container *ngIf="worktypes$ | async as worktypes">
-          <mat-option *ngFor="let worktype of worktypes" [value]="worktype.workType">
-            {{ worktype.viewName }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
-
-    <ng-container *ngIf="sliderValue$ | async as value; else noValue">
-      <ng-container *ngIf="value">
-        <label for="slider" style="font-size: 14px;">Time added: {{ value }}h</label>
+  <mat-form-field appearance="fill" style="margin-top: 13px; display: block;">
+    <mat-label>Worksite selection</mat-label>
+    <mat-select [(ngModel)]="selectedWorksiteValue" name="worksite" formControlName="worksite">
+      <ng-container *ngIf="worksites$ | async as worksites">
+        <mat-option *ngFor="let worksite of worksites" [value]="worksite.nickname" (click)="worksiteOption(worksite)">
+          {{ worksite.nickname }}
+        </mat-option>
       </ng-container>
-    </ng-container>
-    <ng-template #noValue>0h</ng-template>
-    
-    <mat-slider
-      thumbLabel
-      [displayWith]="formatLabel"
-      tickInterval="1"
-      [min]="sliderMin"
-      [max]="sliderMax"
-      [step]="step"
-      formControlName="slider"
-      (change)="updateSlider($event)"></mat-slider>
+    </mat-select>
+  </mat-form-field>
 
-      <button class="submit" type="submit" (click)="onSubmit()">Add</button>
-  </form>
-</div>
+  <mat-form-field appearance="fill" style="margin-top: -6px; display: block;">
+    <mat-label>Worktype selection</mat-label>
+    <mat-select [(ngModel)]="selectedWorktypeValue" name="worktype" formControlName="worktype">
+      <ng-container *ngIf="worktypes$ | async as worktypes">
+        <mat-option *ngFor="let worktype of worktypes" [value]="worktype.id">
+          {{ worktype.viewName }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="slider-box">
+    <div class="slider-container" #slider>
+      <p>Time added: <span style="font-weight: bold;">{{ sliderValue }}h</span></p>
+      <input type="range" [min]="sliderMin" [max]="sliderMax" [value]="0" [step]="step" class="slider"
+        formControlName="slider" (change)="getSliderValue($event)">
+      <ng-container *ngIf="slider$ | async as value; else noValue">
+        <p style="width: 20px; position: relative;" [ngStyle]="{ 'left.px' : getPosition(value) }">{{ value }}h</p>
+      </ng-container>
+      <ng-template #noValue>
+        <p>0h</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <button class="form__submit" type="submit" (click)="onSubmit()">Add</button>
+</form>
 
 <div class="footer"></div>

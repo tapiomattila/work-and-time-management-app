@@ -32,16 +32,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private worksiteService: WorksitesService,
-    private worksiteQuery: WorksitesQuery,
     private worktypeService: WorkTypeService,
-    private worktypeQuery: WorkTypeQuery,
-    private userQuery: UserQuery,
     private hoursService: HoursService,
+    private userQuery: UserQuery,
     private authService: AuthService,
     private authQuery: AuthQuery,
     public navigationHandlerService: NavigationHandlerService,
-    public windowService: WindowService
-  ) { }
+    public windowService: WindowService,
+
+    // TESTING
+    private worksiteQuery: WorksitesQuery,
+    private worktypeQuery: WorkTypeQuery,
+    ) { }
 
   ngOnInit() {
     this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
@@ -50,9 +52,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authQuery.select()
       .subscribe((auth: Auth) => {
         if (auth && auth.id !== undefined) {
-          this.worksiteService.setWorksiteStore(auth.id).subscribe();
+          this.worksiteService.setWorksiteStore(auth.id).subscribe(res => console.log('show worksites', res));
           this.worktypeService.setWorkTypeStore().subscribe();
-          this.hoursService.setUserHours(auth.id).subscribe();
+          this.hoursService.setUserHours(auth.id).subscribe(res => console.log('show hours', res));
         } else {
           this.worksiteService.resetStore();
           this.hoursService.resetStore();
@@ -65,9 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.worksiteQuery.selectActiveId().subscribe(res => console.log('show active id', res));
 
     // this.worksiteQuery.selectActive().subscribe();
-
-
-    this.worktypeQuery.selectAll().subscribe(res => console.log('show res in worktypes', res));
+    // this.worktypeQuery.selectAll().subscribe(res => console.log('show res in worktypes', res));
   }
 
   ngOnDestroy() {

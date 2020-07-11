@@ -2,7 +2,6 @@ import { QueryEntity } from '@datorama/akita';
 import { WorksiteStore, WorksitesState } from './worksites.store';
 import { Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
-import { WorksitesService } from './worksites.service';
 import { HoursQuery } from 'src/app/auth/hours/hours.query';
 import { of } from 'rxjs';
 
@@ -15,10 +14,16 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
 
   constructor(
     protected store: WorksiteStore,
-    private worksiteService: WorksitesService,
     private hoursQuery: HoursQuery,
   ) {
     super(store);
+  }
+
+  selectActiveWorksite() {
+    return this.selectActiveId()
+      .pipe(
+        switchMap(id => id ? this.selectEntity(id) : of(null))
+      );
   }
 
   selectWorksiteById(worksiteId: string) {

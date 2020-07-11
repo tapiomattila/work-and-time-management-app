@@ -4,11 +4,13 @@
   display: grid;
   grid-template-columns: 10px repeat(6, 1fr) 10px;
   grid-template-rows:
-    45px
-    65px
-    minmax(65px, min-content)
-    minmax(65px, min-content)
-    min-content 1fr;
+    [heading-start] 45px
+    [heading-end header-start] 65px
+    [header-end address-start] minmax(65px, min-content)
+    [address-end date-start] minmax(65px, min-content)
+    [date-end form-start] 1fr
+    [form-end footer-start] min-content
+    [footer-end];
   gap: 15px;
 }
 
@@ -57,6 +59,7 @@ svg {
 
 .address {
   grid-column: 2 / span 6;
+  border-radius: 5px;
   padding: 8px;
   background-color: var(--white-color);
   display: grid;
@@ -67,6 +70,7 @@ svg {
 .marked-hours {
   grid-column: 2 / span 6;
   padding: 8px;
+  border-radius: 5px;
   background-color: var(--white-color);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -81,12 +85,12 @@ svg {
   }
 }
 
-.date-picker {
+.form {
   grid-column: 2 / span 6;
   height: 50px;
 
   display: grid;
-  &__button {
+  &__date {
     height: 45px;
     width: 100px;
     background: #ffffff;
@@ -115,22 +119,64 @@ svg {
       transform: rotate(90deg) translateY(-2px);
     }
   }
+
+  &__submit {
+    width: 35%;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+    border: none;
+    margin-bottom: 20px;
+  }
 }
 
-mat-slider {
+.slider-box {
+  background-color: #fff;
+  border: 2px solid #1f524f;
+  border-radius: 5px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+  font-size: 12px;
 }
 
-.submit {
-  width: 35%;
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
-  border: none;
+.slider-container {
+  min-height: 50px;
+  padding: 5px 0;
+  display: grid;
+  align-items: center;
+  width: 90%;
 }
 
-// ::ng-deep .mat-accent .mat-slider-thumb,
-// .mat-accent .mat-slider-thumb-label,
-// .mat-accent .mat-slider-track-fill {
-//   background-color: green !important;
-// }
+.slider {
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  margin: 10px 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1f524f;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1f524f;
+  cursor: pointer;
+}
+
+.slider-box {
+  margin-bottom: 15px;
+}
