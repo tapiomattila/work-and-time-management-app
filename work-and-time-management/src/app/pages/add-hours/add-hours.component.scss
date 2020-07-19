@@ -8,13 +8,16 @@
     [heading-end header-start] 65px
     [header-end address-start] minmax(65px, min-content)
     [address-end date-start] minmax(65px, min-content)
-    [date-end form-start] 1fr
-    [form-end footer-start] min-content
+    [date-end form-start] min-content
+    [form-end table-start] min-content
+    [table-end footer-start] 1fr
     [footer-end];
   gap: 15px;
+  overflow: hidden;
 }
 
 .heading {
+  grid-row: heading-start / heading-end;
   grid-column: 2 / span 6;
 
   &__name {
@@ -27,38 +30,19 @@
     }
   }
 }
-
 .header {
+  grid-row: header-start / header-end;
   grid-column: 2 / span 6;
+
   font-size: 2.1rem;
   text-transform: uppercase;
   text-indent: 10px;
 }
 
-.cards {
-  grid-column: 2 / span 6;
-  display: grid;
-  gap: 10px;
-}
-
-.date {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer {
-  grid-column: 1 / -1;
-  height: 20px;
-}
-
-svg {
-  height: 65px;
-  width: 65px;
-}
-
 .address {
+  grid-row: address-start / address-end;
   grid-column: 2 / span 6;
+
   border-radius: 5px;
   padding: 8px;
   background-color: var(--white-color);
@@ -68,7 +52,9 @@ svg {
 }
 
 .marked-hours {
+  grid-row: date-start / date-end;
   grid-column: 2 / span 6;
+
   padding: 8px;
   border-radius: 5px;
   background-color: var(--white-color);
@@ -86,8 +72,8 @@ svg {
 }
 
 .form {
+  grid-row: form-start / form-end;
   grid-column: 2 / span 6;
-  height: 50px;
 
   display: grid;
   &__date {
@@ -118,6 +104,21 @@ svg {
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
       transform: rotate(90deg) translateY(-2px);
     }
+
+    &--toggle-data {
+      border: none;
+      font-size: 1.2rem;
+      text-decoration: underline;
+      background-color: var(--white-color);
+      border: 2px solid var(--primary-color);
+      border-radius: 5px;
+      color: var(--primary-color);
+      letter-spacing: 0.2rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 
   &__submit {
@@ -126,7 +127,6 @@ svg {
     color: var(--white-color);
     box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
     border: none;
-    margin-bottom: 20px;
   }
 }
 
@@ -140,6 +140,8 @@ svg {
   align-items: center;
   min-height: 60px;
   font-size: 12px;
+
+  margin-bottom: 15px;
 }
 
 .slider-container {
@@ -177,6 +179,41 @@ svg {
   cursor: pointer;
 }
 
-.slider-box {
-  margin-bottom: 15px;
+.table-container {
+  grid-row: table-start / table-end;
+  grid-column: 2 / span 6;
+  text-align: center;
+
+  overflow-x: auto;
+
+  table {
+    width: 400px;
+  }
+
+  table,
+  td,
+  th {
+    border: 1px solid #000;
+    font-weight: lighter;
+    padding: 10px;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th {
+    min-height: 20px;
+  }
+
+  th {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+}
+
+.footer {
+  grid-row: footer-start / footer-end;
+  grid-column: 2 / span 6;
+  min-height: 20px;
 }

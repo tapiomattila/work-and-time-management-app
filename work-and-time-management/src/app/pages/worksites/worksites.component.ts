@@ -8,6 +8,7 @@ import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { NavigationHandlerService } from 'src/app/services/navigation-handler.service';
 
 @Component({
   selector: 'app-worksites',
@@ -28,6 +29,7 @@ export class WorksitesComponent implements OnInit {
     private location: Location,
     private worksitesQuery: WorksitesQuery,
     private router: Router,
+    private navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService,
 
   ) { }
@@ -43,6 +45,10 @@ export class WorksitesComponent implements OnInit {
 
   backArrowPressed(event: any) {
     this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]);
+  }
+
+  navigate(route: string, id?: string) {
+    this.navigationHandlerService.navigateToRoute(route, id);
   }
 
 }

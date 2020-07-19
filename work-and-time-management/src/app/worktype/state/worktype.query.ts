@@ -11,4 +11,12 @@ export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
         super(store);
     }
 
+    getWorktypeById(id: string) {
+        const found = this.getAll().filter(el => el.id === id);
+        if (found) {
+            return found[0];
+        }
+        return undefined;
+    }
+
 }

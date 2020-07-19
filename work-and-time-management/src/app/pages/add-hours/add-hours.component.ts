@@ -6,7 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery } from 'src/app/worktype/state';
-import { map } from 'rxjs/operators';
+import { map, distinctUntilChanged, delay } from 'rxjs/operators';
+import { HoursQuery } from 'src/app/auth/hours';
 
 @Component({
     selector: 'app-add-hours',
@@ -23,6 +24,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     worksites$: Observable<Worksite[]>;
     worktypes$: Observable<WorkType[]>;
     dayHours$: Observable<string>;
+    dayTableHours$: Observable<object[]>;
 
     selectedWorksiteValue: string;
     dataForm: FormGroup;
@@ -32,12 +34,15 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     sliderMin = 0;
     sliderMax = 16;
 
+    showFormData = true;
+
     momentDay: moment.Moment;
 
     constructor(
         private worksiteQuery: WorksitesQuery,
         private worksiteService: WorksitesService,
         private worktypeQuery: WorkTypeQuery,
+        private hoursQuery: HoursQuery,
         private route: ActivatedRoute,
         private router: Router
     ) { }
@@ -71,35 +76,74 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.subscriptions.push(activeWorkSiteSubs);
     }
 
-    ngAfterViewInit() {
-        // console.log(this.slider);
-    }
+    ngAfterViewInit() {}
 
     selectionDayHours() {
         this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
             .pipe(
                 map(el => {
-                    const frac = el % 1;
-
-                    if (frac === 0) {
-                        return `${el.toString()}h`;
-                    }
-
-                    const full = el - frac;
-                    return `${full}h ${frac * 60}min`;
+                    return this.formatHours(el);
                 })
             );
     }
 
     formValueChanges() {
-        this.dataForm.valueChanges.subscribe(data => {
-            this.momentDay = moment(data.date);
+        this.dataForm.valueChanges
+            .pipe(
+                distinctUntilChanged(),
+                delay(100)
+            ).subscribe(data => {
+                this.momentDay = moment(data.date);
 
-            if (data.date) {
-                const date = data.date as Date;
-                this.worksiteQuery.setAddHoursDateSelection(date.getTime());
-            }
-        });
+                if (data.date) {
+                    const date = data.date as Date;
+                    this.worksiteQuery.setAddHoursDateSelection(date.getTime());
+
+                    this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
+                        .pipe(
+                            map(elements => {
+                                return elements.map(el => {
+                                    const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
+                                    const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
+
+                                    const worktypeId = this.hoursQuery.getHourWorktype(el.id);
+                                    const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
+                                    const worktypeNameFound = worktype ? worktype.viewName : undefined;
+
+                                    const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
+                                    const hours = this.formatHours(el.markedHours);
+
+                                    return {
+                                        id: el.id,
+                                        updateAtOrig: el.updatedAt,
+                                        updateAt: formattedDate,
+                                        worksiteId: el.worksiteId,
+                                        worksiteName: worksiteNameFound,
+                                        worktypeId,
+                                        worktypeName: worktypeNameFound,
+                                        hoursOrig: el.markedHours,
+                                        hours
+                                    };
+                                });
+                            }),
+                        );
+                }
+            });
+    }
+
+    formatHours(hours: number) {
+        const frac = hours % 1;
+
+        if (frac === 0) {
+            return `${hours.toString()}h`;
+        }
+
+        const full = hours - frac;
+        return `${full}h ${frac * 60}min`;
+    }
+
+    toggleFormData() {
+        this.showFormData = !this.showFormData;
     }
 
     getPosition(value) {

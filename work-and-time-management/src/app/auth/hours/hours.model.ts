@@ -2,6 +2,7 @@ export interface Hours {
     id: string;
     userId: string;
     worksiteId: string;
+    worktypeId: string;
     markedHours: number;
     createdAt: Date;
     updatedAt: Date;

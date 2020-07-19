@@ -1,11 +1,15 @@
 :host {
+  // display: block;
   display: flex;
   justify-content: center;
 }
 
 .app-container {
-  display: flex;
-  justify-content: center;
+  // display: flex;
+  width: 100vw;
+  // display: flex;
+  // justify-content: stretch;
+  // justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
   max-width: 450px;

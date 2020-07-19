@@ -114,6 +114,9 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
     this.addHoursSelectedDayMillisSubj.next(selection);
   }
 
+  getWorksiteById(worksiteId: string) {
+    return this.getAll().filter(el => el.id === worksiteId);
+  }
 
 }
 

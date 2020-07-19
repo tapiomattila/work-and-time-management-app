@@ -36,12 +36,15 @@
     <input matInput [matDatepicker]="picker" style="visibility: hidden;" formControlName="date" [max]="maxDate">
     <mat-datepicker #picker color="primary" style="visibility: hidden;"></mat-datepicker>
   </mat-form-field>
-  <button type="button" class="form__date" (click)="toggleDatePicker(picker)">
-    <span class="form__date--text">Date</span>
-    <span class="form__date--arrow"></span>
-  </button>
+  <div style="display: flex; justify-content: space-between;">
+    <button type="button" class="form__date" (click)="toggleDatePicker(picker)">
+      <span class="form__date--text">Date</span>
+      <span class="form__date--arrow"></span>
+    </button>
+    <button class="form__date--toggle-data" (click)="toggleFormData()">Toggle</button>
+  </div>
 
-  <mat-form-field appearance="fill" style="margin-top: 13px; display: block;">
+  <mat-form-field appearance="fill" style="margin-top: 13px; display: block;" *ngIf="showFormData">
     <mat-label>Worksite selection</mat-label>
     <mat-select [(ngModel)]="selectedWorksiteValue" name="worksite" formControlName="worksite">
       <ng-container *ngIf="worksites$ | async as worksites">
@@ -52,7 +55,7 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" style="margin-top: -6px; display: block;">
+  <mat-form-field appearance="fill" style="margin-top: -6px; display: block;" *ngIf="showFormData">
     <mat-label>Worktype selection</mat-label>
     <mat-select [(ngModel)]="selectedWorktypeValue" name="worktype" formControlName="worktype">
       <ng-container *ngIf="worktypes$ | async as worktypes">
@@ -63,7 +66,7 @@
     </mat-select>
   </mat-form-field>
 
-  <div class="slider-box">
+  <div class="slider-box" *ngIf="showFormData">
     <div class="slider-container" #slider>
       <p>Time added: <span style="font-weight: bold;">{{ sliderValue }}h</span></p>
       <input type="range" [min]="sliderMin" [max]="sliderMax" [value]="0" [step]="step" class="slider"
@@ -77,7 +80,24 @@
     </div>
   </div>
 
-  <button class="form__submit" type="submit" (click)="onSubmit()">Add</button>
+  <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
 </form>
+
+<div class="table-container">
+  <ng-container *ngIf="dayTableHours$ | async as tableHours">
+    <table *ngIf="tableHours.length > 0">
+      <tr>
+        <th>Date</th>
+        <th>Hours</th>
+        <th>Work type</th>
+      </tr>
+      <tr *ngFor="let hours of tableHours">
+        <td>{{ hours.updateAt }}</td>
+        <td>{{ hours.hours }}</td>
+        <td>{{ hours.worktypeName }}</td>
+      </tr>
+    </table>
+  </ng-container>
+</div>
 
 <div class="footer"></div>

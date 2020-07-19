@@ -59,7 +59,7 @@ export class HoursService {
                     });
 
                 }),
-                first()
+                // first()
             );
     }
 
