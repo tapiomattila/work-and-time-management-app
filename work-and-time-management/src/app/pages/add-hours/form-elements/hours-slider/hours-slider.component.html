@@ -1,0 +1,13 @@
+<div class="slider-box" [formGroup]="parentForm">
+    <div class="slider-container" #slider>
+        <p>Time added: <span style="font-weight: bold;">{{ sliderValue }}h</span></p>
+        <input type="range" [min]="sliderMin" [max]="sliderMax" [value]="0" [step]="step" class="slider"
+            [formControlName]="controlName" (change)="getSliderValue($event)">
+        <ng-container *ngIf="sliderObsValue; else noValue">
+            <p style="width: 20px; position: relative;" [ngStyle]="{ 'left.px' : getPosition(sliderObsValue) }">{{ sliderObsValue }}h</p>
+        </ng-container>
+        <ng-template #noValue>
+            <p>0h</p>
+        </ng-template>
+    </div>
+</div>

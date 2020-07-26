@@ -16,13 +16,16 @@ import { UserQuery } from 'src/app/auth/user';
     styleUrls: ['./add-hours.component.scss']
 })
 export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('slider', { static: false }) slider: ElementRef;
+    // @ViewChild('slider', { static: false }) slider: ElementRef;
     slider$: Observable<number>;
-    sliderValue = 0;
+    // sliderValue = 0;
     subscriptions: Subscription[] = [];
 
     worksite$: Observable<Worksite>;
+    worksiteNickname$: Observable<string>;
+
     worktype$: Observable<WorkType>;
+    worktypeViewName$: Observable<string>;
 
     worksites$: Observable<Worksite[]>;
     worktypes$: Observable<WorkType[]>;
@@ -30,15 +33,15 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     dayHours$: Observable<string>;
     dayTableHours$: Observable<object[]>;
 
-    selectedWorksiteValue: string;
-    selectedWorktypeValue: string;
+    // selectedWorksiteValue: string;
+    // selectedWorktypeValue: string;
 
     dataForm: FormGroup;
     maxDate = new Date();
 
-    step = 0.25;
-    sliderMin = 0;
-    sliderMax = 16;
+    // step = 0.25;
+    // sliderMin = 0;
+    // sliderMax = 16;
 
     showFormData = true;
 
@@ -46,13 +49,6 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dayTableSelectionIndex;
     previousTableSelectionIndex;
-
-    /////////////////////////////////
-
-    // TODO
-    // refactor to have central objects for changes and table selection !!!!
-
-    /////////////////////////////////
 
     constructor(
         private worksiteQuery: WorksitesQuery,
@@ -83,26 +79,39 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         const activeWorksite$ = this.worksiteQuery.selectActiveWorksite();
         const activeWorktype$ = this.worktypeQuery.selectActiveWorktype();
         this.worksite$ = activeWorksite$;
+        this.worktype$ = activeWorktype$;
+
+        this.worksiteNickname$ = activeWorksite$.pipe(
+            map((el: Worksite) => el ? el.nickname : null),
+            delay(0)
+        );
+
+        this.worktypeViewName$ = activeWorktype$.pipe(
+            map((el: WorkType) => el ? el.viewName : null)
+        );
 
         this.selectionDayHours();
         this.formValueChanges();
 
-        const activeWorkSiteSubs = activeWorksite$.subscribe((active: Worksite) => {
-            if (active) {
-                this.selectedWorksiteValue = active.nickname;
-            }
-        });
+        // const activeWorkSiteSubs = activeWorksite$.subscribe((active: Worksite) => {
+        //     if (active) {
+        //         this.selectedWorksiteValue = active.nickname;
+        //     }
+        // });
 
-        const activeWorktypeSubs = activeWorktype$.subscribe((active: WorkType) => {
-            if (active) {
-                this.selectedWorktypeValue = active.viewName;
-            }
-        });
+        // const activeWorktypeSubs = activeWorktype$.subscribe((active: WorkType) => {
+        //     if (active) {
+        //         this.selectedWorktypeValue = active.viewName;
+        //     }
+        // });
 
         this.slider$ = this.dataForm.controls.slider.valueChanges;
 
-        this.subscriptions.push(activeWorkSiteSubs);
-        this.subscriptions.push(activeWorktypeSubs);
+        // this.subscriptions.push(activeWorkSiteSubs);
+        // this.subscriptions.push(activeWorktypeSubs);
+
+        // this.worksite$.subscribe(res => console.log('show active in worktype', res));
+        // this.worktype$.subscribe(res => console.log('show active in workstie', res));
     }
 
     ngAfterViewInit() { }
@@ -179,11 +188,11 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showFormData = !this.showFormData;
     }
 
-    getPosition(value) {
-        const sliderWidth = this.slider.nativeElement.offsetWidth;
-        const pos = sliderWidth / this.sliderMax;
-        return (5 + (value * pos) / 1.075);
-    }
+    // getPosition(value) {
+    //     const sliderWidth = this.slider.nativeElement.offsetWidth;
+    //     const pos = sliderWidth / this.sliderMax;
+    //     return (5 + (value * pos) / 1.075);
+    // }
 
     initForm() {
         this.dataForm = new FormGroup({
@@ -194,17 +203,34 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    getSliderValue(event) {
-        this.sliderValue = event.target.value;
+    // getSliderValue(event) {
+    //     this.sliderValue = event.target.value;
+    // }
+
+    getSliderValue($event) {
+        console.log('show emitted slider value');
     }
 
-    worksiteOption(worksite: Worksite) {
-        this.worksiteService.setActive(worksite.id);
-    }
+    // worksiteOption(worksite: Worksite) {
+    //     this.worksiteService.setActive(worksite.id);
+    // }
 
-    worktypeOption(worktype: WorkType) {
-        console.log('show worktype', worktype, worktype.id);
-        this.worktypeService.setActive(worktype.id);
+    // worktypeOption(worktype: WorkType) {
+    //     console.log('show worktype', worktype, worktype.id);
+    //     this.worktypeService.setActive(worktype.id);
+    // }
+
+    getItemSelectionFromDropdown(item: Worksite | WorkType) {
+        const itemWorksite = this.worksiteQuery.getAll().find(el => el.id === item.id);
+        const itemWorktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
+
+        if (itemWorksite) {
+            this.worksiteService.setActive(item.id);
+        }
+
+        if (itemWorktype) {
+            this.worktypeService.setActive(item.id);
+        }
     }
 
     backArrowPressed() {
@@ -269,8 +295,10 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
             // tslint:disable-next-line: no-string-literal
             this.dataForm.controls.slider.setValue(hours['hours']);
+
             // tslint:disable-next-line: no-string-literal
-            this.sliderValue = hours['hours'];
+            // this.sliderValue = hours['hours'];
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         } else {
             this.dayTableSelectionIndex = undefined;
         }

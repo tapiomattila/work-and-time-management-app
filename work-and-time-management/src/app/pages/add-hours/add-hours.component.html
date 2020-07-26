@@ -44,7 +44,12 @@
     <button class="form__date--toggle-data" (click)="toggleFormData()">Toggle</button>
   </div>
 
-  <mat-form-field appearance="fill" style="margin-top: 13px; display: block;" *ngIf="showFormData">
+  <app-hours-dropdown *ngIf="showFormData" style="margin-top: 13px; width: 100%;" [parentForm]="dataForm"
+    [controlName]="'worksite'" [items]="worksites$ | async" [header]="'Worksite selection'"
+    [modelStringX]="worksiteNickname$ | async"
+    (itemSelection)="getItemSelectionFromDropdown($event)">
+  </app-hours-dropdown>
+  <!-- <mat-form-field appearance="fill" style="margin-top: 13px; display: block;" *ngIf="showFormData">
     <mat-label>Worksite selection</mat-label>
     <mat-select [(ngModel)]="selectedWorksiteValue" name="worksite" formControlName="worksite">
       <ng-container *ngIf="worksites$ | async as worksites">
@@ -53,9 +58,18 @@
         </mat-option>
       </ng-container>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
-  <mat-form-field appearance="fill" style="margin-top: -6px; display: block;" *ngIf="showFormData">
+  <!-- <app-hours-dropdown *ngIf="showFormData" [parentForm]="dataForm" [worksites]="worksites$ | async">
+  </app-hours-dropdown> -->
+
+  <app-hours-dropdown *ngIf="showFormData" style="margin-top: -6px;" [parentForm]="dataForm"
+    [controlName]="'worktype'" [items]="worktypes$ | async" [header]="'Worktype selection'"
+    [modelStringX]="worktypeViewName$ | async"
+    (itemSelection)="getItemSelectionFromDropdown($event)">
+  </app-hours-dropdown>
+
+  <!-- <mat-form-field appearance="fill" style="margin-top: -6px; display: block;" *ngIf="showFormData">
     <mat-label>Worktype selection</mat-label>
     <mat-select [(ngModel)]="selectedWorktypeValue" name="worktype" formControlName="worktype">
       <ng-container *ngIf="worktypes$ | async as worktypes">
@@ -64,9 +78,14 @@
         </mat-option>
       </ng-container>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
-  <div class="slider-box" *ngIf="showFormData">
+  <app-hours-slider
+    *ngIf="showFormData" [parentForm]="dataForm"
+    [controlName]="'slider'" [sliderObsValue]="slider$ | async"
+    (sliderValue)="getSliderValue($event)">
+  </app-hours-slider>
+  <!-- <div class="slider-box" *ngIf="showFormData">
     <div class="slider-container" #slider>
       <p>Time added: <span style="font-weight: bold;">{{ sliderValue }}h</span></p>
       <input type="range" [min]="sliderMin" [max]="sliderMax" [value]="0" [step]="step" class="slider"
@@ -78,7 +97,7 @@
         <p>0h</p>
       </ng-template>
     </div>
-  </div>
+  </div> -->
 
   <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
 </form>
@@ -87,12 +106,13 @@
   <ng-container *ngIf="dayTableHours$ | async as tableHours">
     <table *ngIf="tableHours.length > 0">
       <tr>
-        <th>Date</th>
+        <!-- <th>Date</th> -->
         <th>Hours</th>
         <th>Work type</th>
       </tr>
-      <tr *ngFor="let hours of tableHours; let i = index" (click)="selectDayTableHour(hours, i)" [ngClass]="{ 'active': dayTableSelectionIndex === i}">
-        <td>{{ hours.updateAtFormatted }}</td>
+      <tr *ngFor="let hours of tableHours; let i = index" (click)="selectDayTableHour(hours, i)"
+        [ngClass]="{ 'active': dayTableSelectionIndex === i}">
+        <!-- <td>{{ hours.updateAtFormatted }}</td> -->
         <td>{{ hours.hoursFormatted }}</td>
         <td>{{ hours.worktypeName }}</td>
       </tr>

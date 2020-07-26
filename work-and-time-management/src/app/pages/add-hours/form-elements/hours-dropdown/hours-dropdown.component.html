@@ -1,0 +1,11 @@
+<mat-form-field appearance="fill" [formGroup]="parentForm">
+    <mat-label>{{ header }}</mat-label>
+    <mat-select [(ngModel)]="modelString" name="worksite" [formControlName]="controlName">
+        <ng-container *ngIf="itemsArr && itemsArr.length">
+            <mat-option *ngFor="let item of itemsArr" [value]="item.nickname ? item.nickname : item.viewName"
+                (click)="itemOption(item)">
+                {{ item.nickname ? item.nickname : item.viewName }}
+            </mat-option>
+        </ng-container>
+    </mat-select>
+</mat-form-field>
