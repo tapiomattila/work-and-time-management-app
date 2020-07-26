@@ -63,6 +63,11 @@ export class HoursService {
             );
     }
 
+    postNewHours(hours: Partial<Hours>) {
+        console.log('sohw in post new hours');
+        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).add(hours).then(res => console.log('show after post new hours', res));
+    }
+
     resetStore() {
         this.hoursStore.reset();
     }

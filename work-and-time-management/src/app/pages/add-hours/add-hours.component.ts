@@ -5,9 +5,10 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkType, WorkTypeQuery } from 'src/app/worktype/state';
+import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
 import { map, distinctUntilChanged, delay } from 'rxjs/operators';
-import { HoursQuery } from 'src/app/auth/hours';
+import { HoursQuery, Hours, HoursService } from 'src/app/auth/hours';
+import { UserQuery } from 'src/app/auth/user';
 
 @Component({
     selector: 'app-add-hours',
@@ -21,12 +22,17 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
     worksite$: Observable<Worksite>;
+    worktype$: Observable<WorkType>;
+
     worksites$: Observable<Worksite[]>;
     worktypes$: Observable<WorkType[]>;
+
     dayHours$: Observable<string>;
     dayTableHours$: Observable<object[]>;
 
     selectedWorksiteValue: string;
+    selectedWorktypeValue: string;
+
     dataForm: FormGroup;
     maxDate = new Date();
 
@@ -38,18 +44,32 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     momentDay: moment.Moment;
 
+    dayTableSelectionIndex;
+    previousTableSelectionIndex;
+
+    /////////////////////////////////
+
+    // TODO
+    // refactor to have central objects for changes and table selection !!!!
+
+    /////////////////////////////////
+
     constructor(
         private worksiteQuery: WorksitesQuery,
         private worksiteService: WorksitesService,
         private worktypeQuery: WorkTypeQuery,
         private hoursQuery: HoursQuery,
         private route: ActivatedRoute,
+        private userQuery: UserQuery,
+        private hoursService: HoursService,
+        private worktypeService: WorkTypeService,
         private router: Router
     ) { }
 
     ngOnInit() {
         this.worksites$ = this.worksiteQuery.selectAll();
         this.worktypes$ = this.worktypeQuery.selectAll();
+
         this.initForm();
         this.momentDay = moment();
         this.worksiteQuery.setAddHoursDateSelection(new Date().getTime());
@@ -61,6 +81,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         const activeWorksite$ = this.worksiteQuery.selectActiveWorksite();
+        const activeWorktype$ = this.worktypeQuery.selectActiveWorktype();
         this.worksite$ = activeWorksite$;
 
         this.selectionDayHours();
@@ -72,11 +93,19 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
+        const activeWorktypeSubs = activeWorktype$.subscribe((active: WorkType) => {
+            if (active) {
+                this.selectedWorktypeValue = active.viewName;
+            }
+        });
+
         this.slider$ = this.dataForm.controls.slider.valueChanges;
+
         this.subscriptions.push(activeWorkSiteSubs);
+        this.subscriptions.push(activeWorktypeSubs);
     }
 
-    ngAfterViewInit() {}
+    ngAfterViewInit() { }
 
     selectionDayHours() {
         this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
@@ -94,41 +123,45 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
                 delay(100)
             ).subscribe(data => {
                 this.momentDay = moment(data.date);
-
+                console.log('show formvalue changes', data);
                 if (data.date) {
                     const date = data.date as Date;
                     this.worksiteQuery.setAddHoursDateSelection(date.getTime());
-
-                    this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
-                        .pipe(
-                            map(elements => {
-                                return elements.map(el => {
-                                    const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
-                                    const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
-
-                                    const worktypeId = this.hoursQuery.getHourWorktype(el.id);
-                                    const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
-                                    const worktypeNameFound = worktype ? worktype.viewName : undefined;
-
-                                    const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
-                                    const hours = this.formatHours(el.markedHours);
-
-                                    return {
-                                        id: el.id,
-                                        updateAtOrig: el.updatedAt,
-                                        updateAt: formattedDate,
-                                        worksiteId: el.worksiteId,
-                                        worksiteName: worksiteNameFound,
-                                        worktypeId,
-                                        worktypeName: worktypeNameFound,
-                                        hoursOrig: el.markedHours,
-                                        hours
-                                    };
-                                });
-                            }),
-                        );
+                    this.setDateTEST(data.date);
                 }
             });
+    }
+
+    setDateTEST(date: Date) {
+        this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
+            .pipe(
+                map(elements => {
+                    return elements.map(el => {
+                        const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
+                        const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
+
+                        const worktypeId = this.hoursQuery.getHourWorktype(el.id);
+                        const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
+                        const worktypeNameFound = worktype ? worktype.viewName : undefined;
+
+                        const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
+                        const hoursFormatted = this.formatHours(el.markedHours);
+
+                        return {
+                            id: el.id,
+                            createdAt: el.createdAt,
+                            updateAt: el.updatedAt,
+                            updateAtFormatted: formattedDate,
+                            worksiteId: el.worksiteId,
+                            worksiteName: worksiteNameFound,
+                            worktypeId,
+                            worktypeName: worktypeNameFound,
+                            hours: el.markedHours,
+                            hoursFormatted
+                        };
+                    });
+                }),
+            );
     }
 
     formatHours(hours: number) {
@@ -169,6 +202,11 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.worksiteService.setActive(worksite.id);
     }
 
+    worktypeOption(worktype: WorkType) {
+        console.log('show worktype', worktype, worktype.id);
+        this.worktypeService.setActive(worktype.id);
+    }
+
     backArrowPressed() {
         this.router.navigate([RouterRoutesEnum.DASHBOARD]);
     }
@@ -179,21 +217,64 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onSubmit() {
         if (!this.dataForm.valid) {
-            console.log(this.slider);
-            console.log('INVALID FORM');
+            console.warn('INVALID FORM');
             return;
         }
-
         const values = this.dataForm.value;
+
         console.log('show values', values);
 
-        const data = {
-            date: new Date().toISOString(),
-            worksite: values.worksite,
-            worktype: values.worktype,
-            time: values.slider
-        };
-        console.log('show data ', data);
+        const valid = this.dataForm.valid && this.worktypeQuery.getActiveId() && this.worksiteQuery.getActiveId();
+        console.log('show in valid', valid);
+        console.log('worktype', this.worktypeQuery.getActiveId());
+        console.log('worksite', this.worksiteQuery.getActiveId());
+
+        if (valid) {
+            const newHours: Partial<Hours> = {
+                userId: this.userQuery.getValue().id,
+                createdAt: new Date().toISOString(),
+                markedHours: values.slider,
+                updatedAt: new Date().toISOString(),
+                worksiteId: this.worksiteQuery.getActiveId(),
+                worktypeId: this.worktypeQuery.getActiveId()
+            };
+
+            console.log('show new hours', newHours);
+            this.hoursService.postNewHours(newHours);
+        }
+    }
+
+    // saveCourse(courseId: string, changes: Partial<Course>): Observable<any> {
+    //     return from(this.af.doc(`courses/${courseId}`).update(changes));
+    // }
+
+    // postNewCourse(newCourse: Partial<Course>) {
+    //     this.af.collection('courses').add(newCourse).then(res => console.log('show res in promise', res));
+    // }
+
+    // postNewHours(newCourse: any) {
+    //     this.af.collection('courses').add(newCourse).then(res => console.log('show res in promise', res));
+    // }
+
+    selectDayTableHour(hours: Partial<Hours>, index: number) {
+        console.log('show sel hours', hours);
+        if (
+            this.previousTableSelectionIndex !== index ||
+            this.dayTableSelectionIndex === undefined
+        ) {
+            this.dayTableSelectionIndex = index;
+
+            console.log('show type active', hours.worktypeId);
+            this.worktypeService.setActive(hours.worktypeId);
+
+            // tslint:disable-next-line: no-string-literal
+            this.dataForm.controls.slider.setValue(hours['hours']);
+            // tslint:disable-next-line: no-string-literal
+            this.sliderValue = hours['hours'];
+        } else {
+            this.dayTableSelectionIndex = undefined;
+        }
+        this.previousTableSelectionIndex = index;
     }
 
     ngOnDestroy() {

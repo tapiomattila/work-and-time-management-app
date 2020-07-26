@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 :host {
   width: 100%;
   padding-top: 20px;
@@ -204,11 +206,16 @@
 
   th {
     min-height: 20px;
-  }
-
-  th {
     background-color: var(--primary-color);
     color: var(--white-color);
+  }
+
+  td {
+    background-color: var(--white-color);
+  }
+
+  tr.active td {
+    background-color: #D6D9D4;
   }
 }
 

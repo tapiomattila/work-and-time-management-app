@@ -59,7 +59,7 @@
     <mat-label>Worktype selection</mat-label>
     <mat-select [(ngModel)]="selectedWorktypeValue" name="worktype" formControlName="worktype">
       <ng-container *ngIf="worktypes$ | async as worktypes">
-        <mat-option *ngFor="let worktype of worktypes" [value]="worktype.id">
+        <mat-option *ngFor="let worktype of worktypes" [value]="worktype.viewName" (click)="worktypeOption(worktype)">
           {{ worktype.viewName }}
         </mat-option>
       </ng-container>
@@ -91,9 +91,9 @@
         <th>Hours</th>
         <th>Work type</th>
       </tr>
-      <tr *ngFor="let hours of tableHours">
-        <td>{{ hours.updateAt }}</td>
-        <td>{{ hours.hours }}</td>
+      <tr *ngFor="let hours of tableHours; let i = index" (click)="selectDayTableHour(hours, i)" [ngClass]="{ 'active': dayTableSelectionIndex === i}">
+        <td>{{ hours.updateAtFormatted }}</td>
+        <td>{{ hours.hoursFormatted }}</td>
         <td>{{ hours.worktypeName }}</td>
       </tr>
     </table>

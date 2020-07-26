@@ -4,8 +4,8 @@ export interface Hours {
     worksiteId: string;
     worktypeId: string;
     markedHours: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export function createHours(hours: Partial<Hours>) {
