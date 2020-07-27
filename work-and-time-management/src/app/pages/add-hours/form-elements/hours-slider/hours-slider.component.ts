@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class HoursSliderComponent implements OnInit {
 
     @ViewChild('slider', { static: false }) slider: ElementRef;
-    sliderValue = 0;
+    @Input() sliderValue = 0;
     step = 0.25;
     sliderMin = 0;
     sliderMax = 16;

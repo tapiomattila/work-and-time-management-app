@@ -1,0 +1,13 @@
+<table *ngIf="tableHours && tableHours.length > 0">
+    <tr>
+        <!-- <th>Date</th> -->
+        <th>Hours</th>
+        <th>Work type</th>
+    </tr>
+    <tr *ngFor="let hours of tableHours; let i = index" (click)="selectDayTableHour(hours, i)"
+        [ngClass]="{ 'active': dayTableSelectionIndex === i}">
+        <!-- <td>{{ hours.updateAtFormatted }}</td> -->
+        <td>{{ hours.hoursFormatted }}</td>
+        <td>{{ hours.worktypeName }}</td>
+    </tr>
+</table>

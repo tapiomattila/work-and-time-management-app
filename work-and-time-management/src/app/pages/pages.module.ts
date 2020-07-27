@@ -9,6 +9,8 @@ import { RegisterComponent } from './auth/register/register.component';
 import { SplashComponent } from './auth/splash/splash.component';
 import { HoursDropdownComponent } from './add-hours/form-elements/hours-dropdown/hours-dropdown.component';
 import { HoursSliderComponent } from './add-hours/form-elements/hours-slider/hours-slider.component';
+import { HoursDateSelectionComponent } from './add-hours/form-elements/hours-date-selection/hours-date-selection.component';
+import { HoursTableComponent } from './add-hours/form-elements/hours-table/hours-table.component';
 
 @NgModule({
     imports: [
@@ -24,7 +26,9 @@ import { HoursSliderComponent } from './add-hours/form-elements/hours-slider/hou
         RegisterComponent,
         SplashComponent,
         HoursDropdownComponent,
-        HoursSliderComponent
+        HoursSliderComponent,
+        HoursDateSelectionComponent,
+        HoursTableComponent
     ],
     providers: [],
 })

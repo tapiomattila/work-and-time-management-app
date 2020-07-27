@@ -77,53 +77,7 @@
   grid-row: form-start / form-end;
   grid-column: 2 / span 6;
 
-  display: grid;
-  &__date {
-    height: 45px;
-    width: 100px;
-    background: #ffffff;
-    border: 2px solid #1f524f;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 4px 6px;
-
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-
-    justify-items: flex-start;
-
-    &--text {
-      justify-items: flex-start;
-      padding-left: 6px;
-      font-size: 1.8rem;
-    }
-
-    &--arrow {
-      background-color: #359a94;
-      width: 69%;
-      height: 55%;
-
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      transform: rotate(90deg) translateY(-2px);
-    }
-
-    &--toggle-data {
-      border: none;
-      font-size: 1.2rem;
-      text-decoration: underline;
-      background-color: var(--white-color);
-      border: 2px solid var(--primary-color);
-      border-radius: 5px;
-      color: var(--primary-color);
-      letter-spacing: 0.2rem;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  &__submit {
+    &__submit {
     width: 35%;
     background-color: var(--primary-color);
     color: var(--white-color);
@@ -132,91 +86,12 @@
   }
 }
 
-// .slider-box {
-//   background-color: #fff;
-//   border: 2px solid #1f524f;
-//   border-radius: 5px;
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   min-height: 60px;
-//   font-size: 12px;
-
-//   margin-bottom: 15px;
-// }
-
-// .slider-container {
-//   min-height: 50px;
-//   padding: 5px 0;
-//   display: grid;
-//   align-items: center;
-//   width: 90%;
-// }
-
-// .slider {
-//   -webkit-appearance: none;
-//   height: 6px;
-//   border-radius: 5px;
-//   background: #ddd;
-//   outline: none;
-//   margin: 10px 0;
-// }
-
-// .slider::-webkit-slider-thumb {
-//   -webkit-appearance: none;
-//   appearance: none;
-//   width: 20px;
-//   height: 20px;
-//   border-radius: 50%;
-//   background: #1f524f;
-//   cursor: pointer;
-// }
-
-// .slider::-moz-range-thumb {
-//   width: 20px;
-//   height: 20px;
-//   border-radius: 50%;
-//   background: #1f524f;
-//   cursor: pointer;
-// }
-
 .table-container {
   grid-row: table-start / table-end;
   grid-column: 2 / span 6;
   text-align: center;
 
   overflow-x: auto;
-
-  table {
-    width: 400px;
-  }
-
-  table,
-  td,
-  th {
-    border: 1px solid #000;
-    font-weight: lighter;
-    padding: 10px;
-  }
-
-  table {
-    border-collapse: collapse;
-  }
-
-  th {
-    min-height: 20px;
-    background-color: var(--primary-color);
-    color: var(--white-color);
-  }
-
-  td {
-    background-color: var(--white-color);
-  }
-
-  tr.active td {
-    background-color: #D6D9D4;
-  }
 }
 
 .footer {
