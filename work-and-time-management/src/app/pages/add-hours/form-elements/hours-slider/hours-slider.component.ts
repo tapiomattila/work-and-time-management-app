@@ -12,7 +12,7 @@ export class HoursSliderComponent implements OnInit {
     @Input() sliderValue = 0;
     step = 0.25;
     sliderMin = 0;
-    sliderMax = 16;
+    sliderMax = 10;
     @Input() sliderObsValue = 0;
 
     @Input() parentForm: FormGroup;

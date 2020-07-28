@@ -34,25 +34,38 @@
   <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)">
   </app-hours-date-selection>
 
+  <!-- [modelStringX]="worksiteNickname$ | async"  -->
   <app-hours-dropdown *ngIf="showFormData" style="margin-top: 13px; width: 100%;" [parentForm]="dataForm"
     [controlName]="'worksite'" [items]="worksites$ | async" [header]="'Worksite selection'"
-    [modelStringX]="worksiteNickname$ | async" (itemSelection)="getItemSelectionFromDropdown($event)">
+    (itemSelection)="getItemSelectionFromDropdown($event)">
   </app-hours-dropdown>
 
+  <!-- [modelStringX]="worktypeViewName$ | async" -->
   <app-hours-dropdown *ngIf="showFormData" style="margin-top: -6px;" [parentForm]="dataForm" [controlName]="'worktype'"
-    [items]="worktypes$ | async" [header]="'Worktype selection'" [modelStringX]="worktypeViewName$ | async"
-    (itemSelection)="getItemSelectionFromDropdown($event)">
+    [items]="worktypes$ | async" [header]="'Worktype selection'" (itemSelection)="getItemSelectionFromDropdown($event)">
   </app-hours-dropdown>
 
   <app-hours-slider *ngIf="showFormData" [parentForm]="dataForm" [controlName]="'slider'"
     [sliderObsValue]="slider$ | async" [sliderValue]="sliderValue">
   </app-hours-slider>
 
-  <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
+  <div style="display: flex; justify-content: space-between;">
+    <ng-container *ngIf="activeHours$ | async as active; else add">
+      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Edit</button>
+    </ng-container>
+    <ng-template #add>
+      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
+    </ng-template>
+    <ng-container *ngIf="activeHours$ | async">
+      <button (click)="remove()">Delete</button>
+    </ng-container>
+  </div>
+  <h2 *ngIf="!dataForm.valid && dataForm.touched && dataForm.dirty">ERROR</h2>
 </form>
 
 <div class="table-container">
-  <app-hours-table [tableHours]="dayTableHours$ | async" (hoursSelection)="getHoursSelectionFromTable($event)"></app-hours-table>
+  <app-hours-table [tableHours]="dayTableHours$ | async" (hoursSelection)="getHoursSelectionFromTable($event)">
+  </app-hours-table>
 </div>
 
 <div class="footer"></div>

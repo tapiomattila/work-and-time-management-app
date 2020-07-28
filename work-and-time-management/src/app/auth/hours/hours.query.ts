@@ -1,9 +1,9 @@
 import { QueryEntity } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { HoursState, HoursStore } from './hours.store';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Hours } from './hours.model';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import * as moment from 'moment';
 
 @Injectable({
@@ -56,5 +56,12 @@ export class HoursQuery extends QueryEntity<HoursState> {
             return element.worktypeId;
         }
     }
+
+    selectActiveHours() {
+        return this.selectActiveId()
+          .pipe(
+            switchMap(id => id ? this.selectEntity(id) : of(null))
+          );
+      }
 
 }

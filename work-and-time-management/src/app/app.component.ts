@@ -46,9 +46,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authQuery.select()
       .subscribe((auth: Auth) => {
         if (auth && auth.id !== undefined) {
-          this.worksiteService.setWorksiteStore(auth.id).subscribe(res => console.log('show worksites', res));
+          this.worksiteService.setWorksiteStore(auth.id).subscribe();
           this.worktypeService.setWorkTypeStore().subscribe();
-          this.hoursService.setUserHours(auth.id).subscribe(res => console.log('show hours', res));
+          this.hoursService.setUserHours(auth.id).subscribe();
         } else {
           this.worksiteService.resetStore();
           this.hoursService.resetStore();

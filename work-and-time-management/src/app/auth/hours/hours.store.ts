@@ -1,8 +1,8 @@
-import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { Hours } from './hours.model';
 
-export interface HoursState extends EntityState<Hours, ActiveState> { }
+export interface HoursState extends EntityState<Hours, string> { }
 
 const initialState = {
     active: null

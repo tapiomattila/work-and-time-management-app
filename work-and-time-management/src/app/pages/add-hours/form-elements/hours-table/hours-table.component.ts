@@ -18,6 +18,19 @@ export class HoursTableComponent implements OnInit {
 
     ngOnInit() { }
 
+    // selectDayTableHour(hours: Partial<Hours>, index: number) {
+    //     if (
+    //         this.previousTableSelectionIndex !== index ||
+    //         this.dayTableSelectionIndex === undefined
+    //     ) {
+    //         this.dayTableSelectionIndex = index;
+    //         this.hoursSelection.emit(hours);
+    //     } else {
+    //         this.dayTableSelectionIndex = undefined;
+    //     }
+    //     this.previousTableSelectionIndex = index;
+    // }
+
     selectDayTableHour(hours: Partial<Hours>, index: number) {
         if (
             this.previousTableSelectionIndex !== index ||
@@ -26,7 +39,9 @@ export class HoursTableComponent implements OnInit {
             this.dayTableSelectionIndex = index;
             this.hoursSelection.emit(hours);
         } else {
+            console.log('RESET');
             this.dayTableSelectionIndex = undefined;
+            this.hoursSelection.emit({ message: 'reset' });
         }
         this.previousTableSelectionIndex = index;
     }

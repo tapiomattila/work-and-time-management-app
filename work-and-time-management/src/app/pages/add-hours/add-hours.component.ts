@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
@@ -34,12 +34,10 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dayHours$: Observable<string>;
     dayTableHours$: Observable<object[]>;
+    activeHours$: Observable<Hours>;
 
     dataForm: FormGroup;
     momentDay: moment.Moment;
-
-    // dayTableSelectionIndex;
-    // previousTableSelectionIndex;
 
     constructor(
         private worksiteQuery: WorksitesQuery,
@@ -93,6 +91,10 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.slider$ = this.dataForm.controls.slider.valueChanges;
 
         this.subscriptions.push(activeWorktypeSubs);
+        // this.hoursQuery.selectActiveHours().subscribe(res => console.log('show active', res));
+        // this.hoursQuery.hours$.subscribe(res => console.log('show hours all', res));
+        this.activeHours$ = this.hoursQuery.selectActiveHours();
+        this.activeHours$.subscribe(res => console.log('show active hours', res));
     }
 
     ngAfterViewInit() { }
@@ -113,7 +115,6 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
                 delay(100)
             ).subscribe(data => {
                 this.momentDay = moment(data.date);
-                console.log('show formvalue changes', data);
                 if (data.date) {
                     const date = data.date as Date;
                     this.worksiteQuery.setAddHoursDateSelection(date.getTime());
@@ -204,77 +205,92 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
         console.log('show values', values);
 
-        const valid = this.dataForm.valid && this.worktypeQuery.getActiveId() && this.worksiteQuery.getActiveId();
-        console.log('show in valid', valid);
-        console.log('worktype', this.worktypeQuery.getActiveId());
-        console.log('worksite', this.worksiteQuery.getActiveId());
+        const newHours: Partial<Hours> = {
+            userId: this.userQuery.getValue().id,
+            createdAt: new Date().toISOString(),
+            markedHours: values.slider,
+            updatedAt: new Date().toISOString(),
+            worksiteId: values.worksite.id,
+            worktypeId: values.worktype.id
+        };
 
-        if (valid) {
-            const newHours: Partial<Hours> = {
-                userId: this.userQuery.getValue().id,
-                createdAt: new Date().toISOString(),
+        // POST
+        if (!this.hoursQuery.getActive()) {
+            this.hoursService.postNewHours(newHours).subscribe(() => {
+                this.dataForm.reset();
+                this.sliderValue = 0;
+                this.dataForm.controls.slider.setValue(0);
+
+                this.hoursService.setUserHours(this.userQuery.getValue().id).subscribe();
+            });
+        }
+
+        // UPDATE
+        if (this.hoursQuery.getActive()) {
+            const updatedHours: Partial<Hours> = {
                 markedHours: values.slider,
                 updatedAt: new Date().toISOString(),
-                worksiteId: this.worksiteQuery.getActiveId(),
-                worktypeId: this.worktypeQuery.getActiveId()
+                worksiteId: values.worksite.id,
+                worktypeId: values.worktype.id
             };
 
-            console.log('show new hours', newHours);
-            this.hoursService.postNewHours(newHours);
+            const hours = this.hoursQuery.getActive() as Hours;
+            this.hoursService.putHours(hours.id, updatedHours).subscribe(() => {
+
+                this.dataForm.reset();
+                this.sliderValue = 0;
+                this.dataForm.controls.slider.setValue(0);
+
+                this.hoursService.updateHours(hours, updatedHours);
+            });
         }
     }
 
-    getHoursSelectionFromTable(hours: Partial<Hours>) {
-        console.log('show event', hours);
+    remove() {
+        if (this.hoursQuery.getActive()) {
+            const active = this.hoursQuery.getActive() as Hours;
+            const id = active.id;
 
-        console.log('show type active', hours.worktypeId);
-        this.worktypeService.setActive(hours.worktypeId);
-
-        // tslint:disable-next-line: no-string-literal
-        this.dataForm.controls.slider.setValue(hours['hours']);
-
-        // tslint:disable-next-line: no-string-literal
-        this.sliderValue = hours['hours'];
-        // tslint:disable-next-line: no-string-literal
-        this.dataForm.controls.slider.setValue(hours['hours']);
+            // REMOVE
+            this.hoursService.deleteHours(id).subscribe(() => {
+                this.hoursService.removeHours(id);
+            });
+        }
     }
 
-    // saveCourse(courseId: string, changes: Partial<Course>): Observable<any> {
-    //     return from(this.af.doc(`courses/${courseId}`).update(changes));
-    // }
+    getHoursSelectionFromTable(hours: object | { message: string }) {
 
-    // postNewCourse(newCourse: Partial<Course>) {
-    //     this.af.collection('courses').add(newCourse).then(res => console.log('show res in promise', res));
-    // }
+        console.log('show emit reset', hours);
 
-    // postNewHours(newCourse: any) {
-    //     this.af.collection('courses').add(newCourse).then(res => console.log('show res in promise', res));
-    // }
+        // tslint:disable-next-line: no-string-literal
+        if (hours['id']) {
+            const test = hours as Partial<Hours>;
+            this.hoursService.setActive(test.id);
+            this.worktypeService.setActive(test.worktypeId);
 
-    // selectDayTableHour(hours: Partial<Hours>, index: number) {
-    //     console.log('show sel hours', hours);
-    //     if (
-    //         this.previousTableSelectionIndex !== index ||
-    //         this.dayTableSelectionIndex === undefined
-    //     ) {
-    //         this.dayTableSelectionIndex = index;
+            // tslint:disable-next-line: no-string-literal
+            this.dataForm.controls.slider.setValue(hours['hours']);
 
-    //         console.log('show type active', hours.worktypeId);
-    //         this.worktypeService.setActive(hours.worktypeId);
+            // tslint:disable-next-line: no-string-literal
+            this.sliderValue = hours['hours'];
+            // tslint:disable-next-line: no-string-literal
+            this.dataForm.controls.slider.setValue(hours['hours']);
+        }
 
-    //         // tslint:disable-next-line: no-string-literal
-    //         this.dataForm.controls.slider.setValue(hours['hours']);
+        // tslint:disable-next-line: no-string-literal
+        if (!hours['id']) {
+            const test2 = hours as { message: string };
+            console.log('show test2', test2.message);
+            this.hoursService.setActive(null);
 
-    //         // tslint:disable-next-line: no-string-literal
-    //         this.sliderValue = hours['hours'];
-    //         // tslint:disable-next-line: no-string-literal
-    //         this.dataForm.controls.slider.setValue(hours['hours']);
-    //         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //     } else {
-    //         this.dayTableSelectionIndex = undefined;
-    //     }
-    //     this.previousTableSelectionIndex = index;
-    // }
+            this.route.params.subscribe((params: Params) => {
+                console.log('show params', params.id);
+                this.dataForm.reset();
+                this.sliderValue = 0;
+                this.dataForm.controls.slider.setValue(0);
+            });
+        }
+    }
 
     ngOnDestroy() {
         if (this.subscriptions.length) {

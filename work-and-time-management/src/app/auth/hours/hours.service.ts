@@ -4,6 +4,7 @@ import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { from, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -43,6 +44,38 @@ export class HoursService {
         return d.setUTCSeconds(seconds);
     }
 
+    postNewHours(hours: Partial<Hours>) {
+        return from(this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).add(hours));
+    }
+
+    updateHours(hours: Hours, updated: Partial<Hours>) {
+        console.log('show updated', updated);
+        this.hoursStore.update(hours.id,
+            {
+                ...hours,
+                updatedAt: updated.updatedAt,
+                markedHours: updated.markedHours,
+                worksiteId: updated.worksiteId,
+                worktypeId: updated.worktypeId
+            });
+    }
+
+    removeHours(id: string) {
+        this.hoursStore.remove(id);
+    }
+
+    deleteHours(id: string) {
+
+        console.log('show id in delete', id);
+        return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete());
+        // this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete().then(res => console.log('res after delte', res));
+        // this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).doc(id).delete().then(res => console.log('after delete', res));
+    }
+
+    resetStore() {
+        this.hoursStore.reset();
+    }
+
     fetchHours(userId: string) {
         return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`, ref => ref.where('userId', '==', userId))
             .snapshotChanges()
@@ -59,17 +92,14 @@ export class HoursService {
                     });
 
                 }),
-                // first()
+                first()
             );
     }
 
-    postNewHours(hours: Partial<Hours>) {
-        console.log('sohw in post new hours');
-        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).add(hours).then(res => console.log('show after post new hours', res));
-    }
-
-    resetStore() {
-        this.hoursStore.reset();
+    putHours(id: string, changes: Partial<Hours>): Observable<any> {
+        console.log('in put hours', id, changes);
+        return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).update(changes));
+        // return of(null);
     }
 
 }
