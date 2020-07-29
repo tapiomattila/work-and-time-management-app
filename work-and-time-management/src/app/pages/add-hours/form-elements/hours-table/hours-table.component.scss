@@ -24,6 +24,12 @@ td {
   background-color: var(--white-color);
 }
 
+td {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 tr.active td {
   background-color: #d6d9d4;
 }

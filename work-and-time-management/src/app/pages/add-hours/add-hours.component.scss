@@ -78,6 +78,7 @@
   grid-column: 2 / span 6;
 
     &__submit {
+    min-height: 35px;
     width: 35%;
     background-color: var(--primary-color);
     color: var(--white-color);

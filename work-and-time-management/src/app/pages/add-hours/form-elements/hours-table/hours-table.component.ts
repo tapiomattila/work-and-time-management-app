@@ -14,22 +14,17 @@ export class HoursTableComponent implements OnInit {
     dayTableSelectionIndex;
     previousTableSelectionIndex;
 
+    @Input()
+    set changeIndex(value: number) {
+        if (value === 1) {
+            console.log('show in value index', value);
+            this.dayTableSelectionIndex = undefined;
+        }
+    }
+
     constructor() { }
 
     ngOnInit() { }
-
-    // selectDayTableHour(hours: Partial<Hours>, index: number) {
-    //     if (
-    //         this.previousTableSelectionIndex !== index ||
-    //         this.dayTableSelectionIndex === undefined
-    //     ) {
-    //         this.dayTableSelectionIndex = index;
-    //         this.hoursSelection.emit(hours);
-    //     } else {
-    //         this.dayTableSelectionIndex = undefined;
-    //     }
-    //     this.previousTableSelectionIndex = index;
-    // }
 
     selectDayTableHour(hours: Partial<Hours>, index: number) {
         if (
