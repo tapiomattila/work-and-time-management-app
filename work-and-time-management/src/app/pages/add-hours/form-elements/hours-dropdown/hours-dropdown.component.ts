@@ -10,23 +10,25 @@ import { WorkType } from 'src/app/worktype/state';
 })
 export class HoursDropdownComponent implements OnInit {
 
-    // modelString: string;
+    model: any;
     itemsArr: any[];
     @Input() parentForm: FormGroup;
     @Input() controlName: string;
     @Input() header: string;
+
     @Input()
     set items(vals: any[]) {
         if (vals) {
             this.itemsArr = vals;
         }
     }
-    // @Input()
-    // set modelStringX(value: any) {
-    //     if (value) {
-    //         this.modelString = value;
-    //     }
-    // }
+
+    @Input()
+    set modelX(value: any) {
+        if (value) {
+            this.model = value;
+        }
+    }
 
     @Output() itemSelection = new EventEmitter();
 

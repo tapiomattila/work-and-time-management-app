@@ -9,19 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class HoursSliderComponent implements OnInit {
 
     @ViewChild('slider', { static: false }) slider: ElementRef;
-    sliderValue = '0h';
-
-    @Input()
-    set setSliderValue(value: string) {
-        console.log('in set slider value', value);
-        if (value) {
-            console.log('SET SLIDER', value);
-            this.sliderValue = value;
-        } else {
-            console.log('in else');
-            this.sliderValue = '0h';
-        }
-    }
+    @Input() sliderValue = '0h';
     @Input() sliderObsValue = 0;
 
     step = 0.25;
@@ -37,7 +25,6 @@ export class HoursSliderComponent implements OnInit {
 
     getSliderValue(event) {
         // this.sliderValue = event.target.value;
-
         const frac = event.target.value % 1;
 
         if (frac === 0) {
@@ -55,13 +42,17 @@ export class HoursSliderComponent implements OnInit {
     }
 
     formatHours(hours: number) {
-        const frac = hours % 1;
+        if (typeof(hours) === 'number') {
+            const frac = hours % 1;
 
-        if (frac === 0) {
-            return `${hours.toString()}h`;
+            if (frac === 0) {
+                return `${hours.toString()}h`;
+            }
+
+            const full = hours - frac;
+            return `${full}h ${frac * 60}min`;
+        } else {
+            return hours;
         }
-
-        const full = hours - frac;
-        return `${full}h ${frac * 60}min`;
     }
 }

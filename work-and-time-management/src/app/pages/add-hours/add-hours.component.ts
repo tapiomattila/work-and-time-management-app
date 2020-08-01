@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { Observable, Subscription, of, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
@@ -10,28 +10,40 @@ import { map, distinctUntilChanged, delay } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
 
+interface FormData {
+    date: Date;
+    slider: number;
+    worksite: Worksite;
+    worktype: WorkType;
+}
+
+interface HoursSelection {
+    id: string;
+    hours: number;
+    hoursFormatted: string;
+    createdAt: string;
+    updateAt: string;
+    updateAtFormatted: string;
+    worksiteId: string;
+    worksiteName: string;
+    worktypeId: string;
+    worktypeName: string;
+}
+
 @Component({
     selector: 'app-add-hours',
     templateUrl: './add-hours.component.html',
     styleUrls: ['./add-hours.component.scss']
 })
 export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
-
-    private sliderValueSubj = new BehaviorSubject<string>('0h');
-    sliderValueObs$ = this.sliderValueSubj.asObservable();
-
+    subscriptions: Subscription[] = [];
     setTableIndex;
     showFormData = true;
 
     slider$: Observable<number>;
 
-    subscriptions: Subscription[] = [];
-
     worksite$: Observable<Worksite>;
-    worksiteNickname$: Observable<string>;
-
     worktype$: Observable<WorkType>;
-    worktypeViewName$: Observable<string>;
 
     worksites$: Observable<Worksite[]>;
     worktypes$: Observable<WorkType[]>;
@@ -75,31 +87,17 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
-        this.worksiteQuery.selectActiveWorksite().subscribe(res => console.log('show active', res));
-
-        const activeWorksite$ = this.worksiteQuery.selectActiveWorksite();
-        const activeWorktype$ = this.worktypeQuery.selectActiveWorktype();
-        this.worksite$ = activeWorksite$;
-        this.worktype$ = activeWorktype$;
-
-        this.worksiteNickname$ = activeWorksite$.pipe(
-            map((el: Worksite) => el ? el.nickname : null),
-        );
-
-        this.worktypeViewName$ = activeWorktype$.pipe(
-            map((el: WorkType) => el ? el.viewName : null)
-        );
+        this.worksite$ = this.worksiteQuery.selectActiveWorksite();
+        this.worktype$ = this.worktypeQuery.selectActiveWorktype();
 
         this.selectionDayHours();
         this.formValueChanges();
+        this.setDateTEST(new Date());
 
         this.slider$ = this.dataForm.controls.slider.valueChanges;
         this.activeHours$ = this.hoursQuery.selectActiveHours();
 
         this.subscriptions.push(activeWorktypeSubs);
-
-        const date = new Date();
-        this.setDateTEST(date);
     }
 
     ngAfterViewInit() { }
@@ -132,7 +130,6 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
             .pipe(
                 map(elements => {
-                    console.log('show elements', elements);
                     return elements.map(el => {
                         const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
                         const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
@@ -181,8 +178,15 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
             date: new FormControl(new Date(), Validators.required),
             worksite: new FormControl(null, Validators.required),
             worktype: new FormControl(null, Validators.required),
-            slider: new FormControl(null, Validators.required)
+            slider: new FormControl(null, [Validators.required, this.sliderValidator.bind(this)])
         });
+    }
+
+    sliderValidator(control: FormControl): { [s: string]: boolean } {
+        if (control.value === 0) {
+            return { message: true };
+        }
+        return null;
     }
 
     getItemSelectionFromDropdown(item: Worksite | WorkType) {
@@ -191,6 +195,8 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (itemWorksite) {
             this.worksiteService.setActive(item.id);
+            this.resetTableSelection();
+            this.resetSlider();
         }
 
         if (itemWorktype) {
@@ -203,55 +209,19 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onSubmit() {
-
-        console.log('show in submit', this.dataForm.value);
-
         if (!this.dataForm.valid) {
-            console.warn('INVALID FORM');
             return;
         }
-        const values = this.dataForm.value;
-
-        console.log('show values', values);
-
-        const newHours: Partial<Hours> = {
-            userId: this.userQuery.getValue().id,
-            createdAt: new Date().toISOString(),
-            markedHours: values.slider,
-            updatedAt: new Date().toISOString(),
-            worksiteId: values.worksite.id,
-            worktypeId: values.worktype.id
-        };
+        const values = this.dataForm.value as FormData;
 
         // POST
         if (!this.hoursQuery.getActive()) {
-            this.hoursService.postNewHours(newHours).subscribe(() => {
-                console.log('POST');
-                this.hoursService.setUserHours(this.userQuery.getValue().id).subscribe();
-                this.resetSlider();
-            });
+            this.postHours(values);
         }
 
         // UPDATE
         if (this.hoursQuery.getActive()) {
-            const updatedHours: Partial<Hours> = {
-                markedHours: values.slider,
-                updatedAt: new Date().toISOString(),
-                worksiteId: values.worksite.id,
-                worktypeId: values.worktype.id
-            };
-
-            const hours = this.hoursQuery.getActive() as Hours;
-            this.hoursService.putHours(hours.id, updatedHours).subscribe(() => {
-
-                console.log('UPDATE');
-                this.hoursService.updateHours(hours, updatedHours);
-                this.getHoursSelectionFromTable({ message: 'reset' });
-                this.setTableIndex = 1;
-                setTimeout(() => {
-                    this.setTableIndex = undefined;
-                }, 200);
-            });
+            this.updateHours(values);
         }
     }
 
@@ -259,11 +229,8 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.hoursQuery.getActive()) {
             const active = this.hoursQuery.getActive() as Hours;
             const id = active.id;
-
             // REMOVE
             this.hoursService.deleteHours(id).subscribe(() => {
-
-                console.log('REMOVE');
                 this.hoursService.removeHours(id);
                 this.resetSlider();
                 this.resetTableSelection();
@@ -271,37 +238,16 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    getHoursSelectionFromTable(hours: object | { message: string }) {
-
-        // console.log('show emit reset', hours);
-
+    getHoursSelectionFromTable(hours: HoursSelection | { message: string }) {
         // tslint:disable-next-line: no-string-literal
-        if (hours['id']) {
+        const id = hours['id'];
 
-            console.log('SELECTED');
-
-            const test = hours as Partial<Hours>;
-            this.hoursService.setActive(test.id);
-            this.worktypeService.setActive(test.worktypeId);
-
-            // tslint:disable-next-line: no-string-literal
-            this.dataForm.controls.slider.setValue(hours['hours']);
-
-            // tslint:disable-next-line: no-string-literal
-            console.log('show format', this.formatHours(hours['hours']));
-            const formatHours = this.formatHours(hours['hours']);
-            // this.sliderValue = formatHours;
-            this.sliderValueSubj.next(formatHours);
-        }
-
-        // tslint:disable-next-line: no-string-literal
-        if (!hours['id']) {
-
-            console.log('RESET');
-
-            const test2 = hours as { message: string };
-            console.log('show test2', test2.message);
-
+        if (id) {
+            const hour = hours as HoursSelection;
+            this.hoursService.setActive(hour.id);
+            this.worktypeService.setActive(hour.worktypeId);
+            this.dataForm.controls.slider.setValue(hour.hours);
+        } else {
             this.hoursService.setActive(null);
             this.resetSlider();
             this.resetTableSelection();
@@ -309,17 +255,55 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     resetSlider() {
-        console.log('RESET SLIDER');
         this.dataForm.controls.slider.setValue(0);
-        this.sliderValueSubj.next('0h');
+    }
+
+    resetWorktype() {
+        this.dataForm.controls.worktype.setValue(null);
     }
 
     resetTableSelection() {
-        console.log('RESET TABLE SELECTION');
         this.setTableIndex = 1;
         setTimeout(() => {
             this.setTableIndex = undefined;
         }, 200);
+    }
+
+    postHours(values: FormData) {
+        const newHours: Partial<Hours> = {
+            userId: this.userQuery.getValue().id,
+            createdAt: values.date.toString(),
+            markedHours: values.slider,
+            updatedAt: values.date.toString(),
+            worksiteId: values.worksite.id,
+            worktypeId: values.worktype.id
+        };
+        this.hoursService.postNewHours(newHours).subscribe(() => {
+            console.log('POST');
+            this.hoursService.setUserHours(this.userQuery.getValue().id).subscribe();
+            this.resetSlider();
+        });
+    }
+
+    updateHours(values: FormData) {
+        const updatedHours: Partial<Hours> = {
+            markedHours: values.slider,
+            updatedAt: new Date().toISOString(),
+            worksiteId: values.worksite.id,
+            worktypeId: values.worktype.id
+        };
+
+        const hours = this.hoursQuery.getActive() as Hours;
+        this.hoursService.putHours(hours.id, updatedHours).subscribe(() => {
+
+            console.log('UPDATE');
+            this.hoursService.updateHours(hours, updatedHours);
+            this.getHoursSelectionFromTable({ message: 'reset' });
+            this.setTableIndex = 1;
+            setTimeout(() => {
+                this.setTableIndex = undefined;
+            }, 200);
+        });
     }
 
     ngOnDestroy() {

@@ -1,9 +1,7 @@
 <mat-form-field appearance="fill" [formGroup]="parentForm">
     <mat-label>{{ header }}</mat-label>
-    <!-- [(ngModel)]="modelString"  -->
-    <mat-select name="item" [formControlName]="controlName">
+    <mat-select name="item" [formControlName]="controlName" [(ngModel)]="model">
         <ng-container *ngIf="itemsArr && itemsArr.length">
-            <!-- [value]="item.nickname ? item.nickname : item.viewName" -->
             <mat-option *ngFor="let item of itemsArr" [value]="item"
                 (click)="itemOption(item)">
                 {{ item.nickname ? item.nickname : item.viewName }}

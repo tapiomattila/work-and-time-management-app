@@ -34,19 +34,18 @@
   <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)">
   </app-hours-date-selection>
 
-  <!-- [modelStringX]="worksiteNickname$ | async"  -->
   <app-hours-dropdown *ngIf="showFormData" style="margin-top: 13px; width: 100%;" [parentForm]="dataForm"
     [controlName]="'worksite'" [items]="worksites$ | async" [header]="'Worksite selection'"
-    (itemSelection)="getItemSelectionFromDropdown($event)">
+    (itemSelection)="getItemSelectionFromDropdown($event)" [modelX]="worksite$ | async">
   </app-hours-dropdown>
 
-  <!-- [modelStringX]="worktypeViewName$ | async" -->
   <app-hours-dropdown *ngIf="showFormData" style="margin-top: -6px;" [parentForm]="dataForm" [controlName]="'worktype'"
-    [items]="worktypes$ | async" [header]="'Worktype selection'" (itemSelection)="getItemSelectionFromDropdown($event)">
+    [items]="worktypes$ | async" [header]="'Worktype selection'" (itemSelection)="getItemSelectionFromDropdown($event)"
+    [modelX]="worktype$ | async">
   </app-hours-dropdown>
 
   <app-hours-slider *ngIf="showFormData" [parentForm]="dataForm" [controlName]="'slider'"
-    [sliderObsValue]="slider$ | async" [setSliderValue]="sliderValueObs$ | async">
+    [sliderObsValue]="slider$ | async" [sliderValue]="slider$ | async">
   </app-hours-slider>
 
   <div style="display: flex; justify-content: space-between;">
