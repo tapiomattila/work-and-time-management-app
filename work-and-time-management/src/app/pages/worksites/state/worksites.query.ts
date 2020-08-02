@@ -5,6 +5,9 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { HoursQuery } from 'src/app/auth/hours/hours.query';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { Hours } from 'src/app/auth/hours';
+import { WorkTypeQuery } from 'src/app/worktype/state';
+import * as moment from 'moment';
+import { formatHours } from 'src/app/helpers/helper-functions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +22,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   constructor(
     protected store: WorksiteStore,
     private hoursQuery: HoursQuery,
+    private worktypeQuery: WorkTypeQuery
   ) {
     super(store);
   }
@@ -117,6 +121,33 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   getWorksiteById(worksiteId: string) {
     return this.getAll().filter(el => el.id === worksiteId);
   }
+
+  selectTableHours(hours: Hours[]) {
+    return hours.map(el => {
+        const worksiteName = this.getWorksiteById(el.worksiteId);
+        const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
+
+        const worktypeId = this.hoursQuery.getHourWorktype(el.id);
+        const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
+        const worktypeNameFound = worktype ? worktype.viewName : undefined;
+
+        const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
+        const hoursFormatted = formatHours(el.markedHours);
+
+        return {
+            id: el.id,
+            createdAt: el.createdAt,
+            updateAt: el.updatedAt,
+            updateAtFormatted: formattedDate,
+            worksiteId: el.worksiteId,
+            worksiteName: worksiteNameFound,
+            worktypeId,
+            worktypeName: worktypeNameFound,
+            hours: el.markedHours,
+            hoursFormatted
+        };
+    });
+}
 
 }
 

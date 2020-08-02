@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { RouterRoutesEnum } from '../enumerations/global.enums';
 
 @Component({
   selector: 'app-pagenotfound',
@@ -9,14 +10,14 @@ import { Location } from '@angular/common';
 export class PagenotfoundComponent implements OnInit {
 
   constructor(
-    private location: Location
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  locationBack() {
-    this.location.back();
+  locationDash() {
+    this.router.navigate([RouterRoutesEnum.DASHBOARD]);
   }
 
 }

@@ -15,28 +15,6 @@
 </div>
 
 <div class="table-container">
-    <!-- <ng-container *ngIf="hours$ | async as hours; else noHours">
-        <table *ngIf="hours.length">
-            <tr>
-                <th>Date</th>
-                <th>Worksite</th>
-                <th>Worktype</th>
-                <th>Hours</th>
-                <th>Info</th>
-            </tr>
-            <tr *ngFor="let hour of hours">
-                <td>{{ hour.updateAtFormatted }}</td>
-                <td>{{ hour.worksiteName }}</td>
-                <td>{{ hour.worktypeName }}</td>
-                <td>{{ hour.hoursFormatted }}</td>
-                <td></td>
-            </tr>
-        </table>
-    </ng-container>
-    <ng-template #noHours>
-        <div>No added hours</div>
-    </ng-template> -->
-
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <ng-container matColumnDef="updateAt">

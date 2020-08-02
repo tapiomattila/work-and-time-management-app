@@ -7,27 +7,15 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
 import { map, distinctUntilChanged, delay } from 'rxjs/operators';
-import { HoursQuery, Hours, HoursService } from 'src/app/auth/hours';
+import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
+import { formatHours } from 'src/app/helpers/helper-functions';
 
 interface FormData {
     date: Date;
     slider: number;
     worksite: Worksite;
     worktype: WorkType;
-}
-
-interface HoursSelection {
-    id: string;
-    hours: number;
-    hoursFormatted: string;
-    createdAt: string;
-    updateAt: string;
-    updateAtFormatted: string;
-    worksiteId: string;
-    worksiteName: string;
-    worktypeId: string;
-    worktypeName: string;
 }
 
 @Component({
@@ -92,7 +80,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.selectionDayHours();
         this.formValueChanges();
-        this.setDateTEST(new Date());
+        this.setTableHours(new Date());
 
         this.slider$ = this.dataForm.controls.slider.valueChanges;
         this.activeHours$ = this.hoursQuery.selectActiveHours();
@@ -106,7 +94,7 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
             .pipe(
                 map(el => {
-                    return this.formatHours(el);
+                    return formatHours(el);
                 })
             );
     }
@@ -121,52 +109,18 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (data.date) {
                     const date = data.date as Date;
                     this.worksiteQuery.setAddHoursDateSelection(date.getTime());
-                    this.setDateTEST(data.date);
+                    this.setTableHours(data.date);
                 }
             });
     }
 
-    setDateTEST(date: Date) {
+    setTableHours(date: Date) {
         this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
             .pipe(
                 map(elements => {
-                    return elements.map(el => {
-                        const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
-                        const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
-
-                        const worktypeId = this.hoursQuery.getHourWorktype(el.id);
-                        const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
-                        const worktypeNameFound = worktype ? worktype.viewName : undefined;
-
-                        const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
-                        const hoursFormatted = this.formatHours(el.markedHours);
-
-                        return {
-                            id: el.id,
-                            createdAt: el.createdAt,
-                            updateAt: el.updatedAt,
-                            updateAtFormatted: formattedDate,
-                            worksiteId: el.worksiteId,
-                            worksiteName: worksiteNameFound,
-                            worktypeId,
-                            worktypeName: worktypeNameFound,
-                            hours: el.markedHours,
-                            hoursFormatted
-                        };
-                    });
+                    return this.worksiteQuery.selectTableHours(elements);
                 }),
             );
-    }
-
-    formatHours(hours: number) {
-        const frac = hours % 1;
-
-        if (frac === 0) {
-            return `${hours.toString()}h`;
-        }
-
-        const full = hours - frac;
-        return `${full}h ${frac * 60}min`;
     }
 
     showFormToggleEmit(event) {
@@ -238,12 +192,12 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    getHoursSelectionFromTable(hours: HoursSelection | { message: string }) {
+    getHoursSelectionFromTable(hours: TableHours | { message: string }) {
         // tslint:disable-next-line: no-string-literal
         const id = hours['id'];
 
         if (id) {
-            const hour = hours as HoursSelection;
+            const hour = hours as TableHours;
             this.hoursService.setActive(hour.id);
             this.worktypeService.setActive(hour.worktypeId);
             this.dataForm.controls.slider.setValue(hour.hours);

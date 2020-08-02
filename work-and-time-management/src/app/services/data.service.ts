@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+// import { Injectable } from '@angular/core';
+// import { AngularFirestore } from '@angular/fire/firestore';
 
-@Injectable({ providedIn: 'root' })
-export class DataService {
+// @Injectable({ providedIn: 'root' })
+// export class DataService {
 
-    constructor(
-        private af: AngularFirestore
-    ) { }
-}
+//     constructor(
+//         private af: AngularFirestore
+//     ) { }
+// }

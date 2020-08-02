@@ -14,7 +14,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
     hours$ = this.selectAll();
 
     constructor(
-        protected store: HoursStore,
+        protected store: HoursStore
     ) {
         super(store);
     }
@@ -35,10 +35,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
     selectHoursForDay(millis: number, activeWorksiteId: string) {
 
         const dayMillis1 = new Date(millis);
-        // console.log('show day millis', dayMillis1);
-
         const moment1 = moment(dayMillis1);
-        // console.log('show moment', moment1);
 
         return this.selectAll({
             filterBy: [
@@ -59,9 +56,8 @@ export class HoursQuery extends QueryEntity<HoursState> {
 
     selectActiveHours() {
         return this.selectActiveId()
-          .pipe(
-            switchMap(id => id ? this.selectEntity(id) : of(null))
-          );
-      }
-
+            .pipe(
+                switchMap(id => id ? this.selectEntity(id) : of(null))
+            );
+    }
 }

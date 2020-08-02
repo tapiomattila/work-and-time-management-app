@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { formatHours } from 'src/app/helpers/helper-functions';
 
 @Component({
     selector: 'app-hours-slider',
@@ -24,7 +25,6 @@ export class HoursSliderComponent implements OnInit {
     ngOnInit() { }
 
     getSliderValue(event) {
-        // this.sliderValue = event.target.value;
         const frac = event.target.value % 1;
 
         if (frac === 0) {
@@ -41,18 +41,7 @@ export class HoursSliderComponent implements OnInit {
         return (5 + (value * pos) / 1.075);
     }
 
-    formatHours(hours: number) {
-        if (typeof(hours) === 'number') {
-            const frac = hours % 1;
-
-            if (frac === 0) {
-                return `${hours.toString()}h`;
-            }
-
-            const full = hours - frac;
-            return `${full}h ${frac * 60}min`;
-        } else {
-            return hours;
-        }
+    formatHoursFunc(hours: number) {
+        return formatHours(hours);
     }
 }

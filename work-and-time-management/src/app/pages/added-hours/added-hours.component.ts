@@ -2,10 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular
 import { WorksitesQuery } from '../worksites/state';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { HoursQuery } from 'src/app/auth/hours';
+import { HoursQuery, TableHours } from 'src/app/auth/hours';
 import { map, tap } from 'rxjs/operators';
-import { WorkTypeQuery } from 'src/app/worktype/state';
-import * as moment from 'moment';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -28,7 +26,6 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private worksiteQuery: WorksitesQuery,
-        private worktypeQuery: WorkTypeQuery,
         private router: Router,
         private hoursQuery: HoursQuery
     ) { }
@@ -38,30 +35,7 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const data$ = this.hoursQuery.selectAll().pipe(
             map(elements => {
-                return elements.map(el => {
-                    const worksiteName = this.worksiteQuery.getWorksiteById(el.worksiteId);
-                    const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
-
-                    const worktypeId = this.hoursQuery.getHourWorktype(el.id);
-                    const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
-                    const worktypeNameFound = worktype ? worktype.viewName : undefined;
-
-                    const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
-                    const hoursFormatted = this.formatHours(el.markedHours);
-
-                    return {
-                        id: el.id,
-                        createdAt: el.createdAt,
-                        updateAt: el.updatedAt,
-                        updateAtFormatted: formattedDate,
-                        worksiteId: el.worksiteId,
-                        worksiteName: worksiteNameFound,
-                        worktypeId,
-                        worktypeName: worktypeNameFound,
-                        hours: el.markedHours,
-                        hoursFormatted
-                    };
-                });
+                return this.worksiteQuery.selectTableHours(elements);
             }),
             tap(res => {
                 const sortedByDates = this.sortData(res);
@@ -72,7 +46,8 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.subscriptions.push(data$);
     }
 
-    sortData(data) {
+    sortData(data: TableHours[]) {
+        console.log('show data', data);
         return data.sort((a, b) => {
             // tslint:disable-next-line: no-angle-bracket-type-assertion
             return new Date(b.updateAt) as any - <any> new Date(a.updateAt);

@@ -33,7 +33,6 @@ export class HoursTableComponent implements OnInit {
             this.dayTableSelectionIndex = index;
             this.hoursSelection.emit(hours);
         } else {
-            console.log('RESET');
             this.dayTableSelectionIndex = undefined;
             this.hoursSelection.emit({ message: 'reset' });
         }
