@@ -17,7 +17,6 @@ export class HoursTableComponent implements OnInit {
     @Input()
     set changeIndex(value: number) {
         if (value === 1) {
-            console.log('show in value index', value);
             this.dayTableSelectionIndex = undefined;
         }
     }

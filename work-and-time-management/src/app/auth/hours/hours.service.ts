@@ -92,14 +92,13 @@ export class HoursService {
                     });
 
                 }),
-                first()
+                // first()
             );
     }
 
     putHours(id: string, changes: Partial<Hours>): Observable<any> {
         console.log('in put hours', id, changes);
         return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).update(changes));
-        // return of(null);
     }
 
 }

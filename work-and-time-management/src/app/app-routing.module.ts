@@ -7,6 +7,7 @@ import { AddHoursComponent } from './pages/add-hours/add-hours.component';
 import { SplashComponent } from './pages/auth/splash/splash.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'worksites', component: WorksitesComponent },
   { path: 'current-worksite/:id', component: AddHoursComponent },
   { path: 'add-hours/:id', component: AddHoursComponent },
+  { path: 'added-hours', component: AddedHoursComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 

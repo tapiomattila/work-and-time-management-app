@@ -15,7 +15,6 @@ export class WorkTypeService {
     ) { }
 
     setActive(id: string) {
-        console.log('show in acive id', id);
         this.worktypeStore.setActive(id);
     }
 

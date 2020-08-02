@@ -20,6 +20,8 @@ export class AuthService {
     firebaseAuthUpdate(): Observable<boolean> {
         return this.afAuth.authState.pipe(
             map(authenticated => {
+
+                console.log('show is auth', authenticated);
                 const isAuth = !!authenticated;
 
                 if (isAuth) {

@@ -1,0 +1,67 @@
+<div class="heading">
+    <div class="heading__back-arrow">
+        <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
+    </div>
+    <div class="heading__name">
+        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+    </div>
+    <div class="heading__settings-btn">
+        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+    </div>
+</div>
+
+<div class="header">
+    <p>Added Hours</p>
+</div>
+
+<div class="table-container">
+    <!-- <ng-container *ngIf="hours$ | async as hours; else noHours">
+        <table *ngIf="hours.length">
+            <tr>
+                <th>Date</th>
+                <th>Worksite</th>
+                <th>Worktype</th>
+                <th>Hours</th>
+                <th>Info</th>
+            </tr>
+            <tr *ngFor="let hour of hours">
+                <td>{{ hour.updateAtFormatted }}</td>
+                <td>{{ hour.worksiteName }}</td>
+                <td>{{ hour.worktypeName }}</td>
+                <td>{{ hour.hoursFormatted }}</td>
+                <td></td>
+            </tr>
+        </table>
+    </ng-container>
+    <ng-template #noHours>
+        <div>No added hours</div>
+    </ng-template> -->
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="updateAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.updateAtFormatted}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="worksiteName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Worksite </th>
+          <td mat-cell *matCellDef="let element"> {{element.worksiteName}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="worktypeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Worktype </th>
+          <td mat-cell *matCellDef="let element"> {{element.worktypeName}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="hoursFormatted">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Hours </th>
+          <td mat-cell *matCellDef="let element"> {{element.hoursFormatted}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+</div>
+
+<div class="footer"></div>

@@ -11,6 +11,7 @@ import { HoursDropdownComponent } from './add-hours/form-elements/hours-dropdown
 import { HoursSliderComponent } from './add-hours/form-elements/hours-slider/hours-slider.component';
 import { HoursDateSelectionComponent } from './add-hours/form-elements/hours-date-selection/hours-date-selection.component';
 import { HoursTableComponent } from './add-hours/form-elements/hours-table/hours-table.component';
+import { AddedHoursComponent } from './added-hours/added-hours.component';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { HoursTableComponent } from './add-hours/form-elements/hours-table/hours
     declarations: [
         WorksitesComponent,
         AddHoursComponent,
+        AddedHoursComponent,
         LoginComponent,
         RegisterComponent,
         SplashComponent,

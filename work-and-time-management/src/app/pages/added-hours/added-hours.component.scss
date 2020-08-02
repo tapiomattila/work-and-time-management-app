@@ -1,0 +1,103 @@
+@import "~@angular/material/theming";
+
+:host {
+  //   width: 100%;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 10px repeat(6, 1fr) 10px;
+  grid-template-rows:
+    [heading-start] 45px
+    [heading-end header-start] 65px
+    [header-end table-start] 1fr
+    [table-end footer-start] 20px
+    [footer-end];
+  gap: 15px;
+  //   overflow: hidden;
+
+  min-height: calc(100vh - 20px);
+  //   min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.heading {
+  grid-row: heading-start / heading-end;
+  grid-column: 2 / span 6;
+
+  &__name {
+    font-size: 1.3rem;
+    padding: 2px;
+
+    @media only screen and (min-width: 321px) {
+      font-size: 1.6rem;
+      padding: 0;
+    }
+  }
+}
+.header {
+  grid-row: header-start / header-end;
+  grid-column: 2 / span 6;
+
+  font-size: 2.1rem;
+  text-transform: uppercase;
+  text-indent: 10px;
+}
+
+.table-container {
+  grid-row: table-start / table-end;
+  grid-column: 2 / span 6;
+  text-align: center;
+
+  overflow-x: auto;
+}
+
+.footer {
+  grid-row: footer-start / footer-end;
+  grid-column: 2 / span 6;
+  min-height: 20px;
+}
+
+// table {
+//     width: 100%;
+//     min-width: 400px;
+//   }
+
+// td,
+// th {
+//   border: 1px solid #000;
+//   font-weight: lighter;
+//   padding: 10px;
+// }
+
+//   table {
+//     border-collapse: collapse;
+//   }
+
+//   th {
+//     min-height: 20px;
+//     background-color: var(--primary-color);
+//     color: var(--white-color);
+//   }
+
+//   td {
+//     background-color: var(--white-color);
+//     color: #000;
+//   }
+
+//   td {
+//     &:hover {
+//       cursor: pointer;
+//     }
+//   }
+
+//   tr.active td {
+//     background-color: #d6d9d4;
+//   }
+
+table {
+  width: 100%;
+  min-width: 400px;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}

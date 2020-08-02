@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     imports: [
@@ -16,7 +18,9 @@ import { MatSelectModule } from '@angular/material/select';
         MatInputModule,
         MatNativeDateModule,
         MatRippleModule,
-        MatSelectModule
+        MatSelectModule,
+        MatTableModule,
+        MatSortModule
     ],
     exports: [
         MatSliderModule,
@@ -26,7 +30,9 @@ import { MatSelectModule } from '@angular/material/select';
         MatInputModule,
         MatNativeDateModule,
         MatRippleModule,
-        MatSelectModule
+        MatSelectModule,
+        MatTableModule,
+        MatSortModule
     ],
     declarations: [],
     providers: [],
