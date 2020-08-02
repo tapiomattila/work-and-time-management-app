@@ -14,7 +14,12 @@
     <p>Added Hours</p>
 </div>
 
+<mat-form-field class="table-filter">
+    <input type="text" matInput (keyup)="doFilter($event.target.value)" placeholder="Filter result">
+</mat-form-field>
+
 <div class="table-container">
+  
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <ng-container matColumnDef="updateAt">
@@ -40,6 +45,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>
 
 <div class="footer"></div>

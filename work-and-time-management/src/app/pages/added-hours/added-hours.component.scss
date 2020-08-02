@@ -8,7 +8,8 @@
   grid-template-rows:
     [heading-start] 45px
     [heading-end header-start] 65px
-    [header-end table-start] 1fr
+    [header-end filter-start] minmax(65px, min-content)
+    [filter-end table-start] 1fr
     [table-end footer-start] 20px
     [footer-end];
   gap: 15px;
@@ -42,12 +43,21 @@
   text-indent: 10px;
 }
 
+.table-filter {
+  grid-row: filter-start / filter-end;
+  grid-column: 2 / span 6;
+}
+
 .table-container {
   grid-row: table-start / table-end;
   grid-column: 2 / span 6;
   text-align: center;
 
   overflow-x: auto;
+}
+
+mat-paginator {
+  display: block;
 }
 
 .footer {

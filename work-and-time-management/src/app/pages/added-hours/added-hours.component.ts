@@ -6,6 +6,7 @@ import { HoursQuery, TableHours } from 'src/app/auth/hours';
 import { map, tap } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -23,6 +24,8 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     dataSource;
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
     constructor(
         private worksiteQuery: WorksitesQuery,
@@ -50,7 +53,7 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('show data', data);
         return data.sort((a, b) => {
             // tslint:disable-next-line: no-angle-bracket-type-assertion
-            return new Date(b.updateAt) as any - <any> new Date(a.updateAt);
+            return new Date(b.updateAt) as any - <any>new Date(a.updateAt);
         });
     }
 
@@ -58,6 +61,7 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             console.log('apply sorting');
             this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
         }, 1000);
     }
 
@@ -74,6 +78,10 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     backArrowPressed() {
         this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+    }
+
+    doFilter(filterValue: string) {
+        this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
     ngOnDestroy() {
