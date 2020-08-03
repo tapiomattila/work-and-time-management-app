@@ -226,9 +226,9 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     postHours(values: FormData) {
         const newHours: Partial<Hours> = {
             userId: this.userQuery.getValue().id,
-            createdAt: values.date.toString(),
+            createdAt: values.date.toISOString(),
             markedHours: values.slider,
-            updatedAt: values.date.toString(),
+            updatedAt: values.date.toISOString(),
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id
         };

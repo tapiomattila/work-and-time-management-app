@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
+import { HoursQuery } from 'src/app/auth/hours';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-day-hours',
@@ -7,30 +9,29 @@ import * as moment from 'moment';
     styleUrls: ['./day-hours.component.scss'],
 })
 export class DayHoursComponent implements OnInit {
-
     activeDay = false;
-    day: any;
+    day: string;
+    hours: object;
+    hours$: Observable<number>;
 
     @Input()
-    set days(val: Date) {
-        const dayToISO = val.toISOString();
-        const dayMomentStr = moment(dayToISO);
-        const dayFormat = dayMomentStr.format('LLLL');
-        this.day = dayFormat.substring(0, 3);
+    set hoursVal(val: { day: moment.Moment }) {
+        if (val) {
+            console.log('show val', val);
+            this.hours = val;
 
-        const current = moment();
-        const isSame = current.isSame(dayMomentStr, 'day');
+            const mom = val.day as moment.Moment;
+            const format = mom.format('LLLL');
+            this.day = format.substring(0, 3);
 
-        if (isSame) {
-            this.activeDay = true;
+            this.hours$ = this.hoursQuery.selectHoursForAnyDay(val.day);
         }
-
     }
 
-    @Input() hours: number;
 
-    constructor() { }
+    constructor(
+        private hoursQuery: HoursQuery
+    ) { }
 
-    ngOnInit() {
-    }
+    ngOnInit() { }
 }

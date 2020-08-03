@@ -53,7 +53,7 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('show data', data);
         return data.sort((a, b) => {
             // tslint:disable-next-line: no-angle-bracket-type-assertion
-            return new Date(b.updateAt) as any - <any>new Date(a.updateAt);
+            return new Date(b.updateAt) as any - <any> new Date(a.updateAt);
         });
     }
 

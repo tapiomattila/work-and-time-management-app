@@ -8,6 +8,7 @@ import { Worksite, WorksitesQuery } from '../pages/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { AuthService } from '../auth/state/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { HoursQuery } from '../auth/hours';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,34 +23,13 @@ export class DashboardComponent implements OnInit {
 
   user$: Observable<User>;
   momentDay: moment.Moment;
-
-  infos = [
-    {
-      day: new Date('6.1.2020'),
-      hour: '6.75'
-    },
-    {
-      day: new Date('6.2.2020'),
-      hour: '9'
-    },
-    {
-      day: new Date('6.3.2020'),
-      hour: '11'
-    },
-    {
-      day: new Date('6.4.2020'),
-      hour: '9.5'
-    },
-    {
-      day: new Date('6.5.2020'),
-      hour: '0'
-    }
-  ];
+  infos;
 
   constructor(
     private router: Router,
     private userQuery: UserQuery,
     private worksiteQuery: WorksitesQuery,
+    private hoursQuery: HoursQuery,
     private userService: UserService,
     private authService: AuthService,
     private afAuth: AngularFireAuth,
@@ -60,6 +40,16 @@ export class DashboardComponent implements OnInit {
     this.momentDay = moment();
     this.user$ = this.userQuery.user$;
     this.currentWorksite$ = this.worksiteQuery.selectLastUpdatedWorksite();
+
+    const arr = this.setDaysArray();
+    const days = [];
+    for (const el of arr) {
+      const mom = moment(el);
+      days.push({
+        day: mom,
+      });
+    }
+    this.infos = days;
   }
 
   toWorksites() {
@@ -84,6 +74,25 @@ export class DashboardComponent implements OnInit {
     this.authService.signOut();
     this.afAuth.auth.signOut();
     this.router.navigate([RouterRoutesEnum.WELCOME]);
+  }
+
+  setDaysArray() {
+    const arr = [];
+    const day = moment();
+    let index = 0;
+    while (index <= 5) {
+      if (index === 0) {
+        const momNow = moment();
+        arr.push(momNow.toISOString());
+      }
+
+      if (day.day() <= 6) {
+        const mom2 = day.add(1, 'days');
+        arr.push(mom2.toISOString());
+      }
+      index++;
+    }
+    return arr;
   }
 
 }

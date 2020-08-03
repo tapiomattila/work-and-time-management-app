@@ -1,8 +1,13 @@
 <div class="day-hours">
-    <div class="circle" [ngClass]="{ 'active-circle': activeDay}">
-        {{ hours }}h
-    </div>
-    <div class="date">
-        <p>{{ day }}</p>
-    </div>
+    <ng-container *ngIf="hours">
+        <div class="circle" [ngClass]="{ 'active-circle': activeDay}">
+            <ng-container *ngIf="hours$ | async as hours; else noHours">
+                {{ hours }}h
+            </ng-container>
+            <ng-template #noHours>0h</ng-template>
+        </div>
+        <div class="date">
+            <p>{{ day }}</p>
+        </div>
+    </ng-container>
 </div>

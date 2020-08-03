@@ -77,10 +77,17 @@ button {
 /////////////
 .circles {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 5px;
   justify-items: center;
   align-items: center;
+
+  // &.testing {
+  //   grid-template-columns: repeat(5, 1fr);
+  //   gap: 5px;
+  //   justify-items: center;
+  //   align-items: center;
+  // }
 
   .circle {
     border: 3px solid var(--primary-color);

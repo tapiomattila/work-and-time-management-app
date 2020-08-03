@@ -1,7 +1,7 @@
 import { QueryEntity } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { HoursState, HoursStore } from './hours.store';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap, filter } from 'rxjs/operators';
 import { Hours } from './hours.model';
 import { Observable, of } from 'rxjs';
 import * as moment from 'moment';
@@ -44,6 +44,31 @@ export class HoursQuery extends QueryEntity<HoursState> {
                 }
             ]
         });
+    }
+
+    selectHoursForAnyDay(day: moment.Moment): Observable<number> {
+        // const test = day.toISOString();
+        // console.log('show test', test);
+        return this.selectAll().pipe(
+            map(el => {
+                return el.filter(elx => moment(elx.updatedAt).isSame(day, 'day'));
+            }),
+            map(res => res.map(el => el.markedHours)),
+            map(hoursArr => {
+                return hoursArr.reduce((a, b) => a + b, 0);
+            }),
+        );
+        // map(el => el.map(elx => elx.updatedAt)),
+        // tap(elements => {
+        //     elements.forEach(el => {
+        //         const test = moment(el);
+        //         // console.log(test.date());
+        //         // console.log(test.month() + 1);
+        //         // console.log(test.year());
+        //         const same = moment(el).isSame(day, 'day');
+        //         console.log('show same', same);
+        //     });
+        // })
     }
 
     getHourWorktype(hourId: string) {

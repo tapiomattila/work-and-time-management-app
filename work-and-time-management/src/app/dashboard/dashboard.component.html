@@ -33,9 +33,11 @@
   <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
 </div>
 
+<!-- [ngClass]="{ 'testing': true }" -->
 <div class="circles">
-  <app-day-hours *ngFor="let info of infos" [hours]="info.hour" [days]="info.day"></app-day-hours>
-  <div class="circle-plus">+</div>
+  <!-- <app-day-hours *ngFor="let info of infos" [hours]="info.hour" [days]="info.day"></app-day-hours>
+  <div class="circle-plus">+</div> -->
+  <app-day-hours *ngFor="let info of infos" [hoursVal]="info"></app-day-hours>
 </div>
 
 <div class="cards">
