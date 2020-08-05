@@ -13,21 +13,43 @@ export class DayHoursComponent implements OnInit {
     day: string;
     hours: object;
     hours$: Observable<number>;
+    indexX: number;
+    widthX: number;
 
     @Input()
-    set hoursVal(val: { day: moment.Moment }) {
-        if (val) {
-            console.log('show val', val);
-            this.hours = val;
+    set index(value: number) {
+        this.indexX = value;
+    }
 
-            const mom = val.day as moment.Moment;
+    @Input()
+    set hoursVal(val: [{ day: moment.Moment }, boolean]) {
+        if (val) {
+            const iso = val ? val[0].day.toISOString() : null;
+            const mom = val[0].day as moment.Moment;
             const format = mom.format('LLLL');
             this.day = format.substring(0, 3);
 
-            this.hours$ = this.hoursQuery.selectHoursForAnyDay(val.day);
+            if (val[1] && this.indexX < 5) {
+                this.hours = val;
+                this.hours$ = this.hoursQuery.selectHoursForAnyDay(val[0].day);
+            }
+
+            if (!val[1]) {
+                this.hours = val;
+                this.hours$ = this.hoursQuery.selectHoursForAnyDay(val[0].day);
+            }
+
+            if (iso) {
+                const current = moment();
+                const isSame = current.isSame(iso, 'day');
+
+                if (isSame) {
+                    console.log('show active day', iso);
+                    this.activeDay = true;
+                }
+            }
         }
     }
-
 
     constructor(
         private hoursQuery: HoursQuery

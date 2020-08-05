@@ -16,4 +16,8 @@ export class WindowService {
         this.windowSize = { width: windowWidth, height: windowHeight };
         this.windowSizeSubj.next({ width: windowWidth, height: windowHeight });
     }
+
+    getWindowSize() {
+        return this.windowSizeSubj.getValue();
+    }
 }

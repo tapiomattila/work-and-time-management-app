@@ -33,12 +33,17 @@
   <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
 </div>
 
-<!-- [ngClass]="{ 'testing': true }" -->
-<div class="circles">
-  <!-- <app-day-hours *ngFor="let info of infos" [hours]="info.hour" [days]="info.day"></app-day-hours>
-  <div class="circle-plus">+</div> -->
-  <app-day-hours *ngFor="let info of infos" [hoursVal]="info"></app-day-hours>
-</div>
+<ng-container *ngIf="(windowService.windowSizeObs$ | async).width <= 576; else wide">
+  <div class="circles">
+    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, true]" [index]="i"></app-day-hours>
+  </div>
+</ng-container>
+
+<ng-template #wide>
+  <div class="circles wide">
+    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, false]" [index]="i"></app-day-hours>
+  </div>
+</ng-template>
 
 <div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">

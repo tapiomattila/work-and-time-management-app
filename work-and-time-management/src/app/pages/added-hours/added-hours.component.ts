@@ -34,8 +34,6 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        console.log('added hours');
-
         const data$ = this.hoursQuery.selectAll().pipe(
             map(elements => {
                 return this.worksiteQuery.selectTableHours(elements);
@@ -50,7 +48,6 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sortData(data: TableHours[]) {
-        console.log('show data', data);
         return data.sort((a, b) => {
             // tslint:disable-next-line: no-angle-bracket-type-assertion
             return new Date(b.updateAt) as any - <any> new Date(a.updateAt);
@@ -59,7 +56,6 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         setTimeout(() => {
-            console.log('apply sorting');
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
         }, 1000);

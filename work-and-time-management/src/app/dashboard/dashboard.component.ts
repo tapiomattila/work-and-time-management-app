@@ -9,6 +9,7 @@ import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { AuthService } from '../auth/state/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HoursQuery } from '../auth/hours';
+import { WindowService } from '../services/window.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private afAuth: AngularFireAuth,
+    public windowService: WindowService,
     public navigationHandlerService: NavigationHandlerService,
   ) { }
 
@@ -78,12 +80,11 @@ export class DashboardComponent implements OnInit {
 
   setDaysArray() {
     const arr = [];
-    const day = moment();
+    const day = moment().startOf('week').add(1, 'days');
     let index = 0;
     while (index <= 5) {
       if (index === 0) {
-        const momNow = moment();
-        arr.push(momNow.toISOString());
+        arr.push(day.toISOString());
       }
 
       if (day.day() <= 6) {
