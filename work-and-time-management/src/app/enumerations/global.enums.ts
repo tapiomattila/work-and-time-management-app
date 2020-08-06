@@ -5,7 +5,8 @@ export enum RouterRoutesEnum {
     DASHBOARD = 'dashboard',
     WORKSITES = 'worksites',
     CURRENT_WORKSITE = 'current-worksite',
-    ADD_HOURS = 'add-hours'
+    ADD_HOURS = 'add-hours',
+    MANAGE_WORKSITES = 'manage-worksites'
 }
 
 export enum FireBaseCollectionsEnum {

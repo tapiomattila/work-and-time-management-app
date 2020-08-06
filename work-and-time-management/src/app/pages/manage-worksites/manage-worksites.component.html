@@ -1,0 +1,32 @@
+<div class="heading">
+    <div class="heading__back-arrow">
+        <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
+    </div>
+    <div class="heading__name">
+        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+    </div>
+    <div class="heading__settings-btn">
+        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+    </div>
+</div>
+
+<div class="header">
+    <p>Manage worksites</p>
+</div>
+
+<div class="container">
+    <ng-container *ngIf="worksites$ | async as worksites">
+        <div class="worksites">
+            <p class="worksites__header">Worksites</p>
+            <div class="worksites__item" *ngFor="let worksite of worksites; let i = index" (click)="edit(worksite, i)">
+                <p>
+                    {{ worksite.nickname }}
+                </p>
+                <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
+            </div>
+            <button type="button" (click)="addNew()">ADD NEW WORKSITE</button>
+        </div>
+    </ng-container>
+</div>
+
+<div class="footer"></div>

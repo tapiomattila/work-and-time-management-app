@@ -1,0 +1,125 @@
+// @import "~@angular/material/theming";
+
+:host {
+  //   width: 100%;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 2px repeat(6, 1fr) 2px;
+  grid-template-rows:
+    [heading-start] 45px
+    [heading-end header-start] 65px
+    [header-end container-start] 1fr
+    [container-end footer-start] 20px
+    [footer-end];
+  gap: 15px;
+  //   overflow: hidden;
+
+  min-height: calc(100vh - 20px);
+  //   min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.heading {
+  grid-row: heading-start / heading-end;
+  grid-column: 2 / span 6;
+
+  &__name {
+    font-size: 1.3rem;
+    padding: 2px;
+
+    @media only screen and (min-width: 321px) {
+      font-size: 1.6rem;
+      padding: 0;
+    }
+  }
+}
+.header {
+  grid-row: header-start / header-end;
+  grid-column: 2 / span 6;
+
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  text-indent: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.container {
+  grid-row: container-start / container-end;
+  grid-column: 2 / span 6;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.worksites {
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  padding-bottom: 25px;
+
+  &__header {
+    width: 100%;
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 21px;
+    line-height: 25px;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+
+  &__item {
+    padding: 5px 3px 10px 3px;
+    border-bottom: 1px solid var(--primary-color);
+    margin: 10px 0;
+
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    // text-indent: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    transition: 0.3s all;
+
+    &:hover {
+      // background-color: #edf9f8;
+      // padding: 5px 3px 10px 3px;
+      // border-radius: 5px;
+      box-shadow: 4px 0px 14px rgba(0,0,0,.1);
+      transform: translateY(1px);
+      cursor: pointer;
+    }
+
+    p {
+      display: flex;
+      align-items: center;
+    }
+
+  }
+
+  button {
+    margin-top: 35px;
+    width: 100%;
+    min-height: 50px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+    border: none;
+    font-family: 'Bitter', serif;
+    line-height: 22px;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+}
+
+svg {
+  height: 28px;
+  width: 28px;
+
+  path {
+    fill: #359a94;
+  }
+}

@@ -8,6 +8,7 @@ import { SplashComponent } from './pages/auth/splash/splash.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
+import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'current-worksite/:id', component: AddHoursComponent },
   { path: 'add-hours/:id', component: AddHoursComponent },
   { path: 'added-hours', component: AddedHoursComponent },
+  { path: 'manage-worksites', component: ManageWorksitesComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 
