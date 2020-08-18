@@ -83,6 +83,17 @@ export class WorksitesService {
             );
     }
 
+    fetchWorksiteById(id: string) {
+        return this.af.collection(FireBaseCollectionsEnum.WORKSITES).doc(id)
+            .snapshotChanges()
+            .pipe(
+                map(snap => {
+                    return { id: snap.payload.id, data: snap.payload.data() };
+                }),
+                first()
+            );
+    }
+
     resetStore() {
         this.worksitesStore.reset();
     }

@@ -21,6 +21,8 @@ const routes: Routes = [
   { path: 'add-hours/:id', component: AddHoursComponent },
   { path: 'added-hours', component: AddedHoursComponent },
   { path: 'manage-worksites', component: ManageWorksitesComponent },
+  { path: 'manage-worksites/edit/:id', component: ManageWorksitesComponent },
+  { path: 'manage-worksites/add', component: ManageWorksitesComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 

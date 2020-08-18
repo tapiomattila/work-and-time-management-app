@@ -17,10 +17,10 @@
 
 <ng-container *ngIf="openMenuModal">
   <div class="menu-modal">
-    <div class="menu-modal__close" (click)="closeModal()">
+    <div class="close__x" (click)="closeModal()">
       <div class="line1"></div>
       <div class="line2"></div>
-    </div>
+  </div>
     <div class="menu-modal__content">
       <ul>
         <li (click)="signout()">SignOut</li>

@@ -169,3 +169,72 @@ button {
     }
   }
 }
+
+//////////////////////////
+// MODAL
+.close__x {
+  // position: relative;
+  cursor: pointer;
+
+  .line1 {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background: var(--primary-color);
+    width: 30px;
+    height: 3px;
+    border-radius: 10px;
+    transform: rotate(45deg);
+  }
+
+  .line2 {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background: var(--primary-color);
+    width: 30px;
+    height: 3px;
+    border-radius: 10px;
+    transform: rotate(135deg);
+  }
+}
+
+.close__x:hover .line1,
+.close__x:hover .line2 {
+  background: #28726d;
+}
+
+///////////////////////////////
+// BUTTON
+
+button {
+  min-height: 35px;
+  // width: 35%;
+  width: auto;
+  background-color: var(--primary-color);
+  // color: var(--white-color);
+  // box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+  border: none;
+
+  cursor: pointer;
+}
+
+///////////////////////////////
+// INPUT PLACEHOLDERS
+
+::-webkit-input-placeholder {
+  color: #ccc;
+  font-size: 14px;
+}
+
+:-ms-input-placeholder {
+  color: #ccc;
+  font-size: 14px;
+}
+
+::placeholder {
+  color: #ccc;
+  font-size: 14px;
+}

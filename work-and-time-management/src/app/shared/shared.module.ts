@@ -5,6 +5,7 @@ import { DayHoursComponent } from './day-hours/day-hours.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditFormComponent } from './edit-fom/edit-form.component';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         BackArrowComponent,
         DayHoursComponent,
         DatePickerComponent,
+        EditFormComponent,
         MaterialModule,
         FormsModule,
         ReactiveFormsModule
@@ -24,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     declarations: [
         BackArrowComponent,
         DayHoursComponent,
-        DatePickerComponent
+        DatePickerComponent,
+        EditFormComponent
     ],
     providers: [],
 })
