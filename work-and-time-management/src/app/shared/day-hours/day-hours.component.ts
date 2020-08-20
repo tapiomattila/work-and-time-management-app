@@ -44,7 +44,6 @@ export class DayHoursComponent implements OnInit {
                 const isSame = current.isSame(iso, 'day');
 
                 if (isSame) {
-                    console.log('show active day', iso);
                     this.activeDay = true;
                 }
             }

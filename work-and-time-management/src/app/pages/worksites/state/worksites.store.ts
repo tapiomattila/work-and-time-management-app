@@ -2,7 +2,7 @@ import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/ak
 import { Worksite } from './worksites.model';
 import { Injectable } from '@angular/core';
 
-export interface WorksitesState extends EntityState<Worksite, ActiveState> { }
+export interface WorksitesState extends EntityState<Worksite, string> { }
 
 const initialState = {
     active: null

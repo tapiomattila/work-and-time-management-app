@@ -39,7 +39,14 @@
         <div class="editForm">
 
             <div class="header">
-                <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
+
+                <ng-container *ngIf="activeWorksite$ | async; else add">
+                    <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
+                </ng-container>
+                <ng-template #add>
+                    <h4 class="editForm__header" style="text-indent: 0;">Add</h4>
+                </ng-template>
+
                 <div class="close__x editForm__close" (click)="closeModal()">
                     <div class="line1"></div>
                     <div class="line2"></div>
@@ -52,19 +59,20 @@
                         <span>
                             Name
                         </span>
-                        <input type="text" placeholder="ex. Caribia" id="name" formControlName="name">
+                        <input type="text" placeholder="ex. Caribia" id="name" formControlName="nickname">
                     </label>
                     <label for="address">
                         <span>
                             Address
                         </span>
-                        <input type="text" placeholder="ex. Kongressikuja 1" id="address" formControlName="address">
+                        <input type="text" placeholder="ex. Kongressikuja 1" id="address"
+                            formControlName="streetAddress">
                     </label>
                     <label for="postal">
                         <span>
                             Postal code
                         </span>
-                        <input type="text" placeholder="ex. 20540" id="postal" formControlName="postalcode">
+                        <input type="text" placeholder="ex. 20540" id="postal" formControlName="postalCode">
                     </label>
                     <label for="city">
                         <span>
@@ -73,8 +81,22 @@
                         <input type="text" placeholder="ex. Turku" id="city" formControlName="city">
                     </label>
                 </div>
-                <button type="button" (click)="submit()"
-                    style="width: 45%; max-width: 230px; margin-top: 12px;" [disabled]="!worksiteForm.valid">EDIT</button>
+                <div style="display: flex; justify-content: space-between;">
+
+                    <ng-container *ngIf="activeWorksite$ | async; else addBtn">
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
+                            [ngClass]="{ 'disabled': !worksiteForm.valid}">EDIT</button>
+                        <button type="button" class="delete" (click)="deleteWorksite()">DELETE</button>
+                    </ng-container>
+                    <ng-template #addBtn>
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
+                            [ngClass]="{ 'disabled': !worksiteForm.valid}">ADD</button>
+                    </ng-template>
+                    <!-- 
+                    <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
+                        [ngClass]="{ 'disabled': !worksiteForm.valid}">EDIT</button>
+                    <button type="button" class="delete" (click)="deleteWorksite()">DELETE</button> -->
+                </div>
             </form>
 
         </div>

@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
-import { Observable, of, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserQuery } from 'src/app/auth/user';
 
 @Component({
     selector: 'app-manage-worksites',
@@ -17,6 +18,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     private modalSubj = new BehaviorSubject<boolean>(false);
     modalObs$ = this.modalSubj.asObservable();
 
+    activeWorksite$: Observable<Worksite>;
     worksites$: Observable<Worksite[]>;
     showModal$: Observable<boolean>;
     worksiteForm: FormGroup;
@@ -25,11 +27,13 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         private router: Router,
         private worksitesQuery: WorksitesQuery,
         private route: ActivatedRoute,
-        private worksiteService: WorksitesService
+        private worksiteService: WorksitesService,
+        private userQuery: UserQuery
     ) { }
 
     ngOnInit() {
-        this.worksites$ = this.worksitesQuery.selectAll();
+        this.worksites$ = this.worksitesQuery.selectAllLiveWorksites();
+        this.activeWorksite$ = this.worksitesQuery.selectActiveWorksite();
         this.initForm();
         this.routeParams();
         this.routeEvents();
@@ -38,10 +42,10 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     initForm() {
         this.worksiteForm = new FormGroup({
-            name: new FormControl('', Validators.required),
-            address: new FormControl('', Validators.required),
-            postalcode: new FormControl('', Validators.required),
-            city: new FormControl('', Validators.required),
+            nickname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+            streetAddress: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+            postalCode: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+            city: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
         });
     }
 
@@ -56,7 +60,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
             const worksite = this.worksitesQuery.getEntity(res.id);
 
             if (!worksite) {
-                console.log('FETCH BY ID');
                 const fetchByIdSubs = this.worksiteService.fetchWorksiteById(res.id).subscribe(res2 => {
 
                     if (!res2 || !res2.data) {
@@ -65,16 +68,16 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
                     }
 
                     const mapped = res2.data as Worksite;
-                    console.log('show worksite 2', mapped);
                     this.populateForm(mapped);
+                    this.worksiteService.setActive(res2.id);
 
                 });
                 this.subscriptions.push(fetchByIdSubs);
                 return;
             }
 
-            console.log('show worksite 1', worksite);
             this.populateForm(worksite);
+            this.worksiteService.setActive(worksite.id);
         });
         this.subscriptions.push(routeSubs);
     }
@@ -112,9 +115,9 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     }
 
     populateForm(worksite: Worksite) {
-        this.worksiteForm.controls.name.setValue(worksite.nickname);
-        this.worksiteForm.controls.address.setValue(worksite.streetAddress);
-        this.worksiteForm.controls.postalcode.setValue(worksite.postalCode);
+        this.worksiteForm.controls.nickname.setValue(worksite.nickname);
+        this.worksiteForm.controls.streetAddress.setValue(worksite.streetAddress);
+        this.worksiteForm.controls.postalCode.setValue(worksite.postalCode);
         this.worksiteForm.controls.city.setValue(worksite.city);
     }
 
@@ -123,6 +126,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     }
 
     edit(worksite: Worksite, index: number) {
+        this.worksiteService.setActive(worksite.id);
         this.router.navigate([`${RouterRoutesEnum.EDIT_WORKSITE}/${worksite.id}`]);
     }
 
@@ -131,11 +135,91 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     }
 
     submit() {
+        if (!this.worksiteForm.valid) {
+            return;
+        }
+
         const formValues = this.worksiteForm.value;
-        console.log('show form', formValues);
+        const activeWorksite = this.worksitesQuery.getActive() as Worksite;
+
+        if (activeWorksite) {
+            this.updateWorksite(formValues, activeWorksite);
+        } else {
+            this.postNewWorksite(formValues);
+        }
+    }
+
+    updateWorksite(formValues: Partial<Worksite>, activeWorksite: Worksite) {
+        const updatedWorksite: Partial<Worksite> = {
+            nickname: formValues.nickname,
+            updatedAt: new Date().toISOString(),
+            streetAddress: formValues.streetAddress,
+            postalCode: formValues.postalCode,
+            city: formValues.city,
+        };
+
+        this.worksiteService.putWorksite(activeWorksite.id, updatedWorksite).subscribe(() => {
+            this.worksiteService.updateWorksite(activeWorksite, updatedWorksite);
+
+            setTimeout(() => {
+                this.closeModal();
+            }, 250);
+        });
+    }
+
+    postNewWorksite(formValues: Partial<Worksite>) {
+
+        const user = this.userQuery.getValue();
+
+        const newWorksite: Partial<Worksite> = {
+            createdAt: new Date().toISOString(),
+            createdBy: user.id,
+            updatedAt: new Date().toISOString(),
+            updatedBy: user.id,
+            nickname: formValues.nickname,
+            streetAddress: formValues.streetAddress,
+            postalCode: formValues.postalCode,
+            city: formValues.city,
+            users: [user.id]
+        };
+
+        this.worksiteService.postNewWorksite(newWorksite).subscribe(worksite => {
+            this.worksiteService.addNewWorksiteToStore(newWorksite, worksite.id);
+
+            setTimeout(() => {
+                this.closeModal();
+            }, 250);
+        });
+
+    }
+
+    deleteWorksite() {
+        if (prompt('Type "remove" to delete worksite') === 'remove') {
+            const active = this.worksitesQuery.getActive() as Worksite;
+            const user = this.userQuery.getValue();
+
+            this.worksiteService.putWorksite(active.id,
+                {
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: user.id,
+                    deleted: true
+                })
+                .subscribe(() => {
+                    this.worksiteService.updateDeleted(active, {
+                        updatedAt: new Date().toISOString(),
+                        updatedBy: user.id,
+                        deleted: true
+                    });
+
+                    setTimeout(() => {
+                        this.closeModal();
+                    }, 250);
+                });
+        }
     }
 
     closeModal() {
+        this.worksiteService.setActive(null);
         this.modalSubj.next(false);
         this.router.navigate([`${RouterRoutesEnum.MANAGE_WORKSITES}`]);
     }

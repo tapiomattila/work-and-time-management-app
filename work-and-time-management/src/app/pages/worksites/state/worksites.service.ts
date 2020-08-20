@@ -4,6 +4,7 @@ import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -54,7 +55,7 @@ export class WorksitesService {
                 }),
                 map((worksites: Worksite[]) => {
                     return worksites.filter(el => {
-                        if (el.users.includes(userId)) {
+                        if (el.users && el.users.includes(userId)) {
                             return el;
                         }
                     });
@@ -92,6 +93,47 @@ export class WorksitesService {
                 }),
                 first()
             );
+    }
+
+    putWorksite(id: string, changes: Partial<Worksite>): Observable<any> {
+        return from(this.af.doc(`${FireBaseCollectionsEnum.WORKSITES}/${id}`).update(changes));
+    }
+
+    updateWorksite(worksite: Worksite, updated: Partial<Worksite>): void {
+        this.worksitesStore.update(worksite.id,
+            {
+                ...worksite,
+                updatedAt: updated.updatedAt,
+                nickname: updated.nickname,
+                streetAddress: updated.streetAddress,
+                postalCode: updated.postalCode,
+                city: updated.city,
+                deleted: updated.deleted
+            });
+    }
+
+    updateDeleted(worksite: Worksite, changes: {
+        updatedAt: string,
+        updatedBy: string,
+        deleted: true
+    }) {
+        this.worksitesStore.update(worksite.id,
+            {
+                ...worksite,
+                deleted: changes.deleted,
+                updatedAt: changes.updatedAt,
+                updatedBy: changes.updatedBy
+            });
+    }
+
+    postNewWorksite(worksite: Partial<Worksite>) {
+        return from(this.af.collection(`${FireBaseCollectionsEnum.WORKSITES}`).add(worksite));
+    }
+
+    addNewWorksiteToStore(worksite: Partial<Worksite>, id: string) {
+        worksite.id = id;
+        const newWorksite = createWorksite(worksite);
+        this.worksitesStore.add(newWorksite);
     }
 
     resetStore() {

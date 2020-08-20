@@ -40,6 +40,12 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
     });
   }
 
+  selectAllLiveWorksites() {
+    return this.selectAll({
+      filterBy: entity => !entity.deleted
+    });
+  }
+
   selectLastUpdatedWorksite() {
     return this.hoursQuery.hours$.pipe(
       map(hours => {

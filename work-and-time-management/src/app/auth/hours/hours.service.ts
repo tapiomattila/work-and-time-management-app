@@ -49,7 +49,6 @@ export class HoursService {
     }
 
     updateHours(hours: Hours, updated: Partial<Hours>) {
-        console.log('show updated', updated);
         this.hoursStore.update(hours.id,
             {
                 ...hours,
@@ -65,11 +64,7 @@ export class HoursService {
     }
 
     deleteHours(id: string) {
-
-        console.log('show id in delete', id);
         return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete());
-        // this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete().then(res => console.log('res after delte', res));
-        // this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).doc(id).delete().then(res => console.log('after delete', res));
     }
 
     resetStore() {
@@ -92,12 +87,11 @@ export class HoursService {
                     });
 
                 }),
-                // first()
+                first()
             );
     }
 
     putHours(id: string, changes: Partial<Hours>): Observable<any> {
-        console.log('in put hours', id, changes);
         return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).update(changes));
     }
 

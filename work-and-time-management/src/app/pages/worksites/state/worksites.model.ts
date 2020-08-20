@@ -1,13 +1,4 @@
 export interface Worksite {
-    // id: string;
-    // nickname: string;
-    // streetAddress: string;
-    // postalCode: number;
-    // city: string;
-    // createdAt: Date;
-    // updatedAt: Date;
-    // users: string[];
-
     city: string;
     createdAt: string;
     createdBy: string;
@@ -17,12 +8,14 @@ export interface Worksite {
     streetAddress: string;
     updatedAt: string;
     updatedBy: string;
+    deleted: boolean;
     users: string[];
 }
 
 export function createWorksite(worksite: Partial<Worksite>) {
     return {
         id: worksite.id,
+        deleted: false,
         ...worksite
     } as Worksite;
 }
