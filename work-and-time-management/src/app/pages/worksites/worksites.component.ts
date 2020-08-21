@@ -36,7 +36,7 @@ export class WorksitesComponent implements OnInit {
 
   ngOnInit() {
     this.momentDay = moment();
-    this.worksites$ = this.worksitesQuery.selectAll();
+    this.worksites$ = this.worksitesQuery.selectAllLiveWorksites();
   }
 
   locationBack() {

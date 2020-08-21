@@ -47,6 +47,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   }
 
   selectLastUpdatedWorksite() {
+    const stampsArr = [];
     return this.hoursQuery.hours$.pipe(
       map(hours => {
         return hours.map(el => {
@@ -59,8 +60,16 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
           };
         });
       }),
-      map(stamps => {
-        return stamps.sort((a, b) => b.millis - a.millis);
+      switchMap(stamps => {
+        stamps.forEach(el => stampsArr.push(el));
+        return this.selectAllLiveWorksites()
+          .pipe(
+            map(worksites => worksites.map(el => el.id))
+          );
+      }),
+      map(idList => {
+        const newArr = stampsArr.filter(el => idList.includes(el.worksiteId));
+        return newArr.sort((a, b) => b.millis - a.millis);
       }),
       map(list => list.length ? list[0].worksiteId : ''),
       switchMap(worksiteId => {
@@ -130,30 +139,30 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
 
   selectTableHours(hours: Hours[]) {
     return hours.map(el => {
-        const worksiteName = this.getWorksiteById(el.worksiteId);
-        const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
+      const worksiteName = this.getWorksiteById(el.worksiteId);
+      const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
 
-        const worktypeId = this.hoursQuery.getHourWorktype(el.id);
-        const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
-        const worktypeNameFound = worktype ? worktype.viewName : undefined;
+      const worktypeId = this.hoursQuery.getHourWorktype(el.id);
+      const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
+      const worktypeNameFound = worktype ? worktype.viewName : undefined;
 
-        const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
-        const hoursFormatted = formatHours(el.markedHours);
+      const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
+      const hoursFormatted = formatHours(el.markedHours);
 
-        return {
-            id: el.id,
-            createdAt: el.createdAt,
-            updateAt: el.updatedAt,
-            updateAtFormatted: formattedDate,
-            worksiteId: el.worksiteId,
-            worksiteName: worksiteNameFound,
-            worktypeId,
-            worktypeName: worktypeNameFound,
-            hours: el.markedHours,
-            hoursFormatted
-        };
+      return {
+        id: el.id,
+        createdAt: el.createdAt,
+        updateAt: el.updatedAt,
+        updateAtFormatted: formattedDate,
+        worksiteId: el.worksiteId,
+        worksiteName: worksiteNameFound,
+        worktypeId,
+        worktypeName: worktypeNameFound,
+        hours: el.markedHours,
+        hoursFormatted
+      };
     });
-}
+  }
 
 }
 
