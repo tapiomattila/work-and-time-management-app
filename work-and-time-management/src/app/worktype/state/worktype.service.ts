@@ -4,6 +4,7 @@ import { map, first, tap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -56,6 +57,56 @@ export class WorkTypeService {
                 }),
                 first()
             );
+    }
+
+    fetchWorktypeById(id: string) {
+        return this.af.collection(FireBaseCollectionsEnum.WORKTYPES).doc(id)
+            .snapshotChanges()
+            .pipe(
+                map(snap => {
+                    return { id: snap.payload.id, data: snap.payload.data() };
+                }),
+                first()
+            );
+    }
+
+    putWorktype(id: string, changes: Partial<WorkType>): Observable<any> {
+        return from(this.af.doc(`${FireBaseCollectionsEnum.WORKTYPES}/${id}`).update(changes));
+    }
+
+    updateWorktype(worktype: WorkType, updated: Partial<WorkType>): void {
+        this.worktypeStore.update(worktype.id,
+            {
+                ...worktype,
+                updatedAt: updated.updatedAt,
+                updatedBy: updated.updatedBy,
+                viewName: updated.viewName,
+                workType: updated.workType,
+            });
+    }
+
+    postNewWorktype(worktype: Partial<WorkType>) {
+        return from(this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`).add(worktype));
+    }
+
+    addNewWorktypeToStore(worktype: Partial<WorkType>, id: string) {
+        worktype.id = id;
+        const newworktype = createWorkType(worktype);
+        this.worktypeStore.add(newworktype);
+    }
+
+    updateDeleted(worktype: WorkType, changes: {
+        updatedAt: string,
+        updatedBy: string,
+        deleted: true
+    }) {
+        this.worktypeStore.update(worktype.id,
+            {
+                ...worktype,
+                deleted: changes.deleted,
+                updatedAt: changes.updatedAt,
+                updatedBy: changes.updatedBy
+            });
     }
 
     resetStore() {

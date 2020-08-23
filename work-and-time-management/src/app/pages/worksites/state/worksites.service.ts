@@ -60,7 +60,7 @@ export class WorksitesService {
                         }
                     });
                 }),
-                // first()
+                first()
             );
     }
 

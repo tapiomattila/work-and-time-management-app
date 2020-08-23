@@ -23,9 +23,15 @@ export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
 
     selectActiveWorktype() {
         return this.selectActiveId()
-          .pipe(
-            switchMap(id => id ? this.selectEntity(id) : of(null))
-          );
-      }
+            .pipe(
+                switchMap(id => id ? this.selectEntity(id) : of(null))
+            );
+    }
+
+    selectAllLiveWorktypes() {
+        return this.selectAll({
+            filterBy: entity => !entity.deleted
+        });
+    }
 
 }

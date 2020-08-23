@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
+import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -21,8 +22,11 @@ const routes: Routes = [
   { path: 'add-hours/:id', component: AddHoursComponent },
   { path: 'added-hours', component: AddedHoursComponent },
   { path: 'manage-worksites', component: ManageWorksitesComponent },
-  { path: 'manage-worksites/edit/:id', component: ManageWorksitesComponent },
   { path: 'manage-worksites/add', component: ManageWorksitesComponent },
+  { path: 'manage-worksites/edit/:id', component: ManageWorksitesComponent },
+  { path: 'manage-worktypes', component: ManageWorktypesComponent },
+  { path: 'manage-worktypes/add', component: ManageWorktypesComponent },
+  { path: 'manage-worktypes/edit/:id', component: ManageWorktypesComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 

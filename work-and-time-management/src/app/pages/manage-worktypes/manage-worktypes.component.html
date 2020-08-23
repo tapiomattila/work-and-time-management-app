@@ -1,0 +1,83 @@
+<div class="heading">
+    <div class="heading__back-arrow">
+        <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
+    </div>
+    <div class="heading__name">
+        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+    </div>
+    <div class="heading__settings-btn">
+        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+    </div>
+</div>
+
+<div class="header">
+    <p>Manage worktypes</p>
+</div>
+
+<div class="container">
+    <ng-container *ngIf="worktypes$ | async as worktypes">
+        <div class="worksites">
+            <p class="worksites__header">Worktypes</p>
+            <div class="worksites__items">
+                <div class="worksites__item" *ngFor="let worktype of worktypes; let i = index"
+                    (click)="edit(worktype, i)">
+                    <p>
+                        {{ worktype.viewName }}
+                    </p>
+                    <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <button type="button" (click)="addNew()">ADD NEW WORKTYPE</button>
+</div>
+
+<app-edit-form>
+
+    <div class="blur" [ngClass]="{ 'active': modalObs$ | async }" (click)="closeModal()"></div>
+    <ng-container *ngIf="modalObs$ | async">
+        <div class="editForm">
+
+            <div class="header">
+
+                <ng-container *ngIf="activeWorksite$ | async; else add">
+                    <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
+                </ng-container>
+                <ng-template #add>
+                    <h4 class="editForm__header" style="text-indent: 0;">Add</h4>
+                </ng-template>
+
+                <div class="close__x editForm__close" (click)="closeModal()">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                </div>
+            </div>
+
+            <form class="form" [formGroup]="worktypeForm">
+                <div class="form__inputs">
+                    <label for="name">
+                        <span>
+                            Name
+                        </span>
+                        <input type="text" placeholder="ex. Normal man hours" id="name" formControlName="viewName">
+                    </label>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+
+                    <ng-container *ngIf="activeWorktype$ | async; else addBtn">
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
+                            [ngClass]="{ 'disabled': !worktypeForm.valid}">EDIT</button>
+                        <button type="button" class="delete" (click)="deleteWorktype()">DELETE</button>
+                    </ng-container>
+                    <ng-template #addBtn>
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
+                            [ngClass]="{ 'disabled': !worktypeForm.valid}">ADD</button>
+                    </ng-template>
+                </div>
+            </form>
+
+        </div>
+    </ng-container>
+</app-edit-form>
+
+<div class="footer"></div>

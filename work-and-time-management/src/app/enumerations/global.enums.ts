@@ -9,6 +9,9 @@ export enum RouterRoutesEnum {
     MANAGE_WORKSITES = 'manage-worksites',
     EDIT_WORKSITE = 'manage-worksites/edit',
     ADD_WORKSITE = 'manage-worksites/add',
+    MANAGE_WORKTYPES = 'manage-worktypes',
+    EDIT_WORKTYPE = 'manage-worktypes/edit',
+    ADD_WORKTYPE = 'manage-worktypes/add',
 }
 
 export enum FireBaseCollectionsEnum {

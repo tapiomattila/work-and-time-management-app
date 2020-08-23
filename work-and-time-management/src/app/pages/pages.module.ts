@@ -13,6 +13,7 @@ import { HoursDateSelectionComponent } from './add-hours/form-elements/hours-dat
 import { HoursTableComponent } from './add-hours/form-elements/hours-table/hours-table.component';
 import { AddedHoursComponent } from './added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.component';
+import { ManageWorktypesComponent } from './manage-worktypes/manage-worktypes.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.co
         HoursSliderComponent,
         HoursDateSelectionComponent,
         HoursTableComponent,
-        ManageWorksitesComponent
+        ManageWorksitesComponent,
+        ManageWorktypesComponent
     ],
     providers: [],
 })

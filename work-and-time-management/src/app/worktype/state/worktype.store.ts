@@ -1,8 +1,8 @@
-import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { WorkType } from './worktype.model';
 
-export interface WorkTypeState extends EntityState<WorkType, ActiveState> { }
+export interface WorkTypeState extends EntityState<WorkType, string> { }
 
 const initialState = {
     active: null
