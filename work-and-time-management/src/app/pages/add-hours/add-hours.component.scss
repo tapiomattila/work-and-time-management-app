@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 
 :host {
   width: 100%;
@@ -16,31 +16,6 @@
     [footer-end];
   gap: 15px;
   overflow: hidden;
-}
-
-.heading {
-  grid-row: heading-start / heading-end;
-  grid-column: 2 / span 6;
-
-  &__name {
-    font-size: 1.3rem;
-    padding: 2px;
-
-    @media only screen and (min-width: 321px) {
-      font-size: 1.6rem;
-      padding: 0;
-    }
-  }
-}
-.header {
-  grid-row: header-start / header-end;
-  grid-column: 2 / span 6;
-
-  font-size: 2.1rem;
-  text-transform: uppercase;
-  text-indent: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
 }
 
 .address {
@@ -79,7 +54,7 @@
   grid-row: form-start / form-end;
   grid-column: 2 / span 6;
 
-    &__submit {
+  &__submit {
     min-height: 35px;
     width: 35%;
     background-color: var(--primary-color);

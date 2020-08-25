@@ -140,7 +140,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   selectTableHours(hours: Hours[]) {
     return hours.map(el => {
       const worksiteName = this.getWorksiteById(el.worksiteId);
-      const worksiteNameFound = worksiteName ? worksiteName[0].nickname : undefined;
+      const worksiteNameFound = worksiteName && worksiteName.length ? worksiteName[0].nickname : undefined;
 
       const worktypeId = this.hoursQuery.getHourWorktype(el.id);
       const worktype = this.worktypeQuery.getWorktypeById(worktypeId);

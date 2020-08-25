@@ -6,6 +6,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditFormComponent } from './edit-fom/edit-form.component';
+import { HeaderComponent } from './layout/header/header.component';
 
 @NgModule({
     imports: [
@@ -15,19 +16,22 @@ import { EditFormComponent } from './edit-fom/edit-form.component';
         ReactiveFormsModule
     ],
     exports: [
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+
         BackArrowComponent,
         DayHoursComponent,
         DatePickerComponent,
         EditFormComponent,
-        MaterialModule,
-        FormsModule,
-        ReactiveFormsModule
+        HeaderComponent
     ],
     declarations: [
         BackArrowComponent,
         DayHoursComponent,
         DatePickerComponent,
-        EditFormComponent
+        EditFormComponent,
+        HeaderComponent
     ],
     providers: [],
 })

@@ -17,9 +17,6 @@ import { Subscription } from 'rxjs';
 export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
-    // hours$: Observable<object[]>;
-    // hours: object[];
-
     displayedColumns: string[] = ['updateAt', 'worksiteName', 'worktypeName', 'hoursFormatted'];
     dataSource;
 

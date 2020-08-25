@@ -1,18 +1,4 @@
-<div class="heading">
-    <div class="heading__back-arrow">
-        <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
-    </div>
-    <div class="heading__name">
-        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
-    </div>
-    <div class="heading__settings-btn">
-        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
-    </div>
-</div>
-
-<div class="header">
-    <p>Added Hours</p>
-</div>
+<app-header [title]="'Added Hours'"></app-header>
 
 <mat-form-field class="table-filter">
     <input type="text" matInput (keyup)="doFilter($event.target.value)" placeholder="Filter result">

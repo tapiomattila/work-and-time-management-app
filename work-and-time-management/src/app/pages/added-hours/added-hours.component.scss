@@ -20,29 +20,6 @@
   box-sizing: border-box;
 }
 
-.heading {
-  grid-row: heading-start / heading-end;
-  grid-column: 2 / span 6;
-
-  &__name {
-    font-size: 1.3rem;
-    padding: 2px;
-
-    @media only screen and (min-width: 321px) {
-      font-size: 1.6rem;
-      padding: 0;
-    }
-  }
-}
-.header {
-  grid-row: header-start / header-end;
-  grid-column: 2 / span 6;
-
-  font-size: 2.1rem;
-  text-transform: uppercase;
-  text-indent: 10px;
-}
-
 .table-filter {
   grid-row: filter-start / filter-end;
   grid-column: 2 / span 6;

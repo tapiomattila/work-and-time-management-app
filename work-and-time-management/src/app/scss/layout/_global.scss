@@ -238,3 +238,10 @@ button {
   color: #ccc;
   font-size: 14px;
 }
+
+////////////////////
+// GRID
+app-header {
+  grid-row: heading-start / header-end;
+  grid-column: 2 / span 6;
+}

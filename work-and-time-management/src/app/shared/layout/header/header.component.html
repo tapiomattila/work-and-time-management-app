@@ -1,0 +1,15 @@
+<div class="heading">
+    <div class="heading__back-arrow">
+        <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
+    </div>
+    <div class="heading__name">
+        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+    </div>
+    <div class="heading__settings-btn">
+        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+    </div>
+</div>
+
+<div class="header">
+    <p *ngIf="title">{{ title }}</p>
+</div>
