@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WorkTypeQuery, WorkType, WorkTypeService } from 'src/app/worktype/state';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserQuery } from 'src/app/auth/user';
+import { ManageService } from '../manage,service';
 
 @Component({
   selector: 'app-manage-worktypes',
   templateUrl: './manage-worktypes.component.html',
   styleUrls: ['./manage-worktypes.component.scss']
 })
-export class ManageWorktypesComponent implements OnInit {
+export class ManageWorktypesComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
-
-  private modalSubj = new BehaviorSubject<boolean>(false);
-  modalObs$ = this.modalSubj.asObservable();
 
   activeWorktype$: Observable<WorkType>;
   worktypes$: Observable<WorkType[]>;
@@ -28,7 +26,8 @@ export class ManageWorktypesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private worktypeService: WorkTypeService,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public manageService: ManageService
   ) { }
 
   ngOnInit() {
@@ -36,8 +35,8 @@ export class ManageWorktypesComponent implements OnInit {
     this.activeWorktype$ = this.worktypeQuery.selectActiveWorktype();
     this.initForm();
     this.routeParams();
-    this.routeEvents();
-    this.modalControl();
+    this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKTYPE);
+    this.manageService.modalControl(this.route);
   }
 
   initForm() {
@@ -53,7 +52,7 @@ export class ManageWorktypesComponent implements OnInit {
         return;
       }
 
-      this.modalSubj.next(true);
+      this.manageService.setModal(true);
       const worktype = this.worktypeQuery.getEntity(res.id);
 
       if (!worktype) {
@@ -79,38 +78,6 @@ export class ManageWorktypesComponent implements OnInit {
       }
     });
     this.subscriptions.push(routeSubs);
-  }
-
-  routeEvents() {
-    const routerEventSubs = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        if (event.url.includes(`/${RouterRoutesEnum.EDIT_WORKSITE}`)) {
-          this.modalSubj.next(true);
-        }
-
-        if (event.url === `/${RouterRoutesEnum.ADD_WORKSITE}`) {
-          this.modalSubj.next(true);
-        }
-      }
-    });
-    this.subscriptions.push(routerEventSubs);
-  }
-
-  modalControl() {
-    const modalSubs = this.modalObs$.subscribe(res => {
-      if (!res) {
-        const url = this.route.snapshot.url;
-        if (url) {
-
-          url.forEach(el => {
-            if (el && el.path === 'add') {
-              this.modalSubj.next(true);
-            }
-          });
-        }
-      }
-    });
-    this.subscriptions.push(modalSubs);
   }
 
   populateForm(worktype: WorkType) {
@@ -220,7 +187,12 @@ export class ManageWorktypesComponent implements OnInit {
 
   closeModal() {
     this.worktypeService.setActive(null);
-    this.modalSubj.next(false);
+    this.manageService.setModal(false);
     this.router.navigate([`${RouterRoutesEnum.MANAGE_WORKTYPES}`]);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(el => el.unsubscribe());
+    this.manageService.subscriptions.forEach(el => el.unsubscribe());
   }
 }

@@ -5,6 +5,7 @@ import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserQuery } from 'src/app/auth/user';
+import { ManageService } from '../manage,service';
 
 @Component({
     selector: 'app-manage-worksites',
@@ -13,10 +14,7 @@ import { UserQuery } from 'src/app/auth/user';
 })
 export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
-    subscriptions: Subscription[] = [];
-
-    private modalSubj = new BehaviorSubject<boolean>(false);
-    modalObs$ = this.modalSubj.asObservable();
+    private subscriptions: Subscription[] = [];
 
     activeWorksite$: Observable<Worksite>;
     worksites$: Observable<Worksite[]>;
@@ -28,7 +26,8 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         private worksitesQuery: WorksitesQuery,
         private route: ActivatedRoute,
         private worksiteService: WorksitesService,
-        private userQuery: UserQuery
+        private userQuery: UserQuery,
+        public manageService: ManageService
     ) { }
 
     ngOnInit() {
@@ -36,8 +35,10 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.activeWorksite$ = this.worksitesQuery.selectActiveWorksite();
         this.initForm();
         this.routeParams();
-        this.routeEvents();
-        this.modalControl();
+        this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKSITE);
+        this.manageService.modalControl(this.route);
+
+        this.manageService.modalObs$.subscribe(res => console.log('show modal obs', res));
     }
 
     initForm() {
@@ -56,7 +57,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            this.modalSubj.next(true);
+            this.manageService.setModal(true);
             const worksite = this.worksitesQuery.getEntity(res.id);
 
             if (!worksite) {
@@ -80,38 +81,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
             this.worksiteService.setActive(worksite.id);
         });
         this.subscriptions.push(routeSubs);
-    }
-
-    routeEvents() {
-        const routerEventSubs = this.router.events.subscribe(event => {
-            if (event instanceof NavigationStart) {
-                if (event.url.includes(`/${RouterRoutesEnum.EDIT_WORKSITE}`)) {
-                    this.modalSubj.next(true);
-                }
-
-                if (event.url === `/${RouterRoutesEnum.ADD_WORKSITE}`) {
-                    this.modalSubj.next(true);
-                }
-            }
-        });
-        this.subscriptions.push(routerEventSubs);
-    }
-
-    modalControl() {
-        const modalSubs = this.modalObs$.subscribe(res => {
-            if (!res) {
-                const url = this.route.snapshot.url;
-                if (url) {
-
-                    url.forEach(el => {
-                        if (el && el.path === 'add') {
-                            this.modalSubj.next(true);
-                        }
-                    });
-                }
-            }
-        });
-        this.subscriptions.push(modalSubs);
     }
 
     populateForm(worksite: Worksite) {
@@ -220,11 +189,12 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     closeModal() {
         this.worksiteService.setActive(null);
-        this.modalSubj.next(false);
+        this.manageService.setModal(false);
         this.router.navigate([`${RouterRoutesEnum.MANAGE_WORKSITES}`]);
     }
 
     ngOnDestroy() {
         this.subscriptions.forEach(el => el.unsubscribe());
+        this.manageService.subscriptions.forEach(el => el.unsubscribe());
     }
 }

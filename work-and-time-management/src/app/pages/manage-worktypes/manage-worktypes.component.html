@@ -20,8 +20,8 @@
 
 <app-edit-form>
 
-    <div class="blur" [ngClass]="{ 'active': modalObs$ | async }" (click)="closeModal()"></div>
-    <ng-container *ngIf="modalObs$ | async">
+    <div class="blur" [ngClass]="{ 'active': manageService.modalObs$ | async }" (click)="closeModal()"></div>
+    <ng-container *ngIf="manageService.modalObs$ | async">
         <div class="editForm">
 
             <div class="header">
