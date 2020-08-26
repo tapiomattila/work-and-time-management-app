@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { fadeInEnterTrigger } from './animations/animations';
+import { fadeInEnterWithDelayTrigger } from './animations/animations';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { User, UserQuery } from './auth/user';
@@ -8,19 +8,19 @@ import { WorksitesService } from './pages/worksites/state';
 import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
 import { WorkTypeService } from './worktype/state';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    fadeInEnterTrigger
+    fadeInEnterWithDelayTrigger
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
 
   firebaseAuthSubs: Subscription;
-
   user$: Observable<User>;
 
   @HostListener('window:resize', ['$event'])
@@ -37,23 +37,25 @@ export class AppComponent implements OnInit, OnDestroy {
     private authQuery: AuthQuery,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService,
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.user$ = this.userQuery.user$;
 
     this.authQuery.select()
-      .subscribe((auth: Auth) => {
-        if (auth && auth.id !== undefined) {
-          this.worksiteService.setWorksiteStore(auth.id).subscribe();
-          this.worktypeService.setWorkTypeStore().subscribe();
-          this.hoursService.setUserHours(auth.id).subscribe();
-        } else {
-          this.worksiteService.resetStore();
-          this.hoursService.resetStore();
-        }
-      });
+      .pipe(
+        tap((auth: Auth) => {
+          if (auth && auth.id !== undefined) {
+            this.worksiteService.setWorksiteStore(auth.id).subscribe();
+            this.worktypeService.setWorkTypeStore().subscribe();
+            this.hoursService.setUserHours(auth.id).subscribe();
+          } else {
+            this.worksiteService.resetStore();
+            this.hoursService.resetStore();
+          }
+        })
+      ).subscribe();
   }
 
   ngOnDestroy() {

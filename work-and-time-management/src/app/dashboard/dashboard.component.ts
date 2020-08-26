@@ -10,11 +10,16 @@ import { AuthService } from '../auth/state/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HoursQuery } from '../auth/hours';
 import { WindowService } from '../services/window.service';
+import { fadeInEnterTrigger, fadeInOutTrigger } from '../animations/animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+      fadeInEnterTrigger,
+      fadeInOutTrigger
+  ]
 })
 export class DashboardComponent implements OnInit {
 

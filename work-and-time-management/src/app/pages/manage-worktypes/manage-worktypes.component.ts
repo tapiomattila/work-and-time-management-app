@@ -1,16 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WorkTypeQuery, WorkType, WorkTypeService } from 'src/app/worktype/state';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserQuery } from 'src/app/auth/user';
 import { ManageService } from '../manage,service';
+import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
   selector: 'app-manage-worktypes',
   templateUrl: './manage-worktypes.component.html',
-  styleUrls: ['./manage-worktypes.component.scss']
+  styleUrls: ['./manage-worktypes.component.scss'],
+  animations: [
+    fadeInEnterTrigger
+  ]
 })
 export class ManageWorktypesComponent implements OnInit, OnDestroy {
 

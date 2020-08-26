@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ui: firebaseui.auth.AuthUI;
 
+    loader = false;
+
     constructor(
         private afAuth: AngularFireAuth,
         private router: Router,
@@ -22,6 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        console.log('login init');
+
         const uiConfig = {
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -36,6 +40,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     onLoginSuccessfull(result) {
+        console.log('show in login success');
+        this.loader = false;
         this.ngZone.run(() => this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]));
     }
 

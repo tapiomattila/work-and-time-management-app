@@ -1,20 +1,6 @@
-<div class="heading">
-  <div class="heading__back-arrow">
-    <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
-  </div>
-  <div class="heading__name">
-    <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
-  </div>
-  <div class="heading__settings-btn">
-    <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
-  </div>
-</div>
+<app-header [title]="'Worksites'" [momentDay]="momentDay" @fadeInEnter></app-header>
 
-<div class="header">
-  <p>Worksites</p>
-</div>
-
-<div class="cards">
+<div class="cards" @fadeInEnter>
   <ng-container *ngIf="worksites$ | async as worksites">
     <app-card *ngFor="let worksite of worksites" [name]="worksite.nickname" [worksite]="worksite" (click)="navigate('add-hours', worksite.id)"></app-card>
   </ng-container>

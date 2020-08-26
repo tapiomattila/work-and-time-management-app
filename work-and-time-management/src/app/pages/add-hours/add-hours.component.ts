@@ -10,6 +10,7 @@ import { map, distinctUntilChanged, delay } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
 import { formatHours } from 'src/app/helpers/helper-functions';
+import { fadeInEnterTrigger, fadeInOutTrigger } from 'src/app/animations/animations';
 
 interface FormData {
     date: Date;
@@ -21,7 +22,10 @@ interface FormData {
 @Component({
     selector: 'app-add-hours',
     templateUrl: './add-hours.component.html',
-    styleUrls: ['./add-hours.component.scss']
+    styleUrls: ['./add-hours.component.scss'],
+    animations: [
+        fadeInOutTrigger
+    ]
 })
 export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     subscriptions: Subscription[] = [];
@@ -42,6 +46,8 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dataForm: FormGroup;
     momentDay: moment.Moment;
+
+    loader = true;
 
     constructor(
         private worksiteQuery: WorksitesQuery,

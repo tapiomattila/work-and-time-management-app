@@ -2,27 +2,40 @@
   width: 100%;
   padding-top: 20px;
   display: grid;
+  // grid-template-columns: 2px repeat(6, 1fr) 2px;
+  // grid-template-rows: 45px 65px min-content 1fr;
+
   grid-template-columns: 2px repeat(6, 1fr) 2px;
-  grid-template-rows: 45px 65px min-content 1fr;
+  grid-template-rows:
+    [heading-start] 45px
+    [heading-end header-start] 65px
+    [header-end container-start] 1fr
+    [container-end];
+  gap: 15px;
   gap: 15px;
 }
 
-.heading {
-  grid-column: 2 / span 6;
+// .heading {
+//   grid-column: 2 / span 6;
 
-  &__name {
-    font-size: 1.6rem;
-  }
-}
+//   &__name {
+//     font-size: 1.6rem;
+//   }
+// }
 
-.header {
-  grid-column: 2 / span 6;
-  font-size: 2.1rem;
-  text-transform: uppercase;
-  text-indent: 10px;
-}
+// .header {
+//   grid-column: 2 / span 6;
+//   font-size: 2.1rem;
+//   text-transform: uppercase;
+//   text-indent: 10px;
+// }
+
+// app-header {
+//   grid-column: 2 / span 6;
+// }
 
 .cards {
+  grid-row: container-start / container-end;
   grid-column: 2 / span 6;
   display: grid;
   gap: 10px;

@@ -5,7 +5,7 @@ export const fadeInEnterTrigger = trigger('fadeInEnter', [
         style({
             opacity: 0
         }),
-        animate(900, style({
+        animate('900ms ease-in', style({
             opacity: 1
         }))
     ])
@@ -34,6 +34,22 @@ export const fadeInOutDelayTrigger = trigger('fadeInOutDelay', [
             opacity: 0
         }),
         animate(3000)
+    ]),
+]);
+
+
+export const fadeInOutTrigger = trigger('fadeInOut', [
+    transition(':enter', [
+        style({
+            opacity: 0
+        }),
+        animate('450ms ease-in')
+    ]),
+    transition(':leave', [
+        style({
+            opacity: 0
+        }),
+        animate('450ms ease-in')
     ]),
 ]);
 

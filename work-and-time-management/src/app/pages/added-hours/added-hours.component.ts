@@ -8,11 +8,15 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
+import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
     selector: 'app-added-hours',
     templateUrl: './added-hours.component.html',
-    styleUrls: ['./added-hours.component.scss']
+    styleUrls: ['./added-hours.component.scss'],
+    animations: [
+        fadeInEnterTrigger
+    ]
 })
 export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 

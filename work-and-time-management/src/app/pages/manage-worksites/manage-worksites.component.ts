@@ -1,16 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, NavigationStart, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserQuery } from 'src/app/auth/user';
 import { ManageService } from '../manage,service';
+import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
     selector: 'app-manage-worksites',
     templateUrl: './manage-worksites.component.html',
-    styleUrls: ['./manage-worksites.component.scss']
+    styleUrls: ['./manage-worksites.component.scss'],
+    animations: [
+        fadeInEnterTrigger
+    ]
 })
 export class ManageWorksitesComponent implements OnInit, OnDestroy {
 

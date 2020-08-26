@@ -7,6 +7,7 @@ import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditFormComponent } from './edit-fom/edit-form.component';
 import { HeaderComponent } from './layout/header/header.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
     imports: [
@@ -24,14 +25,16 @@ import { HeaderComponent } from './layout/header/header.component';
         DayHoursComponent,
         DatePickerComponent,
         EditFormComponent,
-        HeaderComponent
+        HeaderComponent,
+        LoaderComponent
     ],
     declarations: [
         BackArrowComponent,
         DayHoursComponent,
         DatePickerComponent,
         EditFormComponent,
-        HeaderComponent
+        HeaderComponent,
+        LoaderComponent
     ],
     providers: [],
 })

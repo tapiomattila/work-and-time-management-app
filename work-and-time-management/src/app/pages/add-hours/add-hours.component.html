@@ -1,21 +1,21 @@
-<app-header [title]="'Add Hours'" [momentDay]="momentDay"></app-header>
-
+<app-header [title]="'Add Hours'" [momentDay]="momentDay" @fadeInOut></app-header>
+ 
 <ng-container *ngIf="(worksite$ | async) as worksite">
-  <div class="address">
+  <div class="address" @fadeInOut>
     <p>{{ worksite.nickname }}</p>
     <p><span>{{ worksite.streetAddress }}, </span> <span>{{ worksite.postalCode }}
       </span><span>{{ worksite.city }}</span></p>
   </div>
 </ng-container>
 
-<div class="marked-hours">
+<div class="marked-hours" @fadeInOut>
   <h4>Total marked hours for the day: </h4>
   <ng-container *ngIf="dayHours$ | async as hours">
     <span class="marked-hours__hours">{{ hours }}</span>
   </ng-container>
 </div>
 
-<form class="form" [formGroup]="dataForm">
+<form class="form" [formGroup]="dataForm" @fadeInOut>
 
   <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)">
   </app-hours-date-selection>
@@ -45,7 +45,7 @@
   </div>
 </form>
 
-<div class="table-container">
+<div class="table-container" @fadeInOut>
   <app-hours-table [tableHours]="dayTableHours$ | async" (hoursSelection)="getHoursSelectionFromTable($event)"
   [changeIndex]="setTableIndex">
   </app-hours-table>
