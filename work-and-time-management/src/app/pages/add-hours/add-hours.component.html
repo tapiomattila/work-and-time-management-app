@@ -1,4 +1,4 @@
-<app-header [title]="'Add Hours'" [momentDay]="momentDay" @fadeInOut></app-header>
+<app-header [title]="'Add Hours'" [momentDay]="momentDay"></app-header>
  
 <ng-container *ngIf="(worksite$ | async) as worksite">
   <div class="address" @fadeInOut>
@@ -8,16 +8,18 @@
   </div>
 </ng-container>
 
-<div class="marked-hours" @fadeInOut>
+<div class="marked-hours">
   <h4>Total marked hours for the day: </h4>
   <ng-container *ngIf="dayHours$ | async as hours">
-    <span class="marked-hours__hours">{{ hours }}</span>
+    <ng-container *ngIf="hoursAddedMoment$ | async as hoursAdded">
+      <span [@hoursAddedState]="hoursAdded === 'added' ? 'addition' : 'noAddition'" class="marked-hours__hours">{{ hours }}</span>
+    </ng-container>
   </ng-container>
 </div>
 
-<form class="form" [formGroup]="dataForm" @fadeInOut>
+<form class="form" [formGroup]="dataForm">
 
-  <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)">
+  <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)" [tableContent]="dayTableHours$ | async">
   </app-hours-date-selection>
 
   <app-hours-dropdown *ngIf="showFormData" style="margin-top: 13px; width: 100%;" [parentForm]="dataForm"
@@ -34,18 +36,18 @@
     [sliderObsValue]="slider$ | async" [sliderValue]="slider$ | async">
   </app-hours-slider>
 
-  <div style="display: flex; justify-content: space-between;">
+  <div style="display: flex; justify-content: space-between; transition: 0.3s all;">
     <ng-container *ngIf="activeHours$ | async as active; else add">
-      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Edit</button>
-      <button (click)="remove()">Delete</button>
+      <button @fadeInSecondary class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Edit</button>
+      <button @fadeInSecondary class="form__remove" style="justify-self: end;" (click)="remove()">Delete</button>
     </ng-container>
     <ng-template #add>
-      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
+      <button @fadeInSecondary class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
     </ng-template>
   </div>
 </form>
 
-<div class="table-container" @fadeInOut>
+<div class="table-container">
   <app-hours-table [tableHours]="dayTableHours$ | async" (hoursSelection)="getHoursSelectionFromTable($event)"
   [changeIndex]="setTableIndex">
   </app-hours-table>

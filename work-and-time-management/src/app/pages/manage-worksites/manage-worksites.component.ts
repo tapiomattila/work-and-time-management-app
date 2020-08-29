@@ -41,8 +41,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.routeParams();
         this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKSITE);
         this.manageService.modalControl(this.route);
-
-        this.manageService.modalObs$.subscribe(res => console.log('show modal obs', res));
     }
 
     initForm() {

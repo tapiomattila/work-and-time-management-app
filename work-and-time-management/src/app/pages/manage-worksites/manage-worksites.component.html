@@ -1,6 +1,6 @@
-<app-header [title]="'Manage Worksites'" @fadeInEnter></app-header>
+<app-header [title]="'Manage Worksites'"></app-header>
 
-<div class="container" @fadeInEnter>
+<div class="container">
     <ng-container *ngIf="worksites$ | async as worksites">
         <div class="worksites">
             <p class="worksites__header">Worksites</p>
@@ -18,7 +18,7 @@
     <button type="button" (click)="addNew()">ADD NEW WORKSITE</button>
 </div>
 
-<app-edit-form @fadeInEnter>
+<app-edit-form>
 
     <div class="blur" [ngClass]="{ 'active': manageService.modalObs$ | async }" (click)="closeModal()"></div>
     <ng-container *ngIf="manageService.modalObs$ | async">

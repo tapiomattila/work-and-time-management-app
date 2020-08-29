@@ -1,10 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Hours } from 'src/app/auth/hours';
+import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
 @Component({
     selector: 'app-hours-table',
     templateUrl: './hours-table.component.html',
-    styleUrls: ['./hours-table.component.scss']
+    styleUrls: ['./hours-table.component.scss'],
+    animations: [
+        fadeInEnterTrigger
+    ]
 })
 export class HoursTableComponent implements OnInit {
 

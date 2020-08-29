@@ -1,6 +1,8 @@
-<app-header [title]="'Worksites'" [momentDay]="momentDay" @fadeInEnter></app-header>
+ <!-- @fadeInEnter -->
+<app-header [title]="'Worksites'" [momentDay]="momentDay"></app-header>
 
-<div class="cards" @fadeInEnter>
+ <!-- @fadeInEnter -->
+<div class="cards">
   <ng-container *ngIf="worksites$ | async as worksites">
     <app-card *ngFor="let worksite of worksites" [name]="worksite.nickname" [worksite]="worksite" (click)="navigate('add-hours', worksite.id)"></app-card>
   </ng-container>

@@ -9,13 +9,23 @@ import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
 import { WorkTypeService } from './worktype/state';
 import { tap } from 'rxjs/operators';
+import { RouterOutlet } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    fadeInEnterWithDelayTrigger
+    trigger('routeState', [
+      transition('* => *', [
+        style({
+          opacity: 0
+        }), animate('400ms 100ms ease-in', style({
+          opacity: 1
+        }))
+      ]),
+    ])
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -56,6 +66,14 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         })
       ).subscribe();
+  }
+
+  getAnimationData(outlet: RouterOutlet) {
+    const routeData = outlet.activatedRouteData['animation'];
+    if (!routeData) {
+      return 'rootPage';
+    }
+    return routeData['page'];
   }
 
   ngOnDestroy() {

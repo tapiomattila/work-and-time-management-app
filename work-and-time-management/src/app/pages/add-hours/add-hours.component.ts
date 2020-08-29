@@ -1,16 +1,17 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
-import { map, distinctUntilChanged, delay } from 'rxjs/operators';
+import { map, distinctUntilChanged, delay, tap } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
 import { formatHours } from 'src/app/helpers/helper-functions';
-import { fadeInEnterTrigger, fadeInOutTrigger } from 'src/app/animations/animations';
+import { fadeInOutTrigger, fadeInEnterTrigger, fadeInSecondaryTrigger } from 'src/app/animations/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface FormData {
     date: Date;
@@ -24,10 +25,21 @@ interface FormData {
     templateUrl: './add-hours.component.html',
     styleUrls: ['./add-hours.component.scss'],
     animations: [
-        fadeInOutTrigger
+        fadeInOutTrigger,
+        fadeInEnterTrigger,
+        fadeInSecondaryTrigger,
+        trigger('hoursAddedState', [
+            state('noAddition', style({
+            })),
+            state('addition', style({
+                // color: '#5FC45A',
+                transform: 'scale(1.12)'
+            })),
+            transition('noAddition <=> addition', animate('400ms 100ms ease-in'))
+        ])
     ]
 })
-export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AddHoursComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     setTableIndex;
     showFormData = true;
@@ -47,7 +59,8 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     dataForm: FormGroup;
     momentDay: moment.Moment;
 
-    loader = true;
+    private hoursAddedMomentSubj = new BehaviorSubject<string>('reset');
+    hoursAddedMoment$ = this.hoursAddedMomentSubj.asObservable();
 
     constructor(
         private worksiteQuery: WorksitesQuery,
@@ -94,14 +107,24 @@ export class AddHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         this.subscriptions.push(activeWorktypeSubs);
     }
 
-    ngAfterViewInit() { }
-
     selectionDayHours() {
+        let previousHours = 0;
         this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
             .pipe(
+                tap(res => {
+                    if (res > 0) {
+                        if (res !== previousHours) {
+                            this.hoursAddedMomentSubj.next('added');
+                            setTimeout(() => {
+                                this.hoursAddedMomentSubj.next('reset');
+                            }, 200);
+                        }
+                        previousHours = res;
+                    }
+                }),
                 map(el => {
                     return formatHours(el);
-                })
+                }),
             );
     }
 

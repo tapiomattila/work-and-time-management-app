@@ -1,10 +1,13 @@
-<app-header [title]="'Added Hours'" @fadeInEnter></app-header>
+ <!-- @fadeInEnter -->
+<app-header [title]="'Added Hours'"></app-header>
 
-<mat-form-field class="table-filter" @fadeInEnter>
+ <!-- @fadeInEnter -->
+<mat-form-field class="table-filter">
     <input type="text" matInput (keyup)="doFilter($event.target.value)" placeholder="Filter result">
 </mat-form-field>
 
-<div class="table-container" @fadeInEnter>
+ <!-- @fadeInEnter -->
+<div class="table-container">
   
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 

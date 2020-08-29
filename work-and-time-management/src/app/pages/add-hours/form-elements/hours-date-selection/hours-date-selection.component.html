@@ -9,5 +9,5 @@
         <span class="form__date--text">Date</span>
         <span class="form__date--arrow"></span>
     </button>
-    <button class="form__date--toggle-data" (click)="toggleFormData()">Toggle</button>
+    <button *ngIf="tableContentValues" @fadeInEnter class="form__date--toggle-data" (click)="toggleFormData()">Toggle</button>
 </div>

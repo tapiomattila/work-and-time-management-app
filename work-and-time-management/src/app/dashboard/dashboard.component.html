@@ -1,4 +1,4 @@
-<div class="heading" @fadeInOut>
+<div class="heading">
   <ng-container *ngIf="user$ | async as user">
     <div class="heading__profile-icon">
       <ng-container *ngIf="user.profilePictureUrl">
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<ng-container *ngIf="openMenuModal" @fadeInOut>
+<ng-container *ngIf="openMenuModal">
   <div class="menu-modal">
     <div class="close__x" (click)="closeModal()">
       <div class="line1"></div>
@@ -29,23 +29,23 @@
   </div>
 </ng-container>
 
-<div class="header" @fadeInOut>
+<div class="header">
   <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
 </div>
 
 <ng-container *ngIf="(windowService.windowSizeObs$ | async).width <= 576; else wide">
-  <div class="circles" @fadeInOut>
+  <div class="circles">
     <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, true]" [index]="i"></app-day-hours>
   </div>
 </ng-container>
 
 <ng-template #wide>
-  <div class="circles wide" @fadeInOut>
+  <div class="circles wide">
     <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, false]" [index]="i"></app-day-hours>
   </div>
 </ng-template>
 
-<div class="cards" @fadeInOut>
+<div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">
     <app-card (click)="navigate('add-hours', current.id)" [name]="current.nickname" [worksite]="current">
     </app-card>
