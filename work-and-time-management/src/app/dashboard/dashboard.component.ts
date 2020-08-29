@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationHandlerService } from '../services/navigation-handler.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User, UserQuery, UserService } from '../auth/user/';
+import { User, UserQuery } from '../auth/user/';
 import * as moment from 'moment';
 import { Worksite, WorksitesQuery } from '../pages/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
-import { AuthService } from '../auth/state/auth.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { HoursQuery } from '../auth/hours';
 import { WindowService } from '../services/window.service';
 import { fadeInEnterTrigger, fadeInOutTrigger } from '../animations/animations';
 
@@ -17,8 +14,8 @@ import { fadeInEnterTrigger, fadeInOutTrigger } from '../animations/animations';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   animations: [
-      fadeInEnterTrigger,
-      fadeInOutTrigger
+    fadeInEnterTrigger,
+    fadeInOutTrigger
   ]
 })
 export class DashboardComponent implements OnInit {
@@ -35,10 +32,6 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private userQuery: UserQuery,
     private worksiteQuery: WorksitesQuery,
-    private hoursQuery: HoursQuery,
-    private userService: UserService,
-    private authService: AuthService,
-    private afAuth: AngularFireAuth,
     public windowService: WindowService,
     public navigationHandlerService: NavigationHandlerService,
   ) { }
@@ -71,16 +64,8 @@ export class DashboardComponent implements OnInit {
     this.openMenuModal = true;
   }
 
-  closeModal() {
+  closedModal($event) {
     this.openMenuModal = false;
-  }
-
-  signout() {
-    this.openMenuModal = false;
-    this.userService.resetAllStores();
-    this.authService.signOut();
-    this.afAuth.auth.signOut();
-    this.router.navigate([RouterRoutesEnum.WELCOME]);
   }
 
   setDaysArray() {

@@ -1,3 +1,7 @@
+<ng-container *ngIf="openMenuModal">
+    <app-menu-modal [openMenuModal]="openMenuModal" (closed)="closedModal($event)"></app-menu-modal>
+</ng-container>
+
 <div class="heading">
     <div class="heading__back-arrow">
         <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
@@ -6,7 +10,7 @@
         <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
     </div>
     <div class="heading__settings-btn">
-        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn">
+        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn" (click)="openMenu()">
     </div>
 </div>
 

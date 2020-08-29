@@ -13,6 +13,8 @@ export class HeaderComponent implements OnInit {
   @Input() title: string;
   @Input() momentDay: moment.Moment;
 
+  openMenuModal = false;
+
   constructor(
     private router: Router
   ) { }
@@ -22,6 +24,14 @@ export class HeaderComponent implements OnInit {
 
   backArrowPressed() {
     this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+  }
+
+  openMenu() {
+    this.openMenuModal = true;
+  }
+
+  closedModal($event) {
+    this.openMenuModal = false;
   }
 
 }

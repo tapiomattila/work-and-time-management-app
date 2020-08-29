@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditFormComponent } from './edit-fom/edit-form.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoaderComponent } from './loader/loader.component';
+import { MenuModalComponent } from './menu-modal/menu-modal.component';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { LoaderComponent } from './loader/loader.component';
         DatePickerComponent,
         EditFormComponent,
         HeaderComponent,
-        LoaderComponent
+        LoaderComponent,
+        MenuModalComponent
     ],
     declarations: [
         BackArrowComponent,
@@ -34,7 +36,8 @@ import { LoaderComponent } from './loader/loader.component';
         DatePickerComponent,
         EditFormComponent,
         HeaderComponent,
-        LoaderComponent
+        LoaderComponent,
+        MenuModalComponent
     ],
     providers: [],
 })
