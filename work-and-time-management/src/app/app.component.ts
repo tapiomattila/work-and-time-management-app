@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
-import { User, UserQuery } from './auth/user';
+import { User, UserQuery, UserService } from './auth/user';
 import { WorksitesService } from './pages/worksites/state';
 import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private worktypeService: WorkTypeService,
     private hoursService: HoursService,
     private userQuery: UserQuery,
+    private userService: UserService,
     private authService: AuthService,
     private authQuery: AuthQuery,
     public navigationHandlerService: NavigationHandlerService,
@@ -52,6 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.user$ = this.userQuery.user$;
 
+    this.user$.subscribe(res => console.log('show user', res));
+
     this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
@@ -61,6 +64,17 @@ export class AppComponent implements OnInit, OnDestroy {
             this.worksiteService.setWorksiteStore(auth.id).subscribe();
             this.worktypeService.setWorkTypeStore().subscribe();
             this.hoursService.setUserHours(auth.id).subscribe();
+
+            this.userService.fetchUserList()
+              .subscribe(
+                (users: { id: string; isAdmin: boolean }[]) => {
+                  this.userService.isAdminManager(users, auth.id);
+                },
+                error => {
+                  console.log('Only admin user can fetch user list\n', error);
+                }
+              );
+
           } else {
             this.worksiteService.resetStore();
             this.hoursService.resetStore();

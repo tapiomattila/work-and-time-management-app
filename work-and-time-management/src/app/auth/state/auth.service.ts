@@ -22,6 +22,8 @@ export class AuthService {
             map(authenticated => {
                 const isAuth = !!authenticated;
 
+                console.log('authe id', authenticated);
+
                 if (isAuth) {
                     const authState: Auth = {
                         id: authenticated.uid,

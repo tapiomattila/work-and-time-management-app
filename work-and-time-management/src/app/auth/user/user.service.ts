@@ -42,6 +42,21 @@ export class UserService {
             );
     }
 
+    fetchUserList() {
+        return this.fetchAllUsers();
+    }
+
+    isAdminManager(users: { id: string; isAdmin: boolean }[], id: string) {
+        const isAdmin = users.find(el => el.id === id);
+        if (isAdmin) {
+            const user: Partial<User> = {
+                id,
+                isAdmin: true,
+            };
+            this.updateUser(user);
+        }
+    }
+
     resetStore() {
         this.userStore.reset();
     }
