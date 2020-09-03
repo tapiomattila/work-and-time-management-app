@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { Worksite, WorksitesQuery } from '../pages/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { WindowService } from '../services/window.service';
-import { fadeInEnterTrigger, fadeInOutTrigger } from '../animations/animations';
+import { fadeInEnterTrigger, fadeInEnterWithDelayTrigger, fadeInOutTrigger } from '../animations/animations';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,13 +15,13 @@ import { fadeInEnterTrigger, fadeInOutTrigger } from '../animations/animations';
   styleUrls: ['./dashboard.component.scss'],
   animations: [
     fadeInEnterTrigger,
+    fadeInEnterWithDelayTrigger,
     fadeInOutTrigger
   ]
 })
 export class DashboardComponent implements OnInit {
 
   openMenuModal = false;
-
   currentWorksite$: Observable<Worksite>;
 
   user$: Observable<User>;

@@ -1,6 +1,5 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { fadeInEnterWithDelayTrigger } from './animations/animations';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { User, UserQuery } from './auth/user';
@@ -56,7 +55,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
-          if (auth && auth.id !== undefined) {
+          console.log('show auth', auth);
+          if (auth && auth.id !== null) {
+            console.log('in tap auth found', auth);
             this.worksiteService.setWorksiteStore(auth.id).subscribe();
             this.worktypeService.setWorkTypeStore().subscribe();
             this.hoursService.setUserHours(auth.id).subscribe();
@@ -69,10 +70,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getAnimationData(outlet: RouterOutlet) {
+    // tslint:disable-next-line: no-string-literal
     const routeData = outlet.activatedRouteData['animation'];
     if (!routeData) {
       return 'rootPage';
     }
+    // tslint:disable-next-line: no-string-literal
     return routeData['page'];
   }
 

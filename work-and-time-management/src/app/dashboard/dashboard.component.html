@@ -37,7 +37,8 @@
 
 <div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">
-    <app-card (click)="navigate('add-hours', current.id)" [name]="current.nickname" [worksite]="current">
+    <app-card @fadeInEnterWithDelay (click)="navigate('add-hours', current.id)" [name]="current.nickname"
+      [worksite]="current">
     </app-card>
   </ng-container>
 
@@ -52,19 +53,25 @@
   </div>
 
   <!-- Manage worksites -->
-  <div class="card" (click)="navigate('manage-worksites')">
-    <app-card [name]="'Manage worksites'"></app-card>
-  </div>
+  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+    <div class="card" (click)="navigate('manage-worksites')">
+      <app-card [name]="'Manage worksites'"></app-card>
+    </div>
+  </ng-container>
 
-   <!-- Manage worktypes -->
-   <div class="card" (click)="navigate('manage-worktypes')">
-    <app-card [name]="'Manage worktypes'"></app-card>
-  </div>
+  <!-- Manage worktypes -->
+  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+    <div class="card" (click)="navigate('manage-worktypes')">
+      <app-card [name]="'Manage worktypes'"></app-card>
+    </div>
+  </ng-container>
 
   <!-- Manage users -->
-  <div class="card">
-    <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
-  </div>
+  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+    <div class="card">
+      <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+    </div>
+  </ng-container>
 
   <!-- Admin settings -->
   <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
@@ -72,8 +79,8 @@
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
   </ng-container>
-  <ng-template #noAdmin>
-  </ng-template>
+  <!-- <ng-template #noAdmin>
+  </ng-template> -->
 </div>
 
 <div class="footer"></div>

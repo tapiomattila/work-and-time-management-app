@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap } from 'rxjs/operators';
+import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
@@ -32,6 +32,7 @@ export class WorkTypeService {
         return this.fetchWorkTypes()
             .pipe(
                 tap(res => {
+                    console.log('fetch worktypes res', res);
                     if (res && res.length) {
                         this.setWorkTypes(res);
                     }
@@ -43,6 +44,7 @@ export class WorkTypeService {
         return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`)
             .snapshotChanges()
             .pipe(
+                delay(1000),
                 map(snaps => {
 
                     return snaps.map(snap => {

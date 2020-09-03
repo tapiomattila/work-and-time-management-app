@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WorksiteStore } from './worksites.store';
 import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap } from 'rxjs/operators';
+import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { Observable, from } from 'rxjs';
 
@@ -32,10 +32,12 @@ export class WorksitesService {
         return this.fetchUserWorksites(userId)
             .pipe(
                 tap(res => {
+                    console.log('show res in worksites', res);
                     if (res && res.length) {
                         this.setWorksites(res);
                     }
                 }),
+                first()
             );
     }
 
@@ -43,6 +45,7 @@ export class WorksitesService {
         return this.af.collection(`${FireBaseCollectionsEnum.WORKSITES}`)
             .snapshotChanges()
             .pipe(
+                delay(1000),
                 map(snaps => {
                     return snaps.map(snap => {
                         const id = snap.payload.doc.id;
@@ -68,6 +71,7 @@ export class WorksitesService {
         return this.af.collection(FireBaseCollectionsEnum.WORKSITES)
             .snapshotChanges()
             .pipe(
+                delay(1000),
                 map(snaps => {
 
                     return snaps.map(snap => {

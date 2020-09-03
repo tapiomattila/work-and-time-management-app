@@ -12,7 +12,7 @@ import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksi
 import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/welcome', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'welcome', component: SplashComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
