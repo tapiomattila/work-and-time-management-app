@@ -32,7 +32,7 @@ export class WorkTypeService {
         return this.fetchWorkTypes()
             .pipe(
                 tap(res => {
-                    console.log('fetch worktypes res', res);
+                    // console.log('fetch worktypes res', res);
                     if (res && res.length) {
                         this.setWorkTypes(res);
                     }

@@ -58,29 +58,34 @@
       <app-card [name]="'Manage worksites'"></app-card>
     </div>
   </ng-container>
+  <ng-template #noAdmin>
+    <ng-container *ngIf="(user$ | async).isManager">
+      <div class="card" (click)="navigate('manage-worksites')">
+        <app-card [name]="'Manage worksites'"></app-card>
+      </div>
+    </ng-container>
+  </ng-template>
 
   <!-- Manage worktypes -->
-  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('manage-worktypes')">
       <app-card [name]="'Manage worktypes'"></app-card>
     </div>
   </ng-container>
 
   <!-- Manage users -->
-  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card">
       <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
     </div>
   </ng-container>
 
   <!-- Admin settings -->
-  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
   </ng-container>
-  <!-- <ng-template #noAdmin>
-  </ng-template> -->
 </div>
 
 <div class="footer"></div>

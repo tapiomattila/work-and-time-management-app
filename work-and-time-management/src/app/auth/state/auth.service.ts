@@ -22,7 +22,7 @@ export class AuthService {
             map(authenticated => {
                 const isAuth = !!authenticated;
 
-                console.log('authe id', authenticated);
+                // console.log('authe id', authenticated);
 
                 if (isAuth) {
                     const authState: Auth = {
@@ -40,6 +40,7 @@ export class AuthService {
                         lastName,
                         displayName: authenticated.displayName,
                         isAdmin: false,
+                        isManager: false,
                         email: authenticated.email,
                         profilePictureUrl: authenticated.photoURL
                     };

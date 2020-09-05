@@ -29,8 +29,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  firebaseAuthSubs: Subscription;
+  firebaseSubs: Subscription[] = [];
+  storeSubs: Subscription[] = [];
   user$: Observable<User>;
+  handleRoles$: Observable<any[]>;
 
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -50,37 +52,42 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.firebaseAuthSubs = this.authService.firebaseAuthUpdate().subscribe();
+    const authSubs = this.authService.firebaseAuthUpdate().subscribe();
+    this.firebaseSubs.push(authSubs);
+
     this.user$ = this.userQuery.user$;
 
-    this.user$.subscribe(res => console.log('show user', res));
-
-    this.authQuery.select()
+    const storeUpdateSub = this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
-          console.log('show auth', auth);
           if (auth && auth.id !== null) {
-            console.log('in tap auth found', auth);
             this.worksiteService.setWorksiteStore(auth.id).subscribe();
             this.worktypeService.setWorkTypeStore().subscribe();
             this.hoursService.setUserHours(auth.id).subscribe();
-
-            this.userService.fetchUserList()
-              .subscribe(
-                (users: { id: string; isAdmin: boolean }[]) => {
-                  this.userService.isAdminManager(users, auth.id);
-                },
-                error => {
-                  console.log('Only admin user can fetch user list\n', error);
-                }
-              );
-
           } else {
             this.worksiteService.resetStore();
             this.hoursService.resetStore();
           }
-        })
+        }),
+        tap(auth => {
+          if (auth && auth.id !== null) {
+
+            this.handleRoles$ = this.userService.fetchAllRolesJoin();
+            this.handleRoles$.subscribe(res => {
+              if (res && res.length) {
+                res.forEach(el => {
+                  if (el.length) {
+                    this.userService.setRoles(el, auth.id);
+                  }
+                });
+              }
+            });
+
+          }
+        }),
       ).subscribe();
+
+    this.storeSubs.push(storeUpdateSub);
   }
 
   getAnimationData(outlet: RouterOutlet) {
@@ -94,8 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.firebaseAuthSubs !== undefined) {
-      this.firebaseAuthSubs.unsubscribe();
-    }
+    this.firebaseSubs.forEach(el => el.unsubscribe());
+    this.storeSubs.forEach(el => el.unsubscribe());
   }
 }

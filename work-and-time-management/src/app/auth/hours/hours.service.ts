@@ -32,7 +32,7 @@ export class HoursService {
         return this.fetchHours(userId)
             .pipe(
                 tap(hours => {
-                    console.log('show hours fetch', hours);
+                    // console.log('show hours fetch', hours);
                     if (hours && hours.length) {
                         this.setHours(hours);
                     }

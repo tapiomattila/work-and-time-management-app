@@ -32,7 +32,7 @@ export class WorksitesService {
         return this.fetchUserWorksites(userId)
             .pipe(
                 tap(res => {
-                    console.log('show res in worksites', res);
+                    // console.log('show res in worksites', res);
                     if (res && res.length) {
                         this.setWorksites(res);
                     }

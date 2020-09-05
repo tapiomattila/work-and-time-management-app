@@ -8,6 +8,7 @@ export function createInitialState(): User {
     firstName: null,
     lastName: null,
     isAdmin: false,
+    isManager: false,
     profilePictureUrl: null,
     email: null,
     displayName: null
