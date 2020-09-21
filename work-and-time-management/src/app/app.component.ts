@@ -45,13 +45,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private hoursService: HoursService,
     private userQuery: UserQuery,
     private userService: UserService,
-    private authService: AuthService,
     private authQuery: AuthQuery,
+    public authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService,
   ) { }
 
   ngOnInit() {
+    this.authService.loader = true;
     const authSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.firebaseSubs.push(authSubs);
 
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
           if (auth && auth.id !== null) {
 
             this.handleRoles$ = this.userService.fetchAllRolesJoin();
-            this.handleRoles$.subscribe(res => {
+            const fetchRolesSubs = this.handleRoles$.subscribe(res => {
               if (res && res.length) {
                 res.forEach(el => {
                   if (el.length) {
@@ -83,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
               }
             });
 
+            this.firebaseSubs.push(fetchRolesSubs);
           }
         }),
       ).subscribe();

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthStore } from './auth.store';
 import { Auth, createAuth } from './auth.model';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { User } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class AuthService {
+
+    loader = false;
+
     constructor(
         private authStore: AuthStore,
         private afAuth: AngularFireAuth,
@@ -19,10 +22,15 @@ export class AuthService {
 
     firebaseAuthUpdate(): Observable<boolean> {
         return this.afAuth.authState.pipe(
+            tap(auth => {
+                console.log('show auth before auth', auth);
+                // this.userService.fetchUserById(auth.uid).subscribe(res => console.log('show tap res', res));
+                this.loader = false;
+            }),
             map(authenticated => {
                 const isAuth = !!authenticated;
 
-                // console.log('authe id', authenticated);
+                console.log('authe id', authenticated);
 
                 if (isAuth) {
                     const authState: Auth = {
@@ -51,7 +59,7 @@ export class AuthService {
                 } else {
                     return null;
                 }
-            })
+            }),
         );
     }
 

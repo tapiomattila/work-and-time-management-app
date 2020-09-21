@@ -1,7 +1,7 @@
 import { UserStore } from './user.store';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, delay, catchError } from 'rxjs/operators';
+import { map, first, delay, catchError, tap, switchMap } from 'rxjs/operators';
 import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { HoursService } from '../hours';

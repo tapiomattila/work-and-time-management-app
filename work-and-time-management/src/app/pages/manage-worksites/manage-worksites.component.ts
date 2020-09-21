@@ -4,7 +4,7 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserQuery } from 'src/app/auth/user';
+import { UserQuery, User } from 'src/app/auth/user';
 import { ManageService } from '../manage,service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
 
@@ -20,6 +20,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
+    user$: Observable<User>;
     activeWorksite$: Observable<Worksite>;
     worksites$: Observable<Worksite[]>;
     showModal$: Observable<boolean>;
@@ -41,13 +42,19 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.routeParams();
         this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKSITE);
         this.manageService.modalControl(this.route);
+        this.user$ = this.userQuery.select();
     }
 
     initForm() {
         this.worksiteForm = new FormGroup({
             nickname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
             streetAddress: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-            postalCode: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+            postalCode: new FormControl('', [
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(20),
+                Validators.pattern('^[0-9]*$')
+            ]),
             city: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
         });
     }
@@ -61,28 +68,32 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
             this.manageService.setModal(true);
             const worksite = this.worksitesQuery.getEntity(res.id);
-
-            if (!worksite) {
-                const fetchByIdSubs = this.worksiteService.fetchWorksiteById(res.id).subscribe(res2 => {
-
-                    if (!res2 || !res2.data) {
-                        this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-                        return;
-                    }
-
-                    const mapped = res2.data as Worksite;
-                    this.populateForm(mapped);
-                    this.worksiteService.setActive(res2.id);
-
-                });
-                this.subscriptions.push(fetchByIdSubs);
-                return;
+            this.setupModal(worksite, res);
+            if (worksite) {
+                this.populateForm(worksite);
+                this.worksiteService.setActive(worksite.id);
             }
-
-            this.populateForm(worksite);
-            this.worksiteService.setActive(worksite.id);
         });
         this.subscriptions.push(routeSubs);
+    }
+
+    setupModal(worksite: Worksite, routeResponse: Params) {
+        if (!worksite) {
+            const fetchByIdSubs = this.worksiteService.fetchWorksiteById(routeResponse.id).subscribe(res2 => {
+
+                if (!res2 || !res2.data) {
+                    this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+                    return;
+                }
+
+                const mapped = res2.data as Worksite;
+                this.populateForm(mapped);
+                this.worksiteService.setActive(res2.id);
+
+            });
+            this.subscriptions.push(fetchByIdSubs);
+            return;
+        }
     }
 
     populateForm(worksite: Worksite) {

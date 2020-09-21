@@ -58,30 +58,32 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
 
       this.manageService.setModal(true);
       const worktype = this.worktypeQuery.getEntity(res.id);
-
-      if (!worktype) {
-        const fetchByIdSubs = this.worktypeService.fetchWorktypeById(res.id).subscribe(res2 => {
-
-          if (!res2 || !res2.data) {
-            this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-            return;
-          }
-
-          const mapped = res2.data as WorkType;
-          this.populateForm(mapped);
-          this.worktypeService.setActive(res2.id);
-
-        });
-        this.subscriptions.push(fetchByIdSubs);
-        return;
-      }
-
+      this.setupModal(worktype, res);
       if (worktype) {
         this.populateForm(worktype);
         this.worktypeService.setActive(worktype.id);
       }
     });
     this.subscriptions.push(routeSubs);
+  }
+
+  setupModal(worktype: WorkType, routeResponse: Params) {
+    if (!worktype) {
+      const fetchByIdSubs = this.worktypeService.fetchWorktypeById(routeResponse.id).subscribe(res2 => {
+
+        if (!res2 || !res2.data) {
+          this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+          return;
+        }
+
+        const mapped = res2.data as WorkType;
+        this.populateForm(mapped);
+        this.worktypeService.setActive(res2.id);
+
+      });
+      this.subscriptions.push(fetchByIdSubs);
+      return;
+    }
   }
 
   populateForm(worktype: WorkType) {
