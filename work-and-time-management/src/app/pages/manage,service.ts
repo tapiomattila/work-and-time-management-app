@@ -13,6 +13,9 @@ export class ManageService {
     private modalSubj = new BehaviorSubject<boolean>(false);
     modalObs$ = this.modalSubj.asObservable();
 
+    private genModalSubj = new BehaviorSubject<boolean>(false);
+    genModalObs$ = this.genModalSubj.asObservable();
+
     constructor(
         private route: ActivatedRoute,
         private router: Router
@@ -60,5 +63,9 @@ export class ManageService {
         service.setActive(null);
         this.modalSubj.next(false);
         this.router.navigate([`${routesEnum}`]);
+    }
+
+    setGeneralModal(value: boolean) {
+        this.genModalSubj.next(value);
     }
 }

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AuthStore } from './auth.store';
 import { Auth, createAuth } from './auth.model';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { User } from '../user/user.model';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -22,43 +22,56 @@ export class AuthService {
 
     firebaseAuthUpdate(): Observable<boolean> {
         return this.afAuth.authState.pipe(
-            tap(auth => {
-                console.log('show auth before auth', auth);
-                // this.userService.fetchUserById(auth.uid).subscribe(res => console.log('show tap res', res));
+            distinctUntilChanged(),
+            tap(authenticated => {
                 this.loader = false;
-            }),
-            map(authenticated => {
                 const isAuth = !!authenticated;
 
-                console.log('authe id', authenticated);
+                console.log('isAuth');
 
                 if (isAuth) {
-                    const authState: Auth = {
-                        id: authenticated.uid,
-                        isAuthenticated: isAuth
-                    };
-
                     const nameArr = authenticated.displayName.split(' ');
                     const firstName = nameArr[0] ? nameArr[0] : null;
                     const lastName = nameArr[1] ? nameArr[1] : null;
 
                     const user: User = {
-                        id: authenticated.uid,
+                        id: null,
                         firstName,
                         lastName,
                         displayName: authenticated.displayName,
                         isAdmin: false,
                         isManager: false,
                         email: authenticated.email,
-                        profilePictureUrl: authenticated.photoURL
+                        profilePictureUrl: authenticated.photoURL,
+                        _c: null
                     };
 
-                    this.updateAuthState(authState);
                     this.userService.updateUser(user);
-                    return isAuth;
-                } else {
-                    return null;
                 }
+            }),
+            switchMap((auth: any) => auth && auth.uid ? this.userService.fetchUserById(auth.uid) : of(null)),
+            map((user: Partial<User>) => {
+
+                if (user && user._c !== undefined) {
+
+                    const authState: Auth = {
+                        id: user.id,
+                        isAuthenticated: !!user
+                    };
+
+                    const userUpdate: Partial<User> = {
+                        id: user.id,
+                        isAdmin: user.isAdmin,
+                        isManager: user.isManager,
+                        _c: user._c
+                    };
+
+                    this.userService.updateUser(userUpdate);
+                    this.updateAuthState(authState);
+                    return authState.isAuthenticated;
+                }
+
+                return false;
             }),
         );
     }
@@ -68,6 +81,12 @@ export class AuthService {
     }
 
     signOut() {
+        this.userService.resetAllStores();
+        this.authStore.reset();
+        // this.afAuth.auth.signOut();
+    }
+
+    resetStore() {
         this.authStore.reset();
     }
 }

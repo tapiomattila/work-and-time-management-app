@@ -11,7 +11,8 @@ export function createInitialState(): User {
     isManager: false,
     profilePictureUrl: null,
     email: null,
-    displayName: null
+    displayName: null,
+    _c: null
   };
 }
 

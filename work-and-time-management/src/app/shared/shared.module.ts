@@ -9,13 +9,16 @@ import { EditFormComponent } from './edit-fom/edit-form.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoaderComponent } from './loader/loader.component';
 import { MenuModalComponent } from './menu-modal/menu-modal.component';
+import { GeneralModalComponent } from './general-modal/general-modal.component';
+import { DirectivesModule } from './directives/directives.module';
 
 @NgModule({
     imports: [
         CommonModule,
         MaterialModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DirectivesModule
     ],
     exports: [
         MaterialModule,
@@ -28,7 +31,8 @@ import { MenuModalComponent } from './menu-modal/menu-modal.component';
         EditFormComponent,
         HeaderComponent,
         LoaderComponent,
-        MenuModalComponent
+        MenuModalComponent,
+        GeneralModalComponent
     ],
     declarations: [
         BackArrowComponent,
@@ -37,7 +41,8 @@ import { MenuModalComponent } from './menu-modal/menu-modal.component';
         EditFormComponent,
         HeaderComponent,
         LoaderComponent,
-        MenuModalComponent
+        MenuModalComponent,
+        GeneralModalComponent,
     ],
     providers: [],
 })

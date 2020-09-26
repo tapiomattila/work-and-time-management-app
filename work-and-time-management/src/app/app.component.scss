@@ -8,7 +8,25 @@
   min-height: 100vh;
   box-sizing: border-box;
   max-width: 650px;
+}
 
-  // display: flex;
-  // justify-content: center;
+.register-modal-content {
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  grid-template-rows: 20px 1fr 40px 20px;
+  gap: 20px;
+
+  align-content: center;
+
+  h4 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  button {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    justify-self: flex-start;
+    width: 60px;
+  }
 }

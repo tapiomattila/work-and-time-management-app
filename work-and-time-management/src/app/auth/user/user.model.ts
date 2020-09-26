@@ -7,6 +7,7 @@ export interface User {
     profilePictureUrl: string;
     email: string;
     displayName: string;
+    _c: string;
 }
 
 export function createUser(user: Partial<User>) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { interval, Observable, of, Subscription, timer } from 'rxjs';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { User, UserQuery, UserService } from './auth/user';
@@ -7,9 +7,10 @@ import { WorksitesService } from './pages/worksites/state';
 import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
 import { WorkTypeService } from './worktype/state';
-import { tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { RouterOutlet } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ManageService } from './pages/manage,service';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private userQuery: UserQuery,
     private userService: UserService,
     private authQuery: AuthQuery,
+    public manageService: ManageService,
     public authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService,
@@ -58,38 +60,87 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.user$ = this.userQuery.user$;
 
+    // this.user$.subscribe(res => console.log('user subs', res));
+    // this.authQuery.select().subscribe(res => console.log('show res in auth', res));
+
+    this.nullOrValid();
+
     const storeUpdateSub = this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
-          if (auth && auth.id !== null) {
-            this.worksiteService.setWorksiteStore(auth.id).subscribe();
-            this.worktypeService.setWorkTypeStore().subscribe();
-            this.hoursService.setUserHours(auth.id).subscribe();
-          } else {
-            this.worksiteService.resetStore();
-            this.hoursService.resetStore();
-          }
-        }),
-        tap(auth => {
+          console.log('show in store update', auth);
           if (auth && auth.id !== null) {
 
-            this.handleRoles$ = this.userService.fetchAllRolesJoin();
-            const fetchRolesSubs = this.handleRoles$.subscribe(res => {
-              if (res && res.length) {
-                res.forEach(el => {
-                  if (el.length) {
-                    this.userService.setRoles(el, auth.id);
-                  }
-                });
-              }
-            });
+            console.log('update stores', auth);
 
-            this.firebaseSubs.push(fetchRolesSubs);
+            this.updateStores(auth);
+            this.handleRoles(auth);
           }
         }),
       ).subscribe();
 
     this.storeSubs.push(storeUpdateSub);
+  }
+
+  /**
+   * Checks auth state on interval and sets please register modal
+   * if no client id is presense on authenticated user
+   */
+  nullOrValid() {
+    const interval$ = interval(1000);
+    const timer$ = timer(6000);
+
+    let lap = 0;
+    const nullOrValidSubs = this.userQuery.select().pipe(
+      switchMap(user => {
+        if ((user.firstName || user.lastName) && !user.id) {
+          return interval$.pipe(
+            takeUntil(timer$),
+            switchMap(() => this.authQuery.select().pipe(
+              map(el => el && el.id !== null)
+            )),
+            tap(() => lap++)
+          );
+        } else {
+          return of(null);
+        }
+
+      }),
+    ).subscribe(auth => {
+      if (auth) {
+        lap = 0;
+        nullOrValidSubs.unsubscribe();
+      }
+
+      if (lap === 5) {
+        lap = 0;
+        this.userService.resetStore();
+        this.authService.resetStore();
+
+        this.manageService.setGeneralModal(true);
+      }
+    });
+    this.storeSubs.push(nullOrValidSubs);
+  }
+
+  updateStores(auth: Auth) {
+    this.worksiteService.setWorksiteStore(auth.id).subscribe();
+    this.worktypeService.setWorkTypeStore().subscribe();
+    this.hoursService.setUserHours(auth.id).subscribe();
+  }
+
+  handleRoles(auth: Auth) {
+    this.handleRoles$ = this.userService.fetchAllRolesJoin();
+    const fetchRolesSubs = this.handleRoles$.subscribe(res => {
+      if (res && res.length) {
+        res.forEach(el => {
+          if (el.length) {
+            this.userService.setRoles(el, auth.id);
+          }
+        });
+      }
+    });
+    this.firebaseSubs.push(fetchRolesSubs);
   }
 
   getAnimationData(outlet: RouterOutlet) {
@@ -100,6 +151,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     // tslint:disable-next-line: no-string-literal
     return routeData['page'];
+  }
+
+  closeModal() {
+    this.manageService.setGeneralModal(false);
   }
 
   ngOnDestroy() {

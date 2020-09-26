@@ -1,7 +1,7 @@
 import { UserStore } from './user.store';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, delay, catchError, tap, switchMap } from 'rxjs/operators';
+import { map, first, delay, catchError, tap } from 'rxjs/operators';
 import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { HoursService } from '../hours';
@@ -28,6 +28,7 @@ export class UserService {
             .snapshotChanges()
             .pipe(
                 delay(1000),
+                tap(res => console.log('all users', res)),
                 map(snaps => {
                     return snaps.map(snap => {
                         const id = snap.payload.doc.id;
@@ -41,6 +42,19 @@ export class UserService {
                 }),
                 first()
             );
+    }
+
+    fetchUserById(id: string) {
+        return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
+        .snapshotChanges()
+        .pipe(
+            map((snap: any) => {
+                return {
+                    id: snap.payload.id,
+                    ...(snap.payload.data() as object)
+                };
+            })
+        );
     }
 
     fetchAUsers() {
