@@ -10,6 +10,7 @@ export interface Worksite {
     updatedBy: string;
     deleted: boolean;
     users: string[];
+    _c: string;
 }
 
 export function createWorksite(worksite: Partial<Worksite>) {

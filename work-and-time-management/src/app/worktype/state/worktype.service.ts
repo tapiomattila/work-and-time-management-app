@@ -5,6 +5,7 @@ import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
 import { from, Observable } from 'rxjs';
+import { Auth } from 'src/app/auth/state';
 
 @Injectable({
     providedIn: 'root'
@@ -28,11 +29,10 @@ export class WorkTypeService {
         this.worktypeStore.set(worktypeArray);
     }
 
-    setWorkTypeStore() {
-        return this.fetchWorkTypes()
+    setWorkTypeStore(auth: Auth) {
+        return this.fetchWorkTypes(auth)
             .pipe(
                 tap(res => {
-                    // console.log('fetch worktypes res', res);
                     if (res && res.length) {
                         this.setWorkTypes(res);
                     }
@@ -40,8 +40,10 @@ export class WorkTypeService {
             );
     }
 
-    fetchWorkTypes() {
-        return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`)
+    fetchWorkTypes(auth: Auth) {
+        return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`,
+            ref => ref.where('_c', '==', auth.clientId)
+        )
             .snapshotChanges()
             .pipe(
                 delay(1000),

@@ -1,6 +1,7 @@
 export interface Auth {
     id: string;
     isAuthenticated: boolean;
+    clientId: string;
 }
 
 export function createAuth(auth: Partial<Auth>) {

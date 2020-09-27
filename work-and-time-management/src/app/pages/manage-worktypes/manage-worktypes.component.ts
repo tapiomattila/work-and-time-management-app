@@ -134,7 +134,8 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
       updatedAt: new Date().toISOString(),
       updatedBy: user.id,
       viewName: formValues.viewName,
-      workType: formValues.workType
+      workType: formValues.workType,
+      _c: this.userQuery.getValue()._c
     };
 
     this.worktypeService.postNewWorktype(newWorktype).subscribe(worktype => {

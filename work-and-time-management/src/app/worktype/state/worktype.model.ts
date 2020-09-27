@@ -7,6 +7,7 @@ export interface WorkType {
     workType: string;
     deleted: boolean;
     viewName: string;
+    _c: string;
 }
 
 export function createWorkType(worktype: Partial<WorkType>) {

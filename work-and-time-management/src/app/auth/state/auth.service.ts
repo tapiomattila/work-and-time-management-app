@@ -27,8 +27,6 @@ export class AuthService {
                 this.loader = false;
                 const isAuth = !!authenticated;
 
-                console.log('isAuth');
-
                 if (isAuth) {
                     const nameArr = authenticated.displayName.split(' ');
                     const firstName = nameArr[0] ? nameArr[0] : null;
@@ -56,7 +54,8 @@ export class AuthService {
 
                     const authState: Auth = {
                         id: user.id,
-                        isAuthenticated: !!user
+                        isAuthenticated: !!user,
+                        clientId: user._c
                     };
 
                     const userUpdate: Partial<User> = {

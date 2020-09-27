@@ -12,6 +12,7 @@ import { UserQuery } from 'src/app/auth/user';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { fadeInOutTrigger, fadeInEnterTrigger, fadeInSecondaryTrigger } from 'src/app/animations/animations';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AuthQuery } from 'src/app/auth/state';
 
 interface FormData {
     date: Date;
@@ -71,7 +72,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         private userQuery: UserQuery,
         private hoursService: HoursService,
         private worktypeService: WorkTypeService,
-        private router: Router
+        private router: Router,
+        private authQuery: AuthQuery
     ) { }
 
     ngOnInit() {
@@ -259,11 +261,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             markedHours: values.slider,
             updatedAt: values.date.toISOString(),
             worksiteId: values.worksite.id,
-            worktypeId: values.worktype.id
+            worktypeId: values.worktype.id,
+            _c: this.authQuery.getValue().clientId
         };
         this.hoursService.postNewHours(newHours).subscribe(() => {
             console.log('POST');
-            this.hoursService.setUserHours(this.userQuery.getValue().id).subscribe();
+            this.hoursService.setUserHours(this.authQuery.getValue()).subscribe();
             this.resetSlider();
         });
     }

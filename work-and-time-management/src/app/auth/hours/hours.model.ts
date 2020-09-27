@@ -19,6 +19,7 @@ export interface Hours {
     markedHours: number;
     createdAt: string;
     updatedAt: string;
+    _c: string;
 }
 
 export function createHours(hours: Partial<Hours>) {

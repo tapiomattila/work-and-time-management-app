@@ -4,7 +4,8 @@ import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { Auth } from '../state';
 
 @Injectable({
     providedIn: 'root'
@@ -28,11 +29,10 @@ export class HoursService {
         this.hoursStore.set(hoursArray);
     }
 
-    setUserHours(userId: string) {
-        return this.fetchHours(userId)
+    setUserHours(auth: Auth) {
+        return this.fetchHours(auth)
             .pipe(
                 tap(hours => {
-                    // console.log('show hours fetch', hours);
                     if (hours && hours.length) {
                         this.setHours(hours);
                     }
@@ -72,8 +72,12 @@ export class HoursService {
         this.hoursStore.reset();
     }
 
-    fetchHours(userId: string) {
-        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`, ref => ref.where('userId', '==', userId))
+    fetchHours(auth: Auth) {
+        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
+            ref =>
+                ref.where('userId', '==', auth.id)
+                   .where('_c', '==', auth.clientId),
+        )
             .snapshotChanges()
             .pipe(
                 delay(1000),

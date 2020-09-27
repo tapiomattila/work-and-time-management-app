@@ -68,11 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const storeUpdateSub = this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
-          console.log('show in store update', auth);
-          if (auth && auth.id !== null) {
-
-            console.log('update stores', auth);
-
+          if (auth && auth.id !== null && auth.clientId !== null) {
             this.updateStores(auth);
             this.handleRoles(auth);
           }
@@ -106,27 +102,26 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
       }),
-    ).subscribe(auth => {
-      if (auth) {
-        lap = 0;
-        nullOrValidSubs.unsubscribe();
-      }
-
-      if (lap === 5) {
-        lap = 0;
-        this.userService.resetStore();
-        this.authService.resetStore();
-
-        this.manageService.setGeneralModal(true);
-      }
-    });
+      tap(auth => {
+        if (auth) {
+          lap = 0;
+          nullOrValidSubs.unsubscribe();
+        }
+        if (lap === 5) {
+          lap = 0;
+          this.userService.resetStore();
+          this.authService.resetStore();
+          this.manageService.setGeneralModal(true);
+        }
+      })
+    ).subscribe();
     this.storeSubs.push(nullOrValidSubs);
   }
 
   updateStores(auth: Auth) {
-    this.worksiteService.setWorksiteStore(auth.id).subscribe();
-    this.worktypeService.setWorkTypeStore().subscribe();
-    this.hoursService.setUserHours(auth.id).subscribe();
+    this.worksiteService.setWorksiteStore(auth).subscribe();
+    this.worktypeService.setWorkTypeStore(auth).subscribe();
+    this.hoursService.setUserHours(auth).subscribe();
   }
 
   handleRoles(auth: Auth) {

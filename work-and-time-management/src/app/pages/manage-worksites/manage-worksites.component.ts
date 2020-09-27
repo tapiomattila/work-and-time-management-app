@@ -162,7 +162,8 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
             streetAddress: formValues.streetAddress,
             postalCode: formValues.postalCode,
             city: formValues.city,
-            users: [user.id]
+            users: [user.id],
+            _c: this.userQuery.getValue()._c
         };
 
         this.worksiteService.postNewWorksite(newWorksite).subscribe(worksite => {

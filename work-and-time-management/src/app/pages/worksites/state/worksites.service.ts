@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { WorksiteStore } from './worksites.store';
 import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap, delay } from 'rxjs/operators';
+import { map, first, tap, delay, filter, switchMap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { Observable, from } from 'rxjs';
+import { Auth } from 'src/app/auth/state';
 
 @Injectable({
     providedIn: 'root'
@@ -28,11 +29,10 @@ export class WorksitesService {
         this.worksitesStore.setActive(id);
     }
 
-    setWorksiteStore(userId: string) {
-        return this.fetchUserWorksites(userId)
+    setWorksiteStore(auth: Auth) {
+        return this.fetchUserWorksites(auth)
             .pipe(
                 tap(res => {
-                    // console.log('show res in worksites', res);
                     if (res && res.length) {
                         this.setWorksites(res);
                     }
@@ -41,30 +41,33 @@ export class WorksitesService {
             );
     }
 
-    fetchUserWorksites(userId: string) {
-        return this.af.collection(`${FireBaseCollectionsEnum.WORKSITES}`)
-            .snapshotChanges()
-            .pipe(
-                delay(1000),
-                map(snaps => {
-                    return snaps.map(snap => {
-                        const id = snap.payload.doc.id;
-                        const data = snap.payload.doc.data();
-                        return {
-                            id,
-                            ...(data as object)
-                        };
-                    });
-                }),
-                map((worksites: Worksite[]) => {
-                    return worksites.filter(el => {
-                        if (el.users && el.users.includes(userId)) {
-                            return el;
-                        }
-                    });
-                }),
-                first()
-            );
+    fetchUserWorksites(auth: Auth) {
+        const worksitesRef = this.af.collection<Worksite[]>(FireBaseCollectionsEnum.WORKSITES,
+            ref => ref.where('_c', '==', auth.clientId)
+        );
+
+        return worksitesRef.snapshotChanges().pipe(
+            delay(1000),
+            map(snaps => {
+                return snaps.map(snap => {
+                    const id = snap.payload.doc.id;
+                    const data = snap.payload.doc.data();
+                    const worksite = {
+                        id,
+                        ...(data as object)
+                    } as Worksite;
+                    return worksite;
+                });
+            }),
+            map(worksites => {
+                return worksites.filter(el => {
+                    if (el && el.users.includes(auth.id) && el._c === auth.clientId) {
+                        return el;
+                    }
+                });
+            }),
+            first()
+        );
     }
 
     fetchAllWorksites() {
