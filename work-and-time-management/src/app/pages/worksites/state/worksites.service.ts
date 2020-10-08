@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WorksiteStore } from './worksites.store';
 import { Worksite, createWorksite } from './worksites.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap, delay, filter, switchMap } from 'rxjs/operators';
+import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { Observable, from } from 'rxjs';
 import { Auth } from 'src/app/auth/state';

@@ -5,7 +5,7 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/worktype/state';
+import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/pages/worktype/state';
 import { map, distinctUntilChanged, delay, tap } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';

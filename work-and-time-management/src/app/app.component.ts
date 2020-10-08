@@ -6,7 +6,7 @@ import { User, UserQuery, UserService } from './auth/user';
 import { WorksitesService } from './pages/worksites/state';
 import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
-import { WorkTypeService } from './worktype/state';
+import { WorkTypeService } from './pages/worktype/state';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { RouterOutlet } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';

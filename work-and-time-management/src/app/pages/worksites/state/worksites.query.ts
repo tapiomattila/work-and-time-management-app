@@ -5,7 +5,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { HoursQuery } from 'src/app/auth/hours/hours.query';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { Hours } from 'src/app/auth/hours';
-import { WorkTypeQuery } from 'src/app/worktype/state';
+import { WorkTypeQuery } from 'src/app/pages/worktype/state';
 import * as moment from 'moment';
 import { formatHours } from 'src/app/helpers/helper-functions';
 

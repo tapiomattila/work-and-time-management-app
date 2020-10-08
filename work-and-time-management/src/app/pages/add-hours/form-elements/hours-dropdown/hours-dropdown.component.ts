@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Worksite } from 'src/app/pages/worksites/state';
-import { WorkType } from 'src/app/worktype/state';
+import { WorkType } from 'src/app/pages/worktype/state';
 
 @Component({
     selector: 'app-hours-dropdown',

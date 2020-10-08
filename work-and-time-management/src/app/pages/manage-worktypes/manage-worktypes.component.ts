@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { WorkTypeQuery, WorkType, WorkTypeService } from 'src/app/worktype/state';
+import { WorkTypeQuery, WorkType, WorkTypeService } from 'src/app/pages/worktype/state';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';

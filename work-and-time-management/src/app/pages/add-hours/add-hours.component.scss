@@ -14,7 +14,8 @@
     [form-end table-start] min-content
     [table-end footer-start] 1fr
     [footer-end];
-  gap: 15px;
+  // gap: 15px;
+  gap: var(--gap15);
   overflow: hidden;
 }
 
