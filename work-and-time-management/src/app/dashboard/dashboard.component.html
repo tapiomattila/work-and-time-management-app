@@ -74,15 +74,17 @@
   </ng-container>
 
   <!-- Manage users -->
-  <ng-container *ngIf="(user$ | async).isAdmin">
-    <div class="card">
-      <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
-    </div>
+  <ng-container *ngIf="false">
+    <ng-container *ngIf="(user$ | async).isAdmin">
+      <div class="card">
+        <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+      </div>
+    </ng-container>
   </ng-container>
 
   <!-- Admin settings -->
   <ng-container *ngIf="(user$ | async).isAdmin">
-    <div class="card">
+    <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
   </ng-container>

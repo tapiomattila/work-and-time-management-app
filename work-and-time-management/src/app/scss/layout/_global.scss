@@ -98,7 +98,11 @@ button {
 
     &.active-circle {
       // border: 3px solid var(--active-color);
-      border: 3px solid #0BF4AE;
+      // border: 3px solid #0BF4AE;
+      border: 3px solid #fff;
+      font-weight: 700;
+      font-size: 1.8rem;
+      padding: 2px;
     }
   }
 

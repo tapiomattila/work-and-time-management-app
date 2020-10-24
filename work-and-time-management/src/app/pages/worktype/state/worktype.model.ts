@@ -7,6 +7,7 @@ export interface WorkType {
     workType: string;
     deleted: boolean;
     viewName: string;
+    rate: number;
     _c: string;
 }
 

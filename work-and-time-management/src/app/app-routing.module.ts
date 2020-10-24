@@ -10,6 +10,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
+import { AdminSettingsComponent } from './pages/admin-settings/admin-settings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -21,10 +22,11 @@ const routes: Routes = [
   { path: 'current-worksite/:id', component: AddHoursComponent, data: { animation: { page: 'currentWorksitedPage' }}  },
   { path: 'add-hours/:id', component: AddHoursComponent, data: { animation: { page: 'addHoursPage' }}  },
   { path: 'added-hours', component: AddedHoursComponent, data: { animation: { page: 'addedHoursPage' }}  },
+  { path: 'admin-settings', component: AdminSettingsComponent, data: { animation: { page: 'adminSettingsPage' }}  },
   { path: 'manage-worksites', component: ManageWorksitesComponent, data: { animation: { page: 'manageWorksitesPage' }}  },
   { path: 'manage-worksites/add', component: ManageWorksitesComponent },
   { path: 'manage-worksites/edit/:id', component: ManageWorksitesComponent },
-  { path: 'manage-worktypes', component: ManageWorktypesComponent, data: { animation: { page: 'manageWorkTypesdPage' }}  },
+  { path: 'manage-worktypes', component: ManageWorktypesComponent, data: { animation: { page: 'manageWorkTypesPage' }}  },
   { path: 'manage-worktypes/add', component: ManageWorktypesComponent },
   { path: 'manage-worktypes/edit/:id', component: ManageWorktypesComponent },
   { path: '**', component: PagenotfoundComponent }

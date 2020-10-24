@@ -11,12 +11,14 @@ export enum RouterRoutesEnum {
     ADD_WORKSITE = 'manage-worksites/add',
     MANAGE_WORKTYPES = 'manage-worktypes',
     EDIT_WORKTYPE = 'manage-worktypes/edit',
+    ADMIN_SETTINGS = 'admin-settings',
     ADD_WORKTYPE = 'manage-worktypes/add',
 }
 
 export enum FireBaseCollectionsEnum {
     WORKSITES = 'worksites',
     USERS = 'users',
+    USERS_INFOS = 'users-infos',
     HOURS = 'hours',
     WORKTYPES = 'worktypes'
 }

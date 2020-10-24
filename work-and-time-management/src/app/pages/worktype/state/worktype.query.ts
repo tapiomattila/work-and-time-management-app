@@ -2,7 +2,8 @@ import { QueryEntity } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { WorkTypeState, WorktypeStore } from './worktype.store';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { WorkType } from './worktype.model';
 
 @Injectable({
     providedIn: 'root'
@@ -28,7 +29,7 @@ export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
             );
     }
 
-    selectAllLiveWorktypes() {
+    selectAllLiveWorktypes(): Observable<WorkType[]> {
         return this.selectAll({
             filterBy: entity => !entity.deleted
         });

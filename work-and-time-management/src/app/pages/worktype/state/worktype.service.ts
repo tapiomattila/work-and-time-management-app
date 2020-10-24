@@ -86,6 +86,7 @@ export class WorkTypeService {
                 updatedBy: updated.updatedBy,
                 viewName: updated.viewName,
                 workType: updated.workType,
+                rate: updated.rate
             });
     }
 

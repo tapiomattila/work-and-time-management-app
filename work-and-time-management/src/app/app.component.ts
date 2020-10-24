@@ -59,10 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.firebaseSubs.push(authSubs);
 
     this.user$ = this.userQuery.user$;
-
-    // this.user$.subscribe(res => console.log('user subs', res));
-    // this.authQuery.select().subscribe(res => console.log('show res in auth', res));
-
     this.nullOrValid();
 
     const storeUpdateSub = this.authQuery.select()

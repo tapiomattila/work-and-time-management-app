@@ -88,3 +88,14 @@ export const translateXRightTrigger = trigger('translateXRight', [
         animate('300ms')
     ])
 ]);
+
+export const pulseInitTrigger = trigger('pulseInit', [
+    transition(':enter', [
+        style({
+            transform: 'scale(1.12)'
+        }),
+        animate('300ms ease-in', style({
+            transform: 'scale(1)'
+        }))
+    ])
+]);

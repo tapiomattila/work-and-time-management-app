@@ -6,7 +6,7 @@ import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { HoursService } from '../hours';
 import { WorksitesService } from 'src/app/pages/worksites/state';
-import { of, throwError, forkJoin } from 'rxjs';
+import { of, throwError, forkJoin, from } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -46,15 +46,15 @@ export class UserService {
 
     fetchUserById(id: string) {
         return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
-        .snapshotChanges()
-        .pipe(
-            map((snap: any) => {
-                return {
-                    id: snap.payload.id,
-                    ...(snap.payload.data() as object)
-                };
-            })
-        );
+            .snapshotChanges()
+            .pipe(
+                map((snap: any) => {
+                    return {
+                        id: snap.payload.id,
+                        ...(snap.payload.data() as object)
+                    };
+                })
+            );
     }
 
     fetchAUsers() {
@@ -140,13 +140,18 @@ export class UserService {
 
 
     setRoles(el: any[], authId: string) {
-        if (el[0].hasOwnProperty('isAdmin')) {
+        const has = Object.prototype.hasOwnProperty;
+        if (has.call(el[0], 'isAdmin')) {
             this.isAdminManager(el, authId);
         }
 
-        if (el[0].hasOwnProperty('isManager')) {
+        if (has.call(el[0], 'isManager')) {
             this.isManagerManager(el, authId);
         }
+    }
+
+    postUser(id: string, user: { firstName: string, lastName: string, email: string }) {
+        return from(this.af.collection(FireBaseCollectionsEnum.USERS_INFOS).doc(id).set(user));
     }
 
     resetStore() {

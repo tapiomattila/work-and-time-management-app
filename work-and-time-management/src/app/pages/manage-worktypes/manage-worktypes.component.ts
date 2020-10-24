@@ -17,7 +17,6 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
   ]
 })
 export class ManageWorktypesComponent implements OnInit, OnDestroy {
-
   subscriptions: Subscription[] = [];
 
   activeWorktype$: Observable<WorkType>;
@@ -46,6 +45,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
   initForm() {
     this.worktypeForm = new FormGroup({
       viewName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      rate: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(5000)])
     });
   }
 
@@ -88,6 +88,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
 
   populateForm(worktype: WorkType) {
     this.worktypeForm.controls.viewName.setValue(worktype.viewName);
+    this.worktypeForm.controls.rate.setValue(worktype.rate);
   }
 
   backArrowPressed() {
@@ -114,7 +115,8 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
     const workType = controlValue.split(' ').join('_').toLowerCase();
     const values = {
       viewName: controlValue,
-      workType
+      workType,
+      rate: this.worktypeForm.controls.rate.value
     };
 
     if (activeWorktype) {
@@ -125,7 +127,6 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
   }
 
   postNewWorktype(formValues: Partial<WorkType>) {
-
     const user = this.userQuery.getValue();
 
     const newWorktype: Partial<WorkType> = {
@@ -135,6 +136,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
       updatedBy: user.id,
       viewName: formValues.viewName,
       workType: formValues.workType,
+      rate: formValues.rate,
       _c: this.userQuery.getValue()._c
     };
 
@@ -154,17 +156,18 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
       updatedAt: new Date().toISOString(),
       updatedBy: user.id,
       viewName: formValues.viewName,
-      workType: formValues.workType
+      workType: formValues.workType,
+      rate: formValues.rate
     };
 
+    this.worktypeService.putWorktype(activeWorktype.id, updatedWorktype)
+      .subscribe(() => {
+        this.worktypeService.updateWorktype(activeWorktype, updatedWorktype);
 
-    this.worktypeService.putWorktype(activeWorktype.id, updatedWorktype).subscribe(() => {
-      this.worktypeService.updateWorktype(activeWorktype, updatedWorktype);
-
-      setTimeout(() => {
-        this.closeModal();
-      }, 250);
-    });
+        setTimeout(() => {
+          this.closeModal();
+        }, 250);
+      });
   }
 
   deleteWorktype() {
