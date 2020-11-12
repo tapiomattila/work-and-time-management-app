@@ -45,7 +45,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
   initForm() {
     this.worktypeForm = new FormGroup({
       viewName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      rate: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(5000)])
+      rate: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(5000)])
     });
   }
 
@@ -102,6 +102,12 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
 
   addNew() {
     this.router.navigate([RouterRoutesEnum.ADD_WORKTYPE]);
+  }
+
+  onFocus() {
+    if (this.worktypeForm.controls.rate.value === 0) {
+      this.worktypeForm.controls.rate.reset();
+    }
   }
 
   submit() {

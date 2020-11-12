@@ -8,7 +8,6 @@ import { formatHours } from 'src/app/helpers/helper-functions';
     styleUrls: ['./hours-slider.component.scss']
 })
 export class HoursSliderComponent implements OnInit {
-
     @ViewChild('slider', { static: false }) slider: ElementRef;
     @Input() sliderValue = '0h';
     @Input() sliderObsValue = 0;

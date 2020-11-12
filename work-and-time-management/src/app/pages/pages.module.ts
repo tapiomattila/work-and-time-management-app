@@ -15,6 +15,7 @@ import { AddedHoursComponent } from './added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './manage-worktypes/manage-worktypes.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { AdminSettingsComponent } from './admin-settings/admin-settings.componen
         HoursTableComponent,
         ManageWorksitesComponent,
         ManageWorktypesComponent,
-        AdminSettingsComponent
+        AdminSettingsComponent,
+        ManageUsersComponent
     ],
     providers: [],
 })

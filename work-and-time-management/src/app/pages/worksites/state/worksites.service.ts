@@ -41,6 +41,47 @@ export class WorksitesService {
             );
     }
 
+    setWorksiteStoreAdmin(auth: Auth) {
+        return this.fetchAllClientWorksites(auth)
+            .pipe(
+                tap(res => {
+                    if (res && res.length) {
+                        this.setWorksites(res);
+                    }
+                }),
+                first()
+            );
+    }
+
+    fetchAllClientWorksites(auth: Auth) {
+        const worksitesRef = this.af.collection<Worksite[]>(FireBaseCollectionsEnum.WORKSITES,
+            ref => ref.where('_c', '==', auth.clientId)
+        );
+
+        return worksitesRef.snapshotChanges().pipe(
+            delay(1000),
+            map(snaps => {
+                return snaps.map(snap => {
+                    const id = snap.payload.doc.id;
+                    const data = snap.payload.doc.data();
+                    const worksite = {
+                        id,
+                        ...(data as object)
+                    } as Worksite;
+                    return worksite;
+                });
+            }),
+            map(worksites => {
+                return worksites.filter(el => {
+                    if (el._c === auth.clientId) {
+                        return el;
+                    }
+                });
+            }),
+            first()
+        );
+    }
+
     fetchUserWorksites(auth: Auth) {
         const worksitesRef = this.af.collection<Worksite[]>(FireBaseCollectionsEnum.WORKSITES,
             ref => ref.where('_c', '==', auth.clientId)

@@ -44,7 +44,7 @@
 
   <!-- Worksites -->
   <div class="card" (click)="navigate('worksites')">
-    <app-card [name]="'Worksites'" [icon]="icon-briefcase"></app-card>
+    <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
   </div>
 
   <!-- Added hours -->
@@ -74,20 +74,18 @@
   </ng-container>
 
   <!-- Manage users -->
-  <ng-container *ngIf="false">
-    <ng-container *ngIf="(user$ | async).isAdmin">
-      <div class="card">
-        <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
-      </div>
-    </ng-container>
+  <ng-container *ngIf="(user$ | async).isAdmin">
+    <div class="card" (click)="navigate('admin/manage-users')">
+      <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+    </div>
   </ng-container>
 
   <!-- Admin settings -->
-  <ng-container *ngIf="(user$ | async).isAdmin">
+  <!-- <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
-  </ng-container>
+  </ng-container> -->
 </div>
 
 <div class="footer"></div>

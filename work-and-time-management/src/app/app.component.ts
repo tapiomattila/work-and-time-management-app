@@ -61,12 +61,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.user$ = this.userQuery.user$;
     this.nullOrValid();
 
+    let authx;
     const storeUpdateSub = this.authQuery.select()
       .pipe(
         tap((auth: Auth) => {
+          authx = undefined;
           if (auth && auth.id !== null && auth.clientId !== null) {
-            this.updateStores(auth);
             this.handleRoles(auth);
+            authx = auth;
+          }
+        }),
+        switchMap(() => this.userQuery.user$),
+        tap(user => {
+          if (authx && !user.isAdmin) {
+            this.updateStores(authx);
+          }
+
+          if (authx && user.isAdmin) {
+            this.updateStoresAdmin(authx);
           }
         }),
       ).subscribe();
@@ -118,6 +130,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.worksiteService.setWorksiteStore(auth).subscribe();
     this.worktypeService.setWorkTypeStore(auth).subscribe();
     this.hoursService.setUserHours(auth).subscribe();
+  }
+
+  updateStoresAdmin(auth: Auth) {
+    this.worksiteService.setWorksiteStoreAdmin(auth).subscribe();
+    this.worktypeService.setWorkTypeStoreAdmin(auth).subscribe();
+    this.hoursService.setAllHours(auth).subscribe();
   }
 
   handleRoles(auth: Auth) {

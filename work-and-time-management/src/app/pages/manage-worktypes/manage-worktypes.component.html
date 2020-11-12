@@ -1,8 +1,8 @@
-<app-header [title]="'Admin settings'"></app-header>
+<app-header [title]="'Work types'"></app-header>
 
 <div class="container">
     <div class="worksites">
-        <p class="worksites__header">Worktype hourly rates</p>
+        <!-- <p class="worksites__header">Worktype Management</p> -->
 
         <ng-container *ngIf="worktypes$ | async as worktypes">
             <div class="worksites__items">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </ng-container>
-
+        <button type="button" (click)="addNew()">ADD NEW WORKTYPE</button>
     </div>
 </div>
 
@@ -27,11 +27,9 @@
         <div class="editForm">
 
             <div class="header">
-
                 <ng-container>
                     <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
                 </ng-container>
-              
 
                 <div class="close__x editForm__close" (click)="closeModal()">
                     <div class="line1"></div>
@@ -52,16 +50,19 @@
                         <span>
                             Rate
                         </span>
-                        <input type="number" placeholder="Hourly rate: ex. 12.25" id="rate" formControlName="rate">
+                        <input type="number" placeholder="Hourly rate: ex. 12.25" id="rate" (focus)="onFocus()" formControlName="rate">
                     </label>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-
-                    <ng-container>
+                    <ng-container *ngIf="activeWorktype$ | async; else addBtn">
                         <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
                             [ngClass]="{ 'disabled': !worktypeForm.valid}">EDIT</button>
                         <button type="button" class="delete" (click)="deleteWorktype()">DELETE</button>
                     </ng-container>
+                    <ng-template #addBtn>
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
+                            [ngClass]="{ 'disabled': !worktypeForm.valid}">ADD</button>
+                    </ng-template>
                 </div>
             </form>
 

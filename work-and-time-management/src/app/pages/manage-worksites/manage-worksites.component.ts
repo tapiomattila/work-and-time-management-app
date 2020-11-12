@@ -150,7 +150,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     }
 
     postNewWorksite(formValues: Partial<Worksite>) {
-
         const user = this.userQuery.getValue();
 
         const newWorksite: Partial<Worksite> = {
@@ -173,7 +172,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
                 this.closeModal();
             }, 250);
         });
-
     }
 
     deleteWorksite() {

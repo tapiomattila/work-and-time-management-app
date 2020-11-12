@@ -40,6 +40,16 @@ export class HoursService {
             );
     }
 
+    setAllHours(auth: Auth) {
+        return this.fetchAllUsersHours(auth).pipe(
+            tap(hours => {
+                if (hours && hours.length) {
+                    this.setHours(hours);
+                }
+            })
+        );
+    }
+
     convertSecondsToDate(seconds: number) {
         const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
         return d.setUTCSeconds(seconds);
@@ -76,7 +86,7 @@ export class HoursService {
         return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
             ref =>
                 ref.where('userId', '==', auth.id)
-                   .where('_c', '==', auth.clientId),
+                    .where('_c', '==', auth.clientId),
         )
             .snapshotChanges()
             .pipe(
@@ -99,6 +109,27 @@ export class HoursService {
 
     putHours(id: string, changes: Partial<Hours>): Observable<any> {
         return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).update(changes));
+    }
+
+    fetchAllUsersHours(auth: Auth) {
+        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
+            ref => ref.where('_c', '==', auth.clientId))
+            .snapshotChanges()
+            .pipe(
+                delay(1000),
+                map(snaps => {
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+
+                }),
+                first()
+            );
     }
 
 }

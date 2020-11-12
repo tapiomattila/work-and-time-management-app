@@ -11,6 +11,7 @@ import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
 import { AdminSettingsComponent } from './pages/admin-settings/admin-settings.component';
+import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'add-hours/:id', component: AddHoursComponent, data: { animation: { page: 'addHoursPage' }}  },
   { path: 'added-hours', component: AddedHoursComponent, data: { animation: { page: 'addedHoursPage' }}  },
   { path: 'admin-settings', component: AdminSettingsComponent, data: { animation: { page: 'adminSettingsPage' }}  },
+  { path: 'admin/manage-users', component: ManageUsersComponent, data: { animation: { page: 'manageUsersPage' }}  },
   { path: 'manage-worksites', component: ManageWorksitesComponent, data: { animation: { page: 'manageWorksitesPage' }}  },
   { path: 'manage-worksites/add', component: ManageWorksitesComponent },
   { path: 'manage-worksites/edit/:id', component: ManageWorksitesComponent },

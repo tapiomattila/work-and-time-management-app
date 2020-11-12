@@ -29,11 +29,22 @@ export class WorkTypeService {
         this.worktypeStore.set(worktypeArray);
     }
 
+    setWorkTypeStoreAdmin(auth: Auth) {
+        return this.fetchWorkTypes(auth)
+            .pipe(
+                tap(res => {
+                    if (res && res.length > 0) {
+                        this.setWorkTypes(res);
+                    }
+                }),
+            );
+    }
+
     setWorkTypeStore(auth: Auth) {
         return this.fetchWorkTypes(auth)
             .pipe(
                 tap(res => {
-                    if (res && res.length) {
+                    if (res && res.length > 0) {
                         this.setWorkTypes(res);
                     }
                 }),

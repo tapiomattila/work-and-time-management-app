@@ -10,6 +10,14 @@ export class AdminSettingsComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    // Admin settings
+    // -> Hours
+    // All hours by worksites
+    // All hours by worktypes
+    // Hours by user
+    // Hours by user in current month
+    // Hours by user and worktypes
+    // Hours by user and worksites
   }
 
   ngOnDestroy() {

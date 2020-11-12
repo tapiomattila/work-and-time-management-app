@@ -10,9 +10,9 @@
                     <p>
                         {{ worksite.nickname }}
                     </p>
-                    <ng-container *ngIf="(user$ | async).isAdmin">
+                    <!-- <ng-container *ngIf="(user$ | async).isAdmin"> -->
                         <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
-                    </ng-container>
+                    <!-- </ng-container> -->
                 </div>
             </div>
         </div>
@@ -72,12 +72,12 @@
                 <div style="display: flex; justify-content: space-between;">
 
                     <ng-container *ngIf="activeWorksite$ | async; else addBtn">
-                        <ng-container *ngIf="(user$ | async).isAdmin">
+                        <!-- <ng-container *ngIf="(user$ | async).isAdmin"> -->
                             <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
                                 [ngClass]="{ 'disabled': !worksiteForm.valid}">EDIT</button>
                             <button type="button" class="delete" (click)="deleteWorksite()">DELETE</button>
-                        </ng-container>
-                        <ng-template #NoAdmin></ng-template>
+                        <!-- </ng-container> -->
+                        <!-- <ng-template #NoAdmin></ng-template> -->
                     </ng-container>
                     <ng-template #addBtn>
                         <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"

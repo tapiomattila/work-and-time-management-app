@@ -7,6 +7,7 @@ import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { HoursService } from '../hours';
 import { WorksitesService } from 'src/app/pages/worksites/state';
 import { of, throwError, forkJoin, from } from 'rxjs';
+import { Auth } from '../state';
 
 @Injectable({
     providedIn: 'root'
@@ -23,12 +24,12 @@ export class UserService {
         this.userStore.update(createUser(user));
     }
 
-    fetchAllUsers() {
-        return this.af.collection(FireBaseCollectionsEnum.USERS)
+    fetchAllUsersInfos(auth: Auth) {
+        return this.af.collection(FireBaseCollectionsEnum.USERS_INFOS,
+            ref => ref.where('_c', '==', auth.clientId))
             .snapshotChanges()
             .pipe(
                 delay(1000),
-                tap(res => console.log('all users', res)),
                 map(snaps => {
                     return snaps.map(snap => {
                         const id = snap.payload.doc.id;

@@ -38,7 +38,9 @@ export class AuthService {
                 if (user && user._c !== undefined) {
                     this.updateAuthStateWithData(user);
                     this.updateUserWithClientId(user);
-                    this.postUserData(user);
+                    if (user.isAdmin) {
+                        this.postUserData(user);
+                    }
                     return !!user;
                 }
                 return false;
@@ -89,6 +91,7 @@ export class AuthService {
             firstName: userGet.firstName,
             lastName: userGet.lastName,
             email: userGet.email,
+            _c: user._c
         };
         this.userService.postUser(user.id, postUser).subscribe();
     }

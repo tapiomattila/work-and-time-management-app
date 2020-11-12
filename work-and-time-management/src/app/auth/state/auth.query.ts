@@ -9,6 +9,7 @@ import { AuthStore } from './auth.store';
 export class AuthQuery extends Query<Auth> {
 
     isAuthenticated$ = this.select(auth => auth.isAuthenticated);
+    auth$ = this.select();
 
     constructor(protected store: AuthStore) {
         super(store);

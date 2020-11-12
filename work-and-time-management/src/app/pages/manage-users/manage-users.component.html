@@ -1,0 +1,38 @@
+<app-header [title]="'Manage users'"></app-header>
+
+<div class="container">
+    <div class="item-container">
+        <ng-container *ngIf="loading$ | async; else">
+            <div class="item-container__items" style="display: flex; justify-content: center; align-items: center;">
+                <app-loader></app-loader>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="users$ | async as users">
+            <div class="item-container__items">
+                <div class="item-container__item" *ngFor="let user of users; let i = index">
+                    <p>
+                        <span>{{ user.user.firstName }} {{ user.user.lastName }}</span>
+                        <span class="email">{{ user.user.email }}</span>
+
+                        <ng-container *ngIf="user.monthHours$ | async as total; else loading">
+                            <span style="margin-top: 6px; display: block;">Month hours: {{ total }}h</span>
+                        </ng-container>
+                        <ng-template #loading>
+                            <span style="color: #000;">Loading</span>
+                        </ng-template>
+
+                        <ng-container *ngIf="user.totalHours$ | async as total; else zero">
+                            <span style="margin-top: 6px; display: block;">Total hours: {{ total }}h</span>
+                        </ng-container>
+                        <ng-template #zero>
+                            <span style="margin-top: 6px; display: block;">Total hours: 0h</span>
+                        </ng-template>
+                    </p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="footer"></div>
