@@ -2,32 +2,31 @@
 
 <div class="container">
     <ng-container *ngIf="worksites$ | async as worksites">
-        <div class="worksites">
-            <p class="worksites__header">Worksites</p>
-            <div class="worksites__items">
-                <div class="worksites__item" *ngFor="let worksite of worksites; let i = index"
+        <div class="main-content">
+            <div class="main-content__items">
+                <div class="main-content__item" *ngFor="let worksite of worksites; let i = index"
                     (click)="edit(worksite, i)">
-                    <p>
+                    <p class="content__text" style="margin-right: 10px;">
                         {{ worksite.nickname }}
                     </p>
-                    <!-- <ng-container *ngIf="(user$ | async).isAdmin"> -->
-                        <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
-                    <!-- </ng-container> -->
+                    <p class="content__users">
+                        users ({{ worksite.users.length }})
+                    </p>
+                    <img class="content__img" src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
                 </div>
             </div>
         </div>
     </ng-container>
-    <button type="button" (click)="addNew()">ADD NEW WORKSITE</button>
+    <button class="button button__worksite" type="button" (click)="addNew()">ADD NEW WORKSITE</button>
+    <button class="button button__users" type="button" (click)="worksiteUsers()">WORKSITE USERS</button>
 </div>
 
 <app-edit-form>
-
     <div class="blur" [ngClass]="{ 'active': manageService.modalObs$ | async }" (click)="closeModal()"></div>
     <ng-container *ngIf="manageService.modalObs$ | async">
         <div class="editForm">
 
             <div class="header">
-
                 <ng-container *ngIf="activeWorksite$ | async; else add">
                     <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
                 </ng-container>
@@ -44,40 +43,29 @@
             <form class="form" [formGroup]="worksiteForm">
                 <div class="form__inputs">
                     <label for="name">
-                        <span>
-                            Name
-                        </span>
+                        <span>Name</span>
                         <input type="text" placeholder="ex. Caribia" id="name" formControlName="nickname">
                     </label>
                     <label for="address">
-                        <span>
-                            Address
-                        </span>
+                        <span>Address</span>
                         <input type="text" placeholder="ex. Kongressikuja 1" id="address"
                             formControlName="streetAddress">
                     </label>
                     <label for="postal">
-                        <span>
-                            Postal code
-                        </span>
+                        <span>Postal code</span>
                         <input type="text" placeholder="ex. 20540" id="postal" formControlName="postalCode">
                     </label>
                     <label for="city">
-                        <span>
-                            City
-                        </span>
+                        <span>City</span>
                         <input type="text" placeholder="ex. Turku" id="city" formControlName="city">
                     </label>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
 
                     <ng-container *ngIf="activeWorksite$ | async; else addBtn">
-                        <!-- <ng-container *ngIf="(user$ | async).isAdmin"> -->
-                            <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
-                                [ngClass]="{ 'disabled': !worksiteForm.valid}">EDIT</button>
-                            <button type="button" class="delete" (click)="deleteWorksite()">DELETE</button>
-                        <!-- </ng-container> -->
-                        <!-- <ng-template #NoAdmin></ng-template> -->
+                        <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"
+                            [ngClass]="{ 'disabled': !worksiteForm.valid}">EDIT</button>
+                        <button type="button" class="delete" (click)="deleteWorksite()">DELETE</button>
                     </ng-container>
                     <ng-template #addBtn>
                         <button type="button" (click)="submit()" class="submit" [disabled]="!worksiteForm.valid"

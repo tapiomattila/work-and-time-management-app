@@ -174,6 +174,28 @@ export class WorksitesService {
             });
     }
 
+    updateWorksiteUsers(worksite: Worksite, newUsers: string[], type: 'add' | 'remove', updateById: string) {
+
+        if (type === 'add') {
+            this.worksitesStore.update(worksite.id,
+                {
+                    ...worksite,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: updateById,
+                    users: newUsers
+                });
+        }
+
+        if (type === 'remove') {
+            this.worksitesStore.update(worksite.id, {
+                ...worksite,
+                updatedAt: new Date().toISOString(),
+                updatedBy: updateById,
+                users: newUsers
+            });
+        }
+    }
+
     postNewWorksite(worksite: Partial<Worksite>) {
         return from(this.af.collection(`${FireBaseCollectionsEnum.WORKSITES}`).add(worksite));
     }

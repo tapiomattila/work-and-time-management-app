@@ -2,11 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserQuery, User } from 'src/app/auth/user';
+import { UserQuery, User, UserService } from 'src/app/auth/user';
+import { UsersQuery, UsersService } from 'src/app/auth/admin/users';
 import { ManageService } from '../manage,service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { AuthQuery } from 'src/app/auth/state';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-manage-worksites',
@@ -19,7 +22,6 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
 export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
-
     user$: Observable<User>;
     activeWorksite$: Observable<Worksite>;
     worksites$: Observable<Worksite[]>;
@@ -32,7 +34,11 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private worksiteService: WorksitesService,
         private userQuery: UserQuery,
-        public manageService: ManageService
+        public manageService: ManageService,
+        private userService: UserService,
+        private usersService: UsersService,
+        private usersQuery: UsersQuery,
+        private authQuery: AuthQuery
     ) { }
 
     ngOnInit() {
@@ -43,6 +49,21 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKSITE);
         this.manageService.modalControl(this.route);
         this.user$ = this.userQuery.select();
+
+        const allInfosSubs = this.authQuery.auth$.pipe(
+            switchMap(auth => {
+                if (!auth) {
+                    return of(null);
+                }
+                return this.userService.fetchAllUsersInfos(auth);
+            }),
+            tap(res => {
+                if (res) {
+                    this.usersService.updateUsersStore(res);
+                }
+            })
+        ).subscribe();
+        this.subscriptions.push(allInfosSubs);
     }
 
     initForm() {
@@ -203,6 +224,10 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.worksiteService.setActive(null);
         this.manageService.setModal(false);
         this.router.navigate([`${RouterRoutesEnum.MANAGE_WORKSITES}`]);
+    }
+
+    worksiteUsers() {
+        this.router.navigate(['worksite-users']);
     }
 
     ngOnDestroy() {

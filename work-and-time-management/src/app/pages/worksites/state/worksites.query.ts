@@ -46,6 +46,18 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
     });
   }
 
+  selectLiveWorksiteById(id: string) {
+    return this.selectAllLiveWorksites()
+      .pipe(
+        map(el => el.find(elx => elx.id === id))
+      );
+  }
+
+  getLiveWorksites() {
+    const allEntities = this.getAll();
+    return allEntities.filter(el => !el.deleted);
+  }
+
   selectLastUpdatedWorksite() {
     const stampsArr = [];
     return this.hoursQuery.hours$.pipe(

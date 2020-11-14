@@ -1,12 +1,10 @@
 <app-header [title]="'Work types'"></app-header>
 
 <div class="container">
-    <div class="worksites">
-        <!-- <p class="worksites__header">Worktype Management</p> -->
-
+    <div class="main-content">
         <ng-container *ngIf="worktypes$ | async as worktypes">
-            <div class="worksites__items">
-                <div class="worksites__item" *ngFor="let worktype of worktypes; let i = index"
+            <div class="main-content__items">
+                <div class="main-content__item" *ngFor="let worktype of worktypes; let i = index"
                     (click)="edit(worktype, i)">
                     <p>
                         {{ worktype.viewName }}
@@ -16,7 +14,7 @@
                 </div>
             </div>
         </ng-container>
-        <button type="button" (click)="addNew()">ADD NEW WORKTYPE</button>
+        <button class="button button__work" type="button" (click)="addNew()">ADD NEW WORKTYPE</button>
     </div>
 </div>
 
@@ -40,16 +38,12 @@
             <form class="form" [formGroup]="worktypeForm">
                 <div class="form__inputs">
                     <label for="name">
-                        <span>
-                            Name
-                        </span>
+                        <span>Name</span>
                         <input type="text" placeholder="ex. Normal man hours" id="name" formControlName="viewName">
                     </label>
 
                     <label for="rate">
-                        <span>
-                            Rate
-                        </span>
+                        <span>Rate</span>
                         <input type="number" placeholder="Hourly rate: ex. 12.25" id="rate" (focus)="onFocus()" formControlName="rate">
                     </label>
                 </div>

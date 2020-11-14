@@ -1,0 +1,31 @@
+.users {
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr min-content;
+        grid-template-rows: minmax(30px, min-content);
+        // gap: 5px;
+
+        border: 1px solid transparent;
+
+        align-items: center;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: 0.3s all;
+
+        &:hover {
+            border-bottom: 1px solid navy;
+        }
+
+        label {
+            grid-column: 1 / 2;
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        input {
+            grid-column: 2 / 3;
+        }
+    }
+}

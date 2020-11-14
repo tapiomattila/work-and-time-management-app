@@ -16,6 +16,8 @@ import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.co
 import { ManageWorktypesComponent } from './manage-worktypes/manage-worktypes.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { WorksiteUsersComponent } from './manage-worksites/worksite-users/worksite-users.component';
+import { UsersElementComponent } from './manage-worksites/worksite-users/users-element/users-element.component';
 
 @NgModule({
     imports: [
@@ -38,7 +40,9 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
         ManageWorksitesComponent,
         ManageWorktypesComponent,
         AdminSettingsComponent,
-        ManageUsersComponent
+        ManageUsersComponent,
+        WorksiteUsersComponent,
+        UsersElementComponent
     ],
     providers: [],
 })

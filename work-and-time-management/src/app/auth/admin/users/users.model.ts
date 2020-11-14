@@ -1,4 +1,4 @@
-export interface User {
+export interface Users {
     id: string;
     firstName: string;
     lastName: string;
@@ -9,9 +9,9 @@ export interface User {
     calculatedSum: number;
 }
 
-export function createUser(user: Partial<User>) {
+export function createUser(user: Partial<Users>) {
     return {
         id: user.id,
         ...user
-    } as User;
+    } as Users;
 }

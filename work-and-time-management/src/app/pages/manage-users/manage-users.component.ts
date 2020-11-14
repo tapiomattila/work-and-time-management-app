@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { User } from 'src/app/auth/admin/users/users.model';
+import { Users } from 'src/app/auth/admin/users/users.model';
 import { UsersQuery } from 'src/app/auth/admin/users/users.query';
 import { UsersService } from 'src/app/auth/admin/users/users.service';
 import { AuthQuery } from 'src/app/auth/state';
@@ -20,7 +20,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   users$: Observable<{
     totalHours$: Observable<number>,
-    user: User
+    user: Users
   }[]>;
 
   constructor(
@@ -33,10 +33,6 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading$ = this.usersQuery.selectLoading();
-    this.loading$.subscribe(res => console.log('show loading', res));
-
-    console.log('init');
-    // const auth = this.authQuery.getValue();
     this.users$ = this.usersQuery.users$.pipe(
       map(el => {
         return el.map(elx => {
@@ -60,8 +56,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
                   return of(res);
                 } else {
                   return this.userService.fetchAllUsersInfos(authen).pipe(
-                    tap((users: User[]) => {
-                      console.log('show in tap', users);
+                    tap((users: Users[]) => {
                       this.usersService.updateUsersStore(users);
                     })
                   );

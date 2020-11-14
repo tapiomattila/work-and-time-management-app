@@ -1,0 +1,10 @@
+<ng-container *ngIf="usersMapped.length > 0">
+    <div class="users__item" style="cursor: pointer; padding-bottom: 7px;" *ngFor="let user of usersMapped; let i = index;">
+        <label for="{{ user.uniqId }}">
+            <span> {{ user.firstName }} {{ user.lastName }}</span>
+            {{ user.email }}
+        </label>
+        <input style="margin-left: 8px;" type="checkbox" name="{{ user.uniqId }}" id="{{ user.uniqId }}"
+        (change)="setNewChecked($event.target.checked, user)" [checked]="getChecked(user.id)">
+    </div>
+</ng-container>

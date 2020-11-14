@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="item-container">
-        <ng-container *ngIf="loading$ | async; else">
+        <ng-container *ngIf="loading$ | async">
             <div class="item-container__items" style="display: flex; justify-content: center; align-items: center;">
                 <app-loader></app-loader>
             </div>

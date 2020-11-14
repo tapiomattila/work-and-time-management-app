@@ -1,0 +1,29 @@
+<app-header [title]="'Worksite users'"></app-header>
+<div class="container">
+    <div class="main-content">
+        <ng-container *ngIf="loading$ | async">
+            <div class="main-content__items" style="display: flex; justify-content: center; align-items: center;">
+                <app-loader></app-loader>
+            </div>
+        </ng-container>
+    </div>
+
+    <ng-container *ngIf="data$ | async as data">
+        <div class="main-content">
+            <div class="main-content__items">
+                <div class="main-content__item no-shadow" *ngFor="let worksite of data.worksites">
+                    <div>
+                        <p style="font-weight: bold; font-size: 24px; margin-bottom: 12px;">
+                            {{ worksite.nickname }}
+                        </p>
+                        <app-users-element style="cursor: pointer;" [users]="data.users" [worksite]="worksite"
+                            (worksiteUserChange)="worksiteChange($event)"></app-users-element>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- <button class="button button__worksite" type="button" (click)="addToDatabase()">ADD</button> -->
+</div>
+<div class="footer"></div>

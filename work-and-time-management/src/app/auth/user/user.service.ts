@@ -45,6 +45,39 @@ export class UserService {
             );
     }
 
+    fetchUserInfosById(id: string, clientId: string) {
+        // return this.af.collection(FireBaseCollectionsEnum.USERS_INFOS,
+        //     ref => ref.where('_c', '==', auth.clientId))
+        //     .snapshotChanges()
+        //     .pipe(
+        //         delay(1000),
+        //         map(snaps => {
+        //             return snaps.map(snap => {
+        //                 const id = snap.payload.doc.id;
+        //                 const data = snap.payload.doc.data();
+        //                 return {
+        //                     id,
+        //                     ...(data as object)
+        //                 };
+        //             });
+
+        //         }),
+        //         first()
+        //     );
+
+        return this.af.collection(FireBaseCollectionsEnum.USERS_INFOS,
+            ref => ref.where('_c', '==', clientId)).doc(id)
+            .snapshotChanges()
+            .pipe(
+                map((snap: any) => {
+                    return {
+                        id: snap.payload.id,
+                        ...(snap.payload.data() as object)
+                    };
+                })
+            );
+    }
+
     fetchUserById(id: string) {
         return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
             .snapshotChanges()
