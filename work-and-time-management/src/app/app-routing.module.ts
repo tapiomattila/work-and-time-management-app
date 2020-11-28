@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, data: { animations: { page: 'rootPage' }} },
   { path: 'worksites', component: WorksitesComponent, data: { animation: { page: 'worksitesPage' }} },
   { path: 'current-worksite/:id', component: AddHoursComponent, data: { animation: { page: 'currentWorksitedPage' }}  },
+  { path: 'add-hours/day/:date', component: AddHoursComponent, data: { animation: { page: 'addHoursPage' }}  },
   { path: 'add-hours/:id', component: AddHoursComponent, data: { animation: { page: 'addHoursPage' }}  },
   { path: 'added-hours', component: AddedHoursComponent, data: { animation: { page: 'addedHoursPage' }}  },
   { path: 'admin-settings', component: AdminSettingsComponent, data: { animation: { page: 'adminSettingsPage' }}  },

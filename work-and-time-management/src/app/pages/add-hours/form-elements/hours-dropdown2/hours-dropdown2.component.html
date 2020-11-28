@@ -1,0 +1,22 @@
+<div class="dropdown">
+    <button type="button" class="dropdown__selection-button" (click)="dropdownShow()">
+        <ng-container *ngIf="selectedItem; else noElement">
+            <span class="dropdown__selection-button--default">
+            {{ selectedItem.nickname ? selectedItem.nickname : selectedItem.viewName }}
+            </span>
+        </ng-container>
+        <ng-template #noElement>
+            <span class="dropdown__selection-button--default">
+                {{ defaultName }}
+            </span>
+        </ng-template>
+        <span class="dropdown__selection-button--carrot" [ngClass]="{ 'active' : show }"></span>
+    </button>
+    <ul class="dropdown__list" [ngClass]="{ 'active' : show }">
+        <li *ngIf="selectedItem" class="dropdown__list--item" [ngClass]="{ 'active' : show, 'scroll-over': scrollOver }" (click)="reset()">
+            --
+        </li>
+        <li class="dropdown__list--item" *ngFor="let el of contents"
+            [ngClass]="{ 'active' : show, 'scroll-over': scrollOver }" (click)="selectElement(el)">{{ el.nickname ? el.nickname : el.viewName }}</li>
+    </ul>
+</div>

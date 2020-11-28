@@ -25,7 +25,7 @@
 
 <ng-container *ngIf="(windowService.windowSizeObs$ | async).width <= 576; else wide">
   <div class="circles">
-    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, true]" [index]="i"></app-day-hours>
+    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, true]" [index]="i" (selectedDay)="daySelected($event)"></app-day-hours>
   </div>
 </ng-container>
 

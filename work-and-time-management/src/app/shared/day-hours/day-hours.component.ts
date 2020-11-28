@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as moment from 'moment';
 import { HoursQuery } from 'src/app/auth/hours';
 import { Observable } from 'rxjs';
@@ -15,6 +15,8 @@ export class DayHoursComponent implements OnInit {
     hours$: Observable<number>;
     indexX: number;
     widthX: number;
+
+    @Output() selectedDay = new EventEmitter();
 
     @Input()
     set index(value: number) {
@@ -55,4 +57,10 @@ export class DayHoursComponent implements OnInit {
     ) { }
 
     ngOnInit() { }
+
+    daySelected() {
+        console.log('day', this.day);
+        console.log('hours', this.hours);
+        this.selectedDay.emit(this.hours);
+    }
 }

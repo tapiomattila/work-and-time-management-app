@@ -96,8 +96,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.worksite$ = this.worksiteQuery.selectActiveWorksite();
-        this.worktype$ = this.worktypeQuery.selectActiveWorktype();
+        this.worksite$ = this.worksiteQuery.selectActiveWorksite().pipe(
+            tap(active => this.dataForm.controls.worksite.setValue(active))
+        );
+        this.worktype$ = this.worktypeQuery.selectActiveWorktype().pipe(
+            tap(active => this.dataForm.controls.worktype.setValue(active))
+        );
 
         this.selectionDayHours();
         this.formValueChanges();
@@ -152,6 +156,23 @@ export class AddHoursComponent implements OnInit, OnDestroy {
                     return this.worksiteQuery.selectTableHours(elements);
                 }),
             );
+    }
+
+    takeItem(item: Worksite | WorkType) {
+        const worksite = this.worksiteQuery.getLiveWorksites().find(el => el.id === item.id);
+        const worktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
+
+        if (worksite) {
+            const selItem = item as Worksite;
+            this.dataForm.controls.worksite.setValue(selItem);
+        }
+
+        if (worktype) {
+            const selItem = item as WorkType;
+            this.dataForm.controls.worktype.setValue(selItem);
+        }
+
+        const form = this.dataForm.value;
     }
 
     showFormToggleEmit(event) {
