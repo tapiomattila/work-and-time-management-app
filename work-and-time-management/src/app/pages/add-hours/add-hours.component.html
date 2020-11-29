@@ -25,19 +25,21 @@
   </app-hours-date-selection>
 
   <div class="worksite-drd">
-    <app-hours-dropdown2
+    <app-hours-dropdown
+      *ngIf="showFormData"
       [defaultName]="'Worksite selection'"
       [content]="worksites$ | async"
-      (itemSelection)="takeItem($event)" 
-      [activeSelection]="worksite$ | async"></app-hours-dropdown2>
+      (itemSelection)="getItemSelectionFromDropdown($event)" 
+      [activeSelection]="worksite$ | async"></app-hours-dropdown>
   </div>
 
   <div class="worktype-drd">
-    <app-hours-dropdown2
+    <app-hours-dropdown
+      *ngIf="showFormData"
       [defaultName]="'Worktype selection'"
       [content]="worktypes$ | async"
-      (itemSelection)="takeItem($event)"
-      [activeSelection]="worktype$ | async"></app-hours-dropdown2>
+      (itemSelection)="getItemSelectionFromDropdown($event)"
+      [activeSelection]="worktype$ | async"></app-hours-dropdown>
   </div>
 
   <app-hours-slider *ngIf="showFormData" [parentForm]="dataForm" [controlName]="'slider'"
@@ -57,7 +59,9 @@
 </form>
 
 <div class="table-container">
-  <app-hours-table [tableHours]="dayTableHours$ | async" (hoursSelection)="getHoursSelectionFromTable($event)"
+  <app-hours-table
+    [tableHours]="dayTableHours$ | async"
+    (hoursSelection)="getHoursSelectionFromTable($event)"
     [changeIndex]="setTableIndex">
   </app-hours-table>
 </div>

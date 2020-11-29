@@ -14,20 +14,9 @@
     [form-end table-start] min-content
     [table-end footer-start] 1fr
     [footer-end];
-  // gap: 15px;
   gap: var(--gap15);
   overflow: hidden;
 }
-
-// .worktype-drd {
-//   grid-column: 1 / -1;
-//   grid-row: worktype-drd-start / worktype-drd-end;
-// }
-
-// .test2 {
-//   grid-column: 1 / -1;
-//   grid-row: test2-start / test2-end;
-// }
 
 .address {
   grid-row: address-start / address-end;

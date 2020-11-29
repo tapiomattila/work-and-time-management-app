@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject, timer } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/pages/worktype/state';
@@ -60,7 +60,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     dataForm: FormGroup;
     momentDay: moment.Moment;
 
-    private hoursAddedMomentSubj = new BehaviorSubject<string>('reset');
+    private hoursAddedMomentSubj = new BehaviorSubject<'reset' | 'added'>('reset');
     hoursAddedMoment$ = this.hoursAddedMomentSubj.asObservable();
 
     constructor(
@@ -77,8 +77,9 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.worksites$ = this.worksiteQuery.selectAll();
-        this.worktypes$ = this.worktypeQuery.selectAll();
+        this.hoursAddedMomentSubj.next('reset');
+        this.worksites$ = this.worksiteQuery.selectAllLiveWorksites();
+        this.worktypes$ = this.worktypeQuery.selectAllLiveWorktypes();
 
         const activeWorktypeSubs = this.worktypes$.subscribe(res => {
             if (res && res.length) {
@@ -97,10 +98,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         });
 
         this.worksite$ = this.worksiteQuery.selectActiveWorksite().pipe(
-            tap(active => this.dataForm.controls.worksite.setValue(active))
+            tap(active => this.dataForm.controls.worksite.setValue(active)),
         );
         this.worktype$ = this.worktypeQuery.selectActiveWorktype().pipe(
-            tap(active => this.dataForm.controls.worktype.setValue(active))
+            tap(active => this.dataForm.controls.worktype.setValue(active)),
         );
 
         this.selectionDayHours();
@@ -121,9 +122,9 @@ export class AddHoursComponent implements OnInit, OnDestroy {
                     if (res > 0) {
                         if (res !== previousHours) {
                             this.hoursAddedMomentSubj.next('added');
-                            setTimeout(() => {
-                                this.hoursAddedMomentSubj.next('reset');
-                            }, 200);
+
+                            const resetSubs = this.timerX(200, this.resetHours, this)
+                                .subscribe(() => resetSubs.unsubscribe());
                         }
                         previousHours = res;
                     }
@@ -158,21 +159,22 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             );
     }
 
-    takeItem(item: Worksite | WorkType) {
+    getItemSelectionFromDropdown(item: Worksite | WorkType) {
         const worksite = this.worksiteQuery.getLiveWorksites().find(el => el.id === item.id);
         const worktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
 
         if (worksite) {
             const selItem = item as Worksite;
             this.dataForm.controls.worksite.setValue(selItem);
+            this.worksiteService.setActive(worksite.id);
+            this.resetTableSelection();
         }
 
         if (worktype) {
             const selItem = item as WorkType;
             this.dataForm.controls.worktype.setValue(selItem);
+            this.worktypeService.setActive(worktype.id);
         }
-
-        const form = this.dataForm.value;
     }
 
     showFormToggleEmit(event) {
@@ -193,21 +195,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             return { message: true };
         }
         return null;
-    }
-
-    getItemSelectionFromDropdown(item: Worksite | WorkType) {
-        const itemWorksite = this.worksiteQuery.getAll().find(el => el.id === item.id);
-        const itemWorktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
-
-        if (itemWorksite) {
-            this.worksiteService.setActive(item.id);
-            this.resetTableSelection();
-            this.resetSlider();
-        }
-
-        if (itemWorktype) {
-            this.worktypeService.setActive(item.id);
-        }
     }
 
     backArrowPressed() {
@@ -252,6 +239,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             const hour = hours as TableHours;
             this.hoursService.setActive(hour.id);
             this.worktypeService.setActive(hour.worktypeId);
+            this.worksiteService.setActive(hour.worksiteId);
             this.dataForm.controls.slider.setValue(hour.hours);
         } else {
             this.hoursService.setActive(null);
@@ -270,9 +258,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
     resetTableSelection() {
         this.setTableIndex = 1;
-        setTimeout(() => {
-            this.setTableIndex = undefined;
-        }, 200);
+        const resetSubs = this.timerX(200, this.resetTableAndHours, this)
+            .subscribe(() => resetSubs.unsubscribe());
     }
 
     postHours(values: FormData) {
@@ -285,8 +272,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             worktypeId: values.worktype.id,
             _c: this.authQuery.getValue().clientId
         };
+        console.log('POST');
         this.hoursService.postNewHours(newHours).subscribe(() => {
-            console.log('POST');
             this.hoursService.setUserHours(this.authQuery.getValue()).subscribe();
             this.resetSlider();
         });
@@ -300,17 +287,34 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             worktypeId: values.worktype.id
         };
 
+        console.log('UPDATE', updatedHours);
         const hours = this.hoursQuery.getActive() as Hours;
         this.hoursService.putHours(hours.id, updatedHours).subscribe(() => {
 
-            console.log('UPDATE');
             this.hoursService.updateHours(hours, updatedHours);
             this.getHoursSelectionFromTable({ message: 'reset' });
             this.setTableIndex = 1;
-            setTimeout(() => {
-                this.setTableIndex = undefined;
-            }, 200);
+            const resetSubs = this.timerX(200, this.resetTableAndHours, this)
+                .subscribe(() => resetSubs.unsubscribe());
         });
+    }
+
+    timerX(time: number, cb: (...args) => void, argu: any) {
+        const timerObs = timer(time);
+        return timerObs.pipe(
+            tap(() => {
+                cb(argu);
+            }),
+        );
+    }
+
+    resetTableAndHours(thisIn: any) {
+        thisIn.setTableIndex = undefined;
+        thisIn.hoursService.setActive(null);
+    }
+
+    resetHours(thisIn: any) {
+        thisIn.hoursAddedMomentSubj.next('reset');
     }
 
     ngOnDestroy() {

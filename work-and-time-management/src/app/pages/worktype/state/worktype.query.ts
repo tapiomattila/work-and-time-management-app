@@ -22,7 +22,7 @@ export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
         return undefined;
     }
 
-    selectActiveWorktype() {
+    selectActiveWorktype(): Observable<WorkType> {
         return this.selectActiveId()
             .pipe(
                 switchMap(id => id ? this.selectEntity(id) : of(null))

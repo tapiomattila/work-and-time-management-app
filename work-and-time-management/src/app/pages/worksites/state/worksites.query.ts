@@ -8,6 +8,7 @@ import { Hours } from 'src/app/auth/hours';
 import { WorkTypeQuery } from 'src/app/pages/worktype/state';
 import * as moment from 'moment';
 import { formatHours } from 'src/app/helpers/helper-functions';
+import { Worksite } from './worksites.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
     super(store);
   }
 
-  selectActiveWorksite() {
+  selectActiveWorksite(): Observable<Worksite> {
     return this.selectActiveId()
       .pipe(
         switchMap(id => id ? this.selectEntity(id) : of(null))

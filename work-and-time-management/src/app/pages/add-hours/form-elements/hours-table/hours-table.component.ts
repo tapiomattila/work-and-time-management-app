@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Hours } from 'src/app/auth/hours';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { timer } from 'rxjs';
 
 @Component({
     selector: 'app-hours-table',
@@ -12,9 +13,8 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
 })
 export class HoursTableComponent implements OnInit {
 
-    @Input() tableHours: object[];
     @Output() hoursSelection = new EventEmitter();
-
+    @Input() tableHours: object[];
     dayTableSelectionIndex;
     previousTableSelectionIndex;
 
