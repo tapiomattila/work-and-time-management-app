@@ -6,7 +6,7 @@
   button {
     &:focus {
       outline: none;
-      border: 2px solid rgb(37, 226, 160);
+      border: 2px solid var(--primary-color);
     }
   }
 

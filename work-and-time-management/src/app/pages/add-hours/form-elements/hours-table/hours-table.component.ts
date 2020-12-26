@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Hours } from 'src/app/auth/hours';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
-import { timer } from 'rxjs';
 
 @Component({
     selector: 'app-hours-table',

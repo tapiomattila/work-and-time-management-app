@@ -1,13 +1,25 @@
-<div class="slider-box" [formGroup]="parentForm">
-    <div class="slider-container" #slider>
-        <p>Time added: <span style="font-weight: bold;">{{ formatHoursFunc(sliderValue) }}</span></p>
-        <input type="range" [min]="sliderMin" [max]="sliderMax" [value]="0" [step]="step" class="slider"
-            [formControlName]="controlName" (change)="getSliderValue($event)">
-        <ng-container *ngIf="sliderObsValue; else noValue">
-            <p style="width: 20px; position: relative;" [ngStyle]="{ 'left.px' : getPosition(sliderObsValue) }">{{ sliderObsValue }}h</p>
-        </ng-container>
-        <ng-template #noValue>
-            <p>0h</p>
-        </ng-template>
-    </div>
+<div class="slider-box">
+  <div class="slider-container" #slider>
+    <input
+      type="range"
+      [min]="sliderMin"
+      [max]="sliderMax"
+      [value]="value"
+      [step]="step"
+      class="slider"
+      (change)="getSliderValue($event)"
+      (input)="inputValue($event)"
+    />
+    <ng-container *ngIf="valueObs$ | async as valueObs; else noValue">
+      <p>
+        Time added: 
+        <span style="font-weight: bold; font-size: 20px;">{{ formatHoursFunc(valueObs) }}</span>
+      </p>
+    </ng-container>
+    <ng-template #noValue>
+      
+      <p>Time added: <span style="font-weight: bold; font-size: 20px;">0h</span></p>
+    </ng-template>
+    <h5 *ngIf="showError" style="color: #AD0028;">Field cannot be value 0</h5>
+  </div>
 </div>

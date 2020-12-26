@@ -20,7 +20,10 @@
 
 <form class="form" [formGroup]="dataForm">
 
-  <app-hours-date-selection [parentForm]="dataForm" [controlName]="'date'" (showForm)="showFormToggleEmit($event)"
+  <app-hours-date-selection
+    [parentForm]="dataForm"
+    [controlName]="'date'"
+    (showForm)="showFormToggleEmit($event)"
     [tableContent]="dayTableHours$ | async">
   </app-hours-date-selection>
 
@@ -30,7 +33,8 @@
       [defaultName]="'Worksite selection'"
       [content]="worksites$ | async"
       (itemSelection)="getItemSelectionFromDropdown($event)" 
-      [activeSelection]="worksite$ | async"></app-hours-dropdown>
+      [activeSelection]="worksite$ | async"
+      [setErrors]="showErrors && !dataForm.get('worksite').valid"></app-hours-dropdown>
   </div>
 
   <div class="worktype-drd">
@@ -39,21 +43,23 @@
       [defaultName]="'Worktype selection'"
       [content]="worktypes$ | async"
       (itemSelection)="getItemSelectionFromDropdown($event)"
-      [activeSelection]="worktype$ | async"></app-hours-dropdown>
+      [activeSelection]="worktype$ | async"
+      [setErrors]="showErrors && !dataForm.get('worktype').valid"></app-hours-dropdown>
   </div>
 
-  <app-hours-slider *ngIf="showFormData" [parentForm]="dataForm" [controlName]="'slider'"
-    [sliderObsValue]="slider$ | async" [sliderValue]="slider$ | async">
-  </app-hours-slider>
+  <app-hours-slider *ngIf="showFormData" formControlName="slider" [setErrors]="showErrors && !dataForm.get('slider').valid"></app-hours-slider>
 
   <div style="display: flex; justify-content: space-between; transition: 0.3s all;">
     <ng-container *ngIf="activeHours$ | async as active; else add">
-      <button @fadeInSecondary class="form__submit" type="submit" (click)="onSubmit()"
+      <!-- @fadeInSecondary  -->
+      <button class="form__submit" type="submit" (click)="onSubmit()"
         *ngIf="showFormData">Edit</button>
-      <button @fadeInSecondary class="form__remove" style="justify-self: end;" (click)="remove()">Delete</button>
+        <!-- @fadeInSecondary  -->
+      <button class="form__remove" style="justify-self: end;" (click)="remove()">Delete</button>
     </ng-container>
     <ng-template #add>
-      <button @fadeInSecondary class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
+      <!-- @fadeInSecondary  -->
+      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
     </ng-template>
   </div>  
 </form>

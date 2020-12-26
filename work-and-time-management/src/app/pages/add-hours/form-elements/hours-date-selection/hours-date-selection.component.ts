@@ -8,7 +8,7 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
     styleUrls: ['./hours-date-selection.component.scss'],
     animations: [
         fadeInEnterTrigger
-    ]
+    ],
 })
 export class HoursDateSelectionComponent implements OnInit {
 

@@ -2,17 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { Observable, Subscription, BehaviorSubject, timer } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/pages/worktype/state';
-import { map, distinctUntilChanged, delay, tap } from 'rxjs/operators';
+import { map, distinctUntilChanged, delay, tap, switchMap } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { fadeInOutTrigger, fadeInEnterTrigger, fadeInSecondaryTrigger } from 'src/app/animations/animations';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AuthQuery } from 'src/app/auth/state';
+import { DropdownReset } from 'src/app/helpers/interfaces/helpers';
 
 interface FormData {
     date: Date;
@@ -33,7 +34,6 @@ interface FormData {
             state('noAddition', style({
             })),
             state('addition', style({
-                // color: '#5FC45A',
                 transform: 'scale(1.12)'
             })),
             transition('noAddition <=> addition', animate('400ms 100ms ease-in'))
@@ -41,11 +41,17 @@ interface FormData {
     ]
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-    subscriptions: Subscription[] = [];
-    setTableIndex;
-    showFormData = true;
 
-    slider$: Observable<number>;
+    private hoursAddedMomentSubj = new BehaviorSubject<'reset' | 'added'>('reset');
+    hoursAddedMoment$ = this.hoursAddedMomentSubj.asObservable();
+
+    private subscriptions: Subscription[] = [];
+    setTableIndex: number;
+    showFormData = true;
+    showErrors = false;
+
+    dataForm: FormGroup;
+    momentDay: moment.Moment;
 
     worksite$: Observable<Worksite>;
     worktype$: Observable<WorkType>;
@@ -56,12 +62,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     dayHours$: Observable<string>;
     dayTableHours$: Observable<object[]>;
     activeHours$: Observable<Hours>;
-
-    dataForm: FormGroup;
-    momentDay: moment.Moment;
-
-    private hoursAddedMomentSubj = new BehaviorSubject<'reset' | 'added'>('reset');
-    hoursAddedMoment$ = this.hoursAddedMomentSubj.asObservable();
 
     constructor(
         private worksiteQuery: WorksitesQuery,
@@ -77,20 +77,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.hoursAddedMomentSubj.next('reset');
-        this.worksites$ = this.worksiteQuery.selectAllLiveWorksites();
-        this.worktypes$ = this.worktypeQuery.selectAllLiveWorktypes();
-
-        const activeWorktypeSubs = this.worktypes$.subscribe(res => {
-            if (res && res.length) {
-                this.worktypeService.setActive(res[0].id);
-            }
-        });
-
-        this.initForm();
-        this.momentDay = moment();
-        this.worksiteQuery.setAddHoursDateSelection(new Date().getTime());
-
+        this.initializeComponentData();
         this.route.params.subscribe((params: Params) => {
             if (params.id) {
                 this.worksiteService.setActive(params.id);
@@ -103,15 +90,28 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         this.worktype$ = this.worktypeQuery.selectActiveWorktype().pipe(
             tap(active => this.dataForm.controls.worktype.setValue(active)),
         );
+    }
 
+    initializeComponentData() {
+        this.resetHours();
+        this.worksites$ = this.worksiteQuery.selectAllLiveWorksites();
+        this.worktypes$ = this.worktypeQuery.selectAllLiveWorktypes();
+        this.initForm();
+        this.momentDay = moment();
+        this.worksiteQuery.setAddHoursDateSelection(new Date().getTime());
         this.selectionDayHours();
         this.formValueChanges();
         this.setTableHours(new Date());
-
-        this.slider$ = this.dataForm.controls.slider.valueChanges;
         this.activeHours$ = this.hoursQuery.selectActiveHours();
+    }
 
-        this.subscriptions.push(activeWorktypeSubs);
+    initForm() {
+        this.dataForm = new FormGroup({
+            date: new FormControl(new Date(), Validators.required),
+            worksite: new FormControl(null, Validators.required),
+            worktype: new FormControl(null, Validators.required),
+            slider: new FormControl(null, [Validators.required, this.sliderValidator.bind(this)])
+        });
     }
 
     selectionDayHours() {
@@ -122,9 +122,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
                     if (res > 0) {
                         if (res !== previousHours) {
                             this.hoursAddedMomentSubj.next('added');
-
-                            const resetSubs = this.timerX(200, this.resetHours, this)
-                                .subscribe(() => resetSubs.unsubscribe());
                         }
                         previousHours = res;
                     }
@@ -132,6 +129,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
                 map(el => {
                     return formatHours(el);
                 }),
+                delay(200),
+                tap(() => this.resetHours())
             );
     }
 
@@ -159,7 +158,24 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             );
     }
 
-    getItemSelectionFromDropdown(item: Worksite | WorkType) {
+    getItemSelectionFromDropdown(item: Worksite | WorkType | DropdownReset ) {
+
+        // to own function
+        this.showErrors = false;
+        if (item.id === null) {
+            const itemx = item as DropdownReset;
+            if (itemx.type === 'worksite') {
+                this.dataForm.controls.worksite.setValue(null);
+            }
+
+            if (itemx.type === 'worktype') {
+                this.dataForm.controls.worktype.setValue(null);
+            }
+            return;
+        }
+        //
+
+        // to own function
         const worksite = this.worksiteQuery.getLiveWorksites().find(el => el.id === item.id);
         const worktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
 
@@ -175,19 +191,11 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             this.dataForm.controls.worktype.setValue(selItem);
             this.worktypeService.setActive(worktype.id);
         }
+        //
     }
 
     showFormToggleEmit(event) {
         this.showFormData = event;
-    }
-
-    initForm() {
-        this.dataForm = new FormGroup({
-            date: new FormControl(new Date(), Validators.required),
-            worksite: new FormControl(null, Validators.required),
-            worktype: new FormControl(null, Validators.required),
-            slider: new FormControl(null, [Validators.required, this.sliderValidator.bind(this)])
-        });
     }
 
     sliderValidator(control: FormControl): { [s: string]: boolean } {
@@ -202,17 +210,26 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
+        console.log('show form', this.dataForm);
         if (!this.dataForm.valid) {
+            this.showErrors = true;
+            console.log('INVALID');
+
+            // own function
+            const slider = this.dataForm.controls.slider.value;
+            const isSliderZero = slider === '0';
+            if (isSliderZero) {
+                this.dataForm.controls.slider.setValue(null);
+            }
             return;
         }
+        this.showErrors = false;
         const values = this.dataForm.value as FormData;
 
-        // POST
         if (!this.hoursQuery.getActive()) {
             this.postHours(values);
         }
 
-        // UPDATE
         if (this.hoursQuery.getActive()) {
             this.updateHours(values);
         }
@@ -222,12 +239,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         if (this.hoursQuery.getActive()) {
             const active = this.hoursQuery.getActive() as Hours;
             const id = active.id;
-            // REMOVE
-            this.hoursService.deleteHours(id).subscribe(() => {
+            const removeSubs = this.hoursService.deleteHours(id).subscribe(() => {
                 this.hoursService.removeHours(id);
                 this.resetSlider();
                 this.resetTableSelection();
             });
+            this.subscriptions.push(removeSubs);
         }
     }
 
@@ -257,70 +274,61 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     }
 
     resetTableSelection() {
-        this.setTableIndex = 1;
-        const resetSubs = this.timerX(200, this.resetTableAndHours, this)
-            .subscribe(() => resetSubs.unsubscribe());
+        this.setTableIndex = undefined;
+        this.hoursService.setActive(null);
     }
 
     postHours(values: FormData) {
+        const sliderStr = values.slider.toString();
         const newHours: Partial<Hours> = {
             userId: this.userQuery.getValue().id,
             createdAt: values.date.toISOString(),
-            markedHours: values.slider,
+            markedHours: parseFloat(sliderStr),
             updatedAt: values.date.toISOString(),
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id,
             _c: this.authQuery.getValue().clientId
         };
-        console.log('POST');
-        this.hoursService.postNewHours(newHours).subscribe(() => {
-            this.hoursService.setUserHours(this.authQuery.getValue()).subscribe();
-            this.resetSlider();
-        });
+
+        const postSubs = this.hoursService.postNewHours(newHours)
+            .pipe(
+                switchMap(() => {
+                    this.resetSlider();
+                    return this.hoursService.setUserHours(this.authQuery.getValue());
+                })
+            ).subscribe();
+        this.subscriptions.push(postSubs);
     }
 
     updateHours(values: FormData) {
+        const sliderStr = values.slider.toString();
         const updatedHours: Partial<Hours> = {
-            markedHours: values.slider,
+            markedHours: parseFloat(sliderStr),
             updatedAt: new Date().toISOString(),
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id
         };
 
-        console.log('UPDATE', updatedHours);
         const hours = this.hoursQuery.getActive() as Hours;
-        this.hoursService.putHours(hours.id, updatedHours).subscribe(() => {
-
-            this.hoursService.updateHours(hours, updatedHours);
-            this.getHoursSelectionFromTable({ message: 'reset' });
-            this.setTableIndex = 1;
-            const resetSubs = this.timerX(200, this.resetTableAndHours, this)
-                .subscribe(() => resetSubs.unsubscribe());
-        });
+        const updateSubs = this.hoursService.putHours(hours.id, updatedHours)
+            .pipe(
+                tap(() => {
+                    this.hoursService.updateHours(hours, updatedHours);
+                    this.getHoursSelectionFromTable({ message: 'reset' });
+                    this.setTableIndex = undefined;
+                    this.hoursService.setActive(null);
+                })
+            ).subscribe();
+        this.subscriptions.push(updateSubs);
     }
 
-    timerX(time: number, cb: (...args) => void, argu: any) {
-        const timerObs = timer(time);
-        return timerObs.pipe(
-            tap(() => {
-                cb(argu);
-            }),
-        );
-    }
-
-    resetTableAndHours(thisIn: any) {
-        thisIn.setTableIndex = undefined;
-        thisIn.hoursService.setActive(null);
-    }
-
-    resetHours(thisIn: any) {
-        thisIn.hoursAddedMomentSubj.next('reset');
+    resetHours() {
+        this.hoursAddedMomentSubj.next('reset');
     }
 
     ngOnDestroy() {
-        if (this.subscriptions.length) {
-            this.subscriptions.forEach(el => el.unsubscribe());
-        }
+        this.subscriptions.forEach(el => {
+            el.unsubscribe();
+        });
     }
-
 }

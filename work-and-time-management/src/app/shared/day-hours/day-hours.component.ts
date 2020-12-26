@@ -59,8 +59,6 @@ export class DayHoursComponent implements OnInit {
     ngOnInit() { }
 
     daySelected() {
-        console.log('day', this.day);
-        console.log('hours', this.hours);
         this.selectedDay.emit(this.hours);
     }
 }

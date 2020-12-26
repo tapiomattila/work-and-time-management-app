@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Worksite } from 'src/app/pages/worksites/state';
 import { WorkType } from 'src/app/pages/worktype/state';
+import { DropdownReset } from 'src/app/helpers/interfaces/helpers';
 
 @Component({
   selector: 'app-hours-dropdown',
@@ -20,6 +21,12 @@ export class HoursDropdownComponent implements OnInit {
     this.contents = [...values];
   }
 
+  @Input()
+  set setErrors(value: boolean) {
+    this.showError = value;
+  }
+
+  showError = false;
   contents = [];
   show = false;
   scrollOver = false;
@@ -42,8 +49,17 @@ export class HoursDropdownComponent implements OnInit {
   }
 
   reset() {
+    const selItem = this.selectedItem;
     this.selectedItem = undefined;
     this.show = !this.show;
+
+    // TODO
+    // add type to worksite and worktype database entity
+
+    // tslint:disable-next-line: no-string-literal
+    const nullType: DropdownReset = selItem['streetAddress'] ? { type: 'worksite', id: null } : { type: 'worktype', id: null };
+    console.log('show nullType', nullType);
+    this.itemSelection.emit(nullType);
   }
 
   clickOutsideEvent() {
