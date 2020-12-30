@@ -19,8 +19,10 @@
         label {
             grid-column: 1 / 2;
 
-            span {
-                font-weight: bold;
+            .span-el {
+                .bold-span {
+                    font-weight: bold;
+                }
             }
         }
 

@@ -99,7 +99,7 @@ export class WorksiteUsersComponent implements OnInit {
 
       const copy = worksite.users.slice(0);
       copy.push(event.userId);
-      this.worksitesService.updateWorksiteUsers(worksite, copy, 'add', this.authQuery.getValue().id);
+      this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'add', this.authQuery.getValue().id);
     }
 
     if (!event.checked) {
@@ -108,7 +108,7 @@ export class WorksiteUsersComponent implements OnInit {
 
         const copy = worksite.users.slice(0);
         copy.splice(index, 1);
-        this.worksitesService.updateWorksiteUsers(worksite, copy, 'remove', this.authQuery.getValue().id);
+        this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'remove', this.authQuery.getValue().id);
       }
     }
 

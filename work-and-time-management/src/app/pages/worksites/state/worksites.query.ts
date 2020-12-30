@@ -167,6 +167,8 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
         createdAt: el.createdAt,
         updateAt: el.updatedAt,
         updateAtFormatted: formattedDate,
+        createdBy: el.createdBy,
+        updatedBy: el.updatedBy,
         worksiteId: el.worksiteId,
         worksiteName: worksiteNameFound,
         worktypeId,

@@ -13,6 +13,7 @@ import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-workty
 import { AdminSettingsComponent } from './pages/admin-settings/admin-settings.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { WorksiteUsersComponent } from './pages/manage-worksites/worksite-users/worksite-users.component';
+import { UserManagementComponent } from './pages/user-management/user-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'manage-worktypes/add', component: ManageWorktypesComponent },
   { path: 'manage-worktypes/edit/:id', component: ManageWorktypesComponent },
   { path: 'worksite-users', component: WorksiteUsersComponent },
+  { path: 'user-management/:id', component: UserManagementComponent },
   { path: '**', component: PagenotfoundComponent }
 ];
 

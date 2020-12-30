@@ -19,8 +19,9 @@ export class HoursTableComponent implements OnInit {
 
     @Input()
     set changeIndex(value: number) {
-        if (value === 1) {
+        if (value === 111) {
             this.dayTableSelectionIndex = undefined;
+            this.hoursSelection.emit({ message: 'reset' });
         }
     }
 

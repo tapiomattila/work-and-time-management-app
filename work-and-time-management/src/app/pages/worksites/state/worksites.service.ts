@@ -143,8 +143,8 @@ export class WorksitesService {
             );
     }
 
-    putWorksite(id: string, changes: Partial<Worksite>): Observable<any> {
-        return from(this.af.doc(`${FireBaseCollectionsEnum.WORKSITES}/${id}`).update(changes));
+    putWorksite(worksiteId: string, changes: Partial<Worksite>): Observable<any> {
+        return from(this.af.doc(`${FireBaseCollectionsEnum.WORKSITES}/${worksiteId}`).update(changes));
     }
 
     updateWorksite(worksite: Worksite, updated: Partial<Worksite>): void {
@@ -174,7 +174,7 @@ export class WorksitesService {
             });
     }
 
-    updateWorksiteUsers(worksite: Worksite, newUsers: string[], type: 'add' | 'remove', updateById: string) {
+    updateStoreWorksiteUsers(worksite: Worksite, newUsers: string[], type: 'add' | 'remove', updateById: string) {
 
         if (type === 'add') {
             this.worksitesStore.update(worksite.id,

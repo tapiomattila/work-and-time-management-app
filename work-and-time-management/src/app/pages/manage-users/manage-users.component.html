@@ -10,7 +10,7 @@
 
         <ng-container *ngIf="users$ | async as users">
             <div class="item-container__items">
-                <div class="item-container__item" *ngFor="let user of users; let i = index">
+                <div class="item-container__item" *ngFor="let user of users; let i = index" (click)="openUser(user)">
                     <p>
                         <span>{{ user.user.firstName }} {{ user.user.lastName }}</span>
                         <span class="email">{{ user.user.email }}</span>
@@ -20,6 +20,7 @@
                         </ng-container>
                         <ng-template #loading>
                             <span style="color: #000;">Loading</span>
+                            <!-- Add loading timer so that 0 hours is shown after certain period of time -->
                         </ng-template>
 
                         <ng-container *ngIf="user.totalHours$ | async as total; else zero">

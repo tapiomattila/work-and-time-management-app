@@ -14,6 +14,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { WorksiteUsersComponent } from './manage-worksites/worksite-users/worksite-users.component';
 import { UsersElementComponent } from './manage-worksites/worksite-users/users-element/users-element.component';
 import { AddHoursModule } from './add-hours/add-hours.module';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 @NgModule({
     imports: [
@@ -35,6 +36,7 @@ import { AddHoursModule } from './add-hours/add-hours.module';
         ManageUsersComponent,
         WorksiteUsersComponent,
         UsersElementComponent,
+        UserManagementComponent,
     ],
     providers: [],
 })

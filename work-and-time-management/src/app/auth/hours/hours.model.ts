@@ -5,6 +5,8 @@ export interface TableHours {
     createdAt: string;
     updateAt: string;
     updateAtFormatted: string;
+    createdBy: string;
+    updatedBy: string;
     worksiteId: string;
     worksiteName: string;
     worktypeId: string;
@@ -19,6 +21,8 @@ export interface Hours {
     markedHours: number;
     createdAt: string;
     updatedAt: string;
+    createdBy: string;
+    updatedBy: string;
     _c: string;
 }
 

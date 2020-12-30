@@ -8,6 +8,8 @@ import { AuthQuery } from 'src/app/auth/state';
 import { UserService } from 'src/app/auth/user';
 import { Auth } from 'src/app/auth/state';
 import { HoursQuery } from 'src/app/auth/hours';
+import { Router } from '@angular/router';
+import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 
 @Component({
   selector: 'app-manage-users',
@@ -28,7 +30,8 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private usersQuery: UsersQuery,
     private authQuery: AuthQuery,
-    private hoursQurery: HoursQuery
+    private hoursQurery: HoursQuery,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -70,6 +73,10 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
         })
       ).subscribe();
     this.subscriptions.push(usersStoreOrFetchSubs);
+  }
+
+  openUser(user) {
+    this.router.navigate([RouterRoutesEnum.USER_MANAGEMENT, user.user.id]);
   }
 
   ngOnDestroy() {

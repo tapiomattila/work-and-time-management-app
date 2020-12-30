@@ -13,6 +13,7 @@ export enum RouterRoutesEnum {
     EDIT_WORKTYPE = 'manage-worktypes/edit',
     ADMIN_SETTINGS = 'admin-settings',
     ADD_WORKTYPE = 'manage-worktypes/add',
+    USER_MANAGEMENT = 'user-management'
 }
 
 export enum FireBaseCollectionsEnum {

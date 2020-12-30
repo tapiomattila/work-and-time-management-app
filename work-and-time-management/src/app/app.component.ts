@@ -33,9 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
   // TODO
   // add new form add hours dropdown (own custom)
   // with this dropdown add day hours selection with add hours default dropdown selection
-  // create new double range selector on add hours
-  // modify hours to use this new double range selector
-
 
   firebaseSubs: Subscription[] = [];
   storeSubs: Subscription[] = [];

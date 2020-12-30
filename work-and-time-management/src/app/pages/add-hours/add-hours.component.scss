@@ -85,3 +85,25 @@
   grid-column: 2 / span 6;
   min-height: 20px;
 }
+
+.button-add {
+  transition: 0.5s all;
+  &:focus {
+    outline: none;
+  }
+  &.test {
+    transform: translateX(-10px);
+  }
+}
+
+button {
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    border: 2px solid rgb(29, 80, 73);
+    background: rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+  }
+}

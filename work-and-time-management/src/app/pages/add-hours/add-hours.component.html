@@ -52,14 +52,14 @@
   <div style="display: flex; justify-content: space-between; transition: 0.3s all;">
     <ng-container *ngIf="activeHours$ | async as active; else add">
       <!-- @fadeInSecondary  -->
-      <button class="form__submit" type="submit" (click)="onSubmit()"
+      <button class="form__submit" type="submit" (click)="onValidateAndSubmit()"
         *ngIf="showFormData">Edit</button>
         <!-- @fadeInSecondary  -->
       <button class="form__remove" style="justify-self: end;" (click)="remove()">Delete</button>
     </ng-container>
     <ng-template #add>
       <!-- @fadeInSecondary  -->
-      <button class="form__submit" type="submit" (click)="onSubmit()" *ngIf="showFormData">Add</button>
+      <button class="form__submit" type="submit" (click)="onValidateAndSubmit()" *ngIf="showFormData" [disabled]="disable || !dataForm.valid">Add</button>
     </ng-template>
   </div>  
 </form>
@@ -67,8 +67,8 @@
 <div class="table-container">
   <app-hours-table
     [tableHours]="dayTableHours$ | async"
-    (hoursSelection)="getHoursSelectionFromTable($event)"
-    [changeIndex]="setTableIndex">
+    (hoursSelection)="handleTableSelection($event)"
+    [changeIndex]="tableSelectionObs$ | async">
   </app-hours-table>
 </div>
 
