@@ -96,7 +96,6 @@ export class WorksiteUsersComponent implements OnInit {
     const findUser = worksite.users.find(el => el === event.userId);
 
     if (event.checked && !findUser) {
-
       const copy = worksite.users.slice(0);
       copy.push(event.userId);
       this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'add', this.authQuery.getValue().id);
@@ -105,7 +104,6 @@ export class WorksiteUsersComponent implements OnInit {
     if (!event.checked) {
       const index = worksite.users.findIndex(el => el === event.userId);
       if (findUser && index !== -1) {
-
         const copy = worksite.users.slice(0);
         copy.splice(index, 1);
         this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'remove', this.authQuery.getValue().id);

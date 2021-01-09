@@ -50,7 +50,7 @@
     height: auto;
     max-height: 230px;
 
-    z-index: 0;
+    z-index: 1;
 
     position: absolute;
     top: 47px;
@@ -58,7 +58,7 @@
     width: 100%;
 
     &.active {
-      z-index: 1;
+      z-index: 2;
     }
 
     & > *:nth-child(1) {

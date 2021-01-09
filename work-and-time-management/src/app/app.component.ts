@@ -8,7 +8,6 @@ import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
 import { WorkTypeService } from './pages/worktype/state';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { RouterOutlet } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ManageService } from './pages/manage,service';
 
@@ -154,16 +153,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     this.firebaseSubs.push(fetchRolesSubs);
-  }
-
-  getAnimationData(outlet: RouterOutlet) {
-    // tslint:disable-next-line: no-string-literal
-    const routeData = outlet.activatedRouteData['animation'];
-    if (!routeData) {
-      return 'rootPage';
-    }
-    // tslint:disable-next-line: no-string-literal
-    return routeData['page'];
   }
 
   closeModal() {

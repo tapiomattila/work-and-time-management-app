@@ -1,7 +1,6 @@
 import { QueryEntity } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { UsersState, UsersStore } from './users.store';
-import { filter, take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

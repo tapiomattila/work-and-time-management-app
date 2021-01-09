@@ -20,5 +20,4 @@
         <li class="dropdown__list--item" *ngFor="let el of contents"
             [ngClass]="{ 'active' : show, 'scroll-over': scrollOver }" (click)="selectElement(el)">{{ el.nickname ? el.nickname : el.viewName }}</li>
     </ul>
-    <!-- <h5 *ngIf="showError" style="color: #AD0028;">Field is required</h5> -->
 </div>

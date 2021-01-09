@@ -2,9 +2,8 @@
   <app-loader *ngIf="authService.loader"></app-loader>
 </div>
 
-<!-- [@routeState]="getAnimationData(rOutlet)" -->
-<div *ngIf="!authService.loader" class="app-container" style="transition: 0.5s all;">
-  <router-outlet #rOutlet="outlet"></router-outlet>
+<div *ngIf="!authService.loader" class="app-container">
+  <router-outlet></router-outlet>
 </div>
 
 <ng-container *ngIf="manageService.genModalObs$ | async">

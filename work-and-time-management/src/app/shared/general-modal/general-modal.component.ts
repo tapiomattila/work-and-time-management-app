@@ -12,8 +12,7 @@ export class GeneralModalComponent implements OnInit {
     private manageService: ManageService
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   closeModal() {
     this.manageService.setGeneralModal(false);

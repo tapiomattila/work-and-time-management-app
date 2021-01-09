@@ -1,18 +1,23 @@
 :host {
-    padding-top: 20px;
-    display: grid;
-    grid-template-columns: 2px repeat(6, 1fr) 2px;
-    grid-template-rows:
-      [heading-start] 45px
-      [heading-end header-start] 65px
-      [header-end container-start] 1fr
-      [container-end];
-    gap: 15px;
-  
-    min-height: calc(100vh - 20px);
-    box-sizing: border-box;
-  
-    position: relative;
-    z-index: 10;
-  }
-  
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 2px repeat(6, 1fr) 2px;
+  grid-template-rows:
+    [heading-start] 45px
+    [heading-end header-start] 65px
+    [header-end container-start] 1fr
+    [container-end];
+  gap: 15px;
+
+  // min-height: calc(100vh - 20px);
+  box-sizing: border-box;
+
+  position: relative;
+  z-index: 10;
+}
+
+.main-content__item--text {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 12px;
+}

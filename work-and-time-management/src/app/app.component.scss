@@ -8,25 +8,21 @@
   min-height: 100vh;
   box-sizing: border-box;
   max-width: 650px;
-}
+  transition: 0.5s all;
 
-.register-modal-content {
-  display: grid;
-  grid-template-columns: 20px 1fr 20px;
-  grid-template-rows: 20px 1fr 40px 20px;
-  gap: 20px;
+  @media only screen and (min-width: 650px) {
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    margin: 10px;
+    height: min-content;
+    min-height: 85vh;
 
-  align-content: center;
+    // TODO
+    // tablet layout fix
 
-  h4 {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-  }
-
-  button {
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
-    justify-self: flex-start;
-    width: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

@@ -13,7 +13,7 @@
             <div class="main-content__items">
                 <div class="main-content__item no-shadow" *ngFor="let worksite of data.worksites">
                     <div>
-                        <p style="font-weight: bold; font-size: 24px; margin-bottom: 12px;">
+                        <p class="main-content__item--text">
                             {{ worksite.nickname }}
                         </p>
                         <app-users-element style="cursor: pointer;" [users]="data.users" [worksite]="worksite"
@@ -23,7 +23,5 @@
             </div>
         </div>
     </ng-container>
-
-    <!-- <button class="button button__worksite" type="button" (click)="addToDatabase()">ADD</button> -->
 </div>
 <div class="footer"></div>

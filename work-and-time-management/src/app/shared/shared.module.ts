@@ -32,7 +32,7 @@ import { DirectivesModule } from './directives/directives.module';
         HeaderComponent,
         LoaderComponent,
         MenuModalComponent,
-        GeneralModalComponent
+        GeneralModalComponent,
     ],
     declarations: [
         BackArrowComponent,

@@ -101,9 +101,12 @@ button {
     outline: none;
   }
 
+  transition: 0.5s all;
+
   &:disabled {
     border: 2px solid rgb(29, 80, 73);
-    background: rgba(0, 0, 0, 0.25);
+    // background: rgba(0, 0, 0, 0.25);
+    background-color: #ccc;
     cursor: not-allowed;
   }
 }

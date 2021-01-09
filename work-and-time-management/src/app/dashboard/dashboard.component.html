@@ -1,58 +1,46 @@
-<div class="heading">
-  <ng-container *ngIf="user$ | async as user">
-    <div class="heading__profile-icon">
-      <ng-container *ngIf="user.profilePictureUrl">
-        <img [src]="user.profilePictureUrl" alt="avatar">
-        <!-- <img src="../../assets/img/profile-avatar-thumb.jpg" alt="avatar"> -->
-      </ng-container>
-    </div>
-    <div class="heading__name">
-      <p>{{ user.displayName }}</p>
+<app-header class="heading" [user]="user$ | async" [momentDay]="momentDay"></app-header>
+
+<!-- TODO, day selection to add-hours for given day -->
+<ng-container *ngIf="(windowService.windowSizeObs$ | async).width as width">
+  <ng-container *ngIf="width <= 576; else wide">
+    <div class="circles">
+      <app-day-hours
+        *ngFor="let info of infos; let i = index"
+        [hoursVal]="[info, true]"
+        [index]="i"
+        (selectedDay)="daySelected($event)">
+      </app-day-hours>
     </div>
   </ng-container>
-  <div class="heading__settings-btn">
-    <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn" (click)="openMenu()">
-  </div>
-</div>
-
-<ng-container *ngIf="openMenuModal">
-  <app-menu-modal [openMenuModal]="openMenuModal" (closed)="closedModal($event)"></app-menu-modal>
+  <ng-template #wide>
+    <div class="circles wide">
+      <app-day-hours
+        *ngFor="let info of infos; let i = index"
+        [hoursVal]="[info, false]"
+        [index]="i">
+      </app-day-hours>
+    </div>
+  </ng-template>
 </ng-container>
-
-<div class="header">
-  <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
-</div>
-
-<ng-container *ngIf="(windowService.windowSizeObs$ | async).width <= 576; else wide">
-  <div class="circles">
-    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, true]" [index]="i" (selectedDay)="daySelected($event)"></app-day-hours>
-  </div>
-</ng-container>
-
-<ng-template #wide>
-  <div class="circles wide">
-    <app-day-hours *ngFor="let info of infos; let i = index" [hoursVal]="[info, false]" [index]="i"></app-day-hours>
-  </div>
-</ng-template>
 
 <div class="cards">
   <ng-container *ngIf="currentWorksite$ | async as current">
-    <app-card @fadeInEnterWithDelay (click)="navigate('add-hours', current.id)" [name]="current.nickname"
+    <app-card
+      @fadeInEnterWithDelay
+      (click)="navigate('add-hours', current.id)"
+      [name]="current.nickname"
       [worksite]="current">
     </app-card>
   </ng-container>
 
-  <!-- Worksites -->
   <div class="card" (click)="navigate('worksites')">
     <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
   </div>
 
-  <!-- Added hours -->
   <div class="card" (click)="navigate('added-hours')">
     <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
   </div>
 
-  <!-- Manage worksites -->
   <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
     <div class="card" (click)="navigate('manage-worksites')">
       <app-card [name]="'Manage worksites'"></app-card>
@@ -66,26 +54,23 @@
     </ng-container>
   </ng-template>
 
-  <!-- Manage worktypes -->
   <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('manage-worktypes')">
       <app-card [name]="'Manage worktypes'"></app-card>
     </div>
   </ng-container>
 
-  <!-- Manage users -->
   <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('admin/manage-users')">
       <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
     </div>
   </ng-container>
 
-  <!-- Admin settings -->
-  <!-- <ng-container *ngIf="(user$ | async).isAdmin">
+  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
-  </ng-container> -->
+  </ng-container>
 </div>
 
 <div class="footer"></div>

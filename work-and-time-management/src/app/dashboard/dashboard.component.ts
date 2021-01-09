@@ -20,7 +20,6 @@ import { fadeInEnterTrigger, fadeInEnterWithDelayTrigger, fadeInOutTrigger } fro
   ]
 })
 export class DashboardComponent implements OnInit {
-
   openMenuModal = false;
   currentWorksite$: Observable<Worksite>;
 

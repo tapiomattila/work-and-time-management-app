@@ -2,7 +2,8 @@
   padding-top: 20px;
   display: grid;
   grid-template-columns: 2px repeat(6, 1fr) 2px;
-  grid-template-rows: 45px 45px min-content 1fr;
+  // grid-template-rows: 45px 45px min-content 1fr;
+  grid-template-rows: 125px min-content 1fr;
   gap: 15px;
 
   position: relative;
@@ -10,11 +11,12 @@
 
 .heading {
   grid-column: 2 / span 6;
+  grid-row: 1 / 2;
 }
 
-.header {
-  grid-column: 2 / span 6;
-}
+// .header {
+//   grid-column: 2 / span 6;
+// }
 
 .circles {
   grid-column: 2 / span 6;

@@ -1,19 +1,54 @@
-<ng-container *ngIf="openMenuModal">
-    <app-menu-modal [openMenuModal]="openMenuModal" (closed)="closedModal($event)"></app-menu-modal>
-</ng-container>
+<app-menu-modal
+  *ngIf="openMenuModal"
+  [openMenuModal]="openMenuModal"
+  (closed)="closedModal($event)"
+>
+</app-menu-modal>
 
-<div class="heading">
-    <div class="heading__back-arrow">
+<div class="heading-container">
+  <ng-container *ngIf="user; else noUser">
+    <div class="heading">
+      <div class="heading__profile-icon">
+        <img
+          *ngIf="user.profilePictureUrl"
+          [src]="user.profilePictureUrl"
+          alt="avatar"
+        />
+      </div>
+      <div class="heading__name">
+        <p>{{ user.displayName }}</p>
+      </div>
+      <div class="heading__settings-btn">
+        <img
+          src="../../assets/svg/SVG/settings-btn.svg"
+          alt="settings btn"
+          (click)="openMenu()"
+        />
+      </div>
+    </div>
+    <div class="header" [ngClass]="{ small: momentDay }">
+      <p *ngIf="momentDay">{{ momentDay.format("DD.MM.YYYY dddd") }}</p>
+    </div>
+  </ng-container>
+
+  <ng-template #noUser>
+    <div class="heading">
+      <div class="heading__back-arrow">
         <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
+      </div>
+      <div class="heading__name">
+        <p *ngIf="momentDay">{{ momentDay.format("DD.MM.YYYY dddd") }}</p>
+      </div>
+      <div class="heading__settings-btn">
+        <img
+          src="../../assets/svg/SVG/settings-btn.svg"
+          alt="settings btn"
+          (click)="openMenu()"
+        />
+      </div>
     </div>
-    <div class="heading__name">
-        <p *ngIf="momentDay">{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+    <div class="header">
+      <p *ngIf="title">{{ title }}</p>
     </div>
-    <div class="heading__settings-btn">
-        <img src="../../assets/svg/SVG/settings-btn.svg" alt="settings btn" (click)="openMenu()">
-    </div>
-</div>
-
-<div class="header">
-    <p *ngIf="title">{{ title }}</p>
+  </ng-template>
 </div>

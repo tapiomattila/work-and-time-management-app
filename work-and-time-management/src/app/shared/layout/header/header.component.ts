@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import * as moment from 'moment';
+import { User } from 'src/app/auth/user';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,8 @@ import * as moment from 'moment';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
+  @Input() user: User;
 
   @Input() title: string;
   @Input() momentDay: moment.Moment;
