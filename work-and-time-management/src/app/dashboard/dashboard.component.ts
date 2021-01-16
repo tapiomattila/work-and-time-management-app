@@ -86,7 +86,6 @@ export class DashboardComponent implements OnInit {
   }
 
   daySelected(event) {
-    console.log('hsow day in parent', event);
     const momemtSelected = moment(event[0].date);
     this.router.navigate([`${RouterRoutesEnum.ADD_HOURS}/day/${momemtSelected.toISOString()}`]);
   }

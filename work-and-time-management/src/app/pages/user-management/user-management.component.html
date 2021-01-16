@@ -9,7 +9,7 @@
             <div class="main-content__items">
                 <div class="main-content__item" *ngFor="let worksite of data.worksites" (click)="changeCheckedState(input, worksite.id)">
                     <label class="content__text text__display">
-                        <span>{{ worksite.nickname }}</span>
+                        <span>{{ worksite.name }}</span>
                     <input type="checkbox" [checked]="getCheckedState(worksite)" #input>
                     </label>
                 </div>

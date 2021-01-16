@@ -2,12 +2,12 @@
 
 <div class="container">
     <ng-container *ngIf="worksites$ | async as worksites">
-        <div class="main-content">
+        <div *ngIf="worksites.length > 0" class="main-content">
             <div class="main-content__items">
                 <div class="main-content__item" *ngFor="let worksite of worksites; let i = index"
                     (click)="edit(worksite, i)">
                     <p class="content__text" style="margin-right: 10px;">
-                        {{ worksite.nickname }}
+                        {{ worksite.name }}
                     </p>
                     <p class="content__users">
                         users ({{ worksite.users.length }})
@@ -44,7 +44,7 @@
                 <div class="form__inputs">
                     <label for="name">
                         <span>Name</span>
-                        <input type="text" placeholder="ex. Caribia" id="name" formControlName="nickname">
+                        <input type="text" placeholder="ex. Caribia" id="name" formControlName="name">
                     </label>
                     <label for="address">
                         <span>Address</span>

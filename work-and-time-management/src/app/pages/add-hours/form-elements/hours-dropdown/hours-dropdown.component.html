@@ -2,7 +2,7 @@
     <button type="button" class="dropdown__selection-button" (click)="dropdownShow()" appClickOutside (clickOutside)="clickOutsideEvent($event)">
         <ng-container *ngIf="selectedItem; else noElement">
             <span class="dropdown__selection-button--default">
-            {{ selectedItem.nickname ? selectedItem.nickname : selectedItem.viewName }}
+            {{ selectedItem.name }}
             </span>
         </ng-container>
         <ng-template #noElement>
@@ -18,6 +18,6 @@
             --
         </li>
         <li class="dropdown__list--item" *ngFor="let el of contents"
-            [ngClass]="{ 'active' : show, 'scroll-over': scrollOver }" (click)="selectElement(el)">{{ el.nickname ? el.nickname : el.viewName }}</li>
+            [ngClass]="{ 'active' : show, 'scroll-over': scrollOver }" (click)="selectElement(el)">{{ el.name }}</li>
     </ul>
 </div>

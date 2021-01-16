@@ -1,12 +1,11 @@
 export interface WorkType {
     id: string;
+    name: string;
     createdAt: string;
     updatedAt: string;
     createdBy: string;
     updatedBy: string;
-    workType: string;
     deleted: boolean;
-    viewName: string;
     rate: number;
     _c: string;
 }

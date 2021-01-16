@@ -2,7 +2,7 @@
 
 <ng-container *ngIf="(worksite$ | async) as worksite">
   <div class="address" @fadeInOut>
-    <p>{{ worksite.nickname }}</p>
+    <p>{{ worksite.name }}</p>
     <p><span>{{ worksite.streetAddress }}, </span> <span>{{ worksite.postalCode }}
       </span><span>{{ worksite.city }}</span></p>
   </div>

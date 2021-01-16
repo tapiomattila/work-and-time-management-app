@@ -9,6 +9,7 @@ import { WorkTypeQuery } from 'src/app/pages/worktype/state';
 import * as moment from 'moment';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { Worksite } from './worksites.model';
+import { TableHours } from '../../../auth/hours/hours.model';
 
 @Injectable({
   providedIn: 'root'
@@ -153,27 +154,21 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   selectTableHours(hours: Hours[]) {
     return hours.map(el => {
       const worksiteName = this.getWorksiteById(el.worksiteId);
-      const worksiteNameFound = worksiteName && worksiteName.length ? worksiteName[0].nickname : undefined;
+      const worksiteNameFound = worksiteName && worksiteName.length > 0 ? worksiteName[0].name : undefined;
 
       const worktypeId = this.hoursQuery.getHourWorktype(el.id);
       const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
-      const worktypeNameFound = worktype ? worktype.viewName : undefined;
+      const worktypeNameFound = worktype ? worktype.name : undefined;
 
       const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
       const hoursFormatted = formatHours(el.markedHours);
 
       return {
-        id: el.id,
-        createdAt: el.createdAt,
-        updateAt: el.updatedAt,
+        ...el,
         updateAtFormatted: formattedDate,
-        createdBy: el.createdBy,
-        updatedBy: el.updatedBy,
-        worksiteId: el.worksiteId,
         worksiteName: worksiteNameFound,
-        worktypeId,
         worktypeName: worktypeNameFound,
-        hours: el.markedHours,
+        worktypeId,
         hoursFormatted
       };
     });

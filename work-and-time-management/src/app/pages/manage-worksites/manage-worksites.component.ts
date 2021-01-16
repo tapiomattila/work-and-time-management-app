@@ -68,7 +68,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     initForm() {
         this.worksiteForm = new FormGroup({
-            nickname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+            name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
             streetAddress: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
             postalCode: new FormControl('', [
                 Validators.required,
@@ -118,7 +118,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     }
 
     populateForm(worksite: Worksite) {
-        this.worksiteForm.controls.nickname.setValue(worksite.nickname);
+        this.worksiteForm.controls.name.setValue(worksite.name);
         this.worksiteForm.controls.streetAddress.setValue(worksite.streetAddress);
         this.worksiteForm.controls.postalCode.setValue(worksite.postalCode);
         this.worksiteForm.controls.city.setValue(worksite.city);
@@ -154,7 +154,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
 
     updateWorksite(formValues: Partial<Worksite>, activeWorksite: Worksite) {
         const updatedWorksite: Partial<Worksite> = {
-            nickname: formValues.nickname,
+            name: formValues.name,
             updatedAt: new Date().toISOString(),
             streetAddress: formValues.streetAddress,
             postalCode: formValues.postalCode,
@@ -178,7 +178,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
             createdBy: user.id,
             updatedAt: new Date().toISOString(),
             updatedBy: user.id,
-            nickname: formValues.nickname,
+            name: formValues.name,
             streetAddress: formValues.streetAddress,
             postalCode: formValues.postalCode,
             city: formValues.city,

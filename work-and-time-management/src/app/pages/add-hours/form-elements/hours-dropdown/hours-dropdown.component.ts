@@ -58,7 +58,6 @@ export class HoursDropdownComponent implements OnInit {
 
     // tslint:disable-next-line: no-string-literal
     const nullType: DropdownReset = selItem['streetAddress'] ? { type: 'worksite', id: null } : { type: 'worktype', id: null };
-    console.log('show nullType', nullType);
     this.itemSelection.emit(nullType);
   }
 

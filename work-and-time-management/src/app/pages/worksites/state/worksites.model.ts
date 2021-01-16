@@ -1,13 +1,13 @@
 export interface Worksite {
-    city: string;
+    id: string;
+    name: string;
     createdAt: string;
     createdBy: string;
-    id: string;
-    nickname: string;
-    postalCode: number;
-    streetAddress: string;
     updatedAt: string;
     updatedBy: string;
+    city: string;
+    postalCode: number;
+    streetAddress: string;
     deleted: boolean;
     users: string[];
     _c: string;

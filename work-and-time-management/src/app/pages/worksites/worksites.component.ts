@@ -29,7 +29,6 @@ export class WorksitesComponent implements OnInit {
     private router: Router,
     private navigationHandlerService: NavigationHandlerService,
     public windowService: WindowService,
-
   ) { }
 
   ngOnInit() {

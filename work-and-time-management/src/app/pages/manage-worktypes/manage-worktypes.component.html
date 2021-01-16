@@ -7,7 +7,7 @@
                 <div class="main-content__item" *ngFor="let worktype of worktypes; let i = index"
                     (click)="edit(worktype, i)">
                     <p>
-                        {{ worktype.viewName }}
+                        {{ worktype.name }}
                     </p>
                     <span class="rate">Rate: <span>{{ worktype.rate }}</span></span>
                     <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
@@ -39,7 +39,7 @@
                 <div class="form__inputs">
                     <label for="name">
                         <span>Name</span>
-                        <input type="text" placeholder="ex. Normal man hours" id="name" formControlName="viewName">
+                        <input type="text" placeholder="ex. Normal man hours" id="name" formControlName="name">
                     </label>
 
                     <label for="rate">

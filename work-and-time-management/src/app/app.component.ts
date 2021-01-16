@@ -33,6 +33,15 @@ export class AppComponent implements OnInit, OnDestroy {
   // add new form add hours dropdown (own custom)
   // with this dropdown add day hours selection with add hours default dropdown selection
 
+  // admin user show all worksites always, set
+
+  // store changes:
+  // -> current worksites -> user worksites
+  // -> current worktypes -> user worktypes
+  // new:
+  // -> all worksites
+  // -> all worktypes
+
   firebaseSubs: Subscription[] = [];
   storeSubs: Subscription[] = [];
   user$: Observable<User>;

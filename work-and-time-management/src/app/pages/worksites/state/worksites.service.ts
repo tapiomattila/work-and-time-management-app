@@ -152,7 +152,7 @@ export class WorksitesService {
             {
                 ...worksite,
                 updatedAt: updated.updatedAt,
-                nickname: updated.nickname,
+                name: updated.name,
                 streetAddress: updated.streetAddress,
                 postalCode: updated.postalCode,
                 city: updated.city,

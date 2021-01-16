@@ -44,7 +44,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.worktypeForm = new FormGroup({
-      viewName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       rate: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(5000)])
     });
   }
@@ -87,7 +87,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
   }
 
   populateForm(worktype: WorkType) {
-    this.worktypeForm.controls.viewName.setValue(worktype.viewName);
+    this.worktypeForm.controls.name.setValue(worktype.name);
     this.worktypeForm.controls.rate.setValue(worktype.rate);
   }
 
@@ -115,13 +115,10 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const controlValue = this.worktypeForm.controls.viewName.value;
+    const controlValue = this.worktypeForm.controls.name.value;
     const activeWorktype = this.worktypeQuery.getActive() as WorkType;
-
-    const workType = controlValue.split(' ').join('_').toLowerCase();
     const values = {
-      viewName: controlValue,
-      workType,
+      name: controlValue,
       rate: this.worktypeForm.controls.rate.value
     };
 
@@ -140,8 +137,8 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
       createdBy: user.id,
       updatedAt: new Date().toISOString(),
       updatedBy: user.id,
-      viewName: formValues.viewName,
-      workType: formValues.workType,
+      // viewName: formValues.viewName,
+      name: formValues.name,
       rate: formValues.rate,
       _c: this.userQuery.getValue()._c
     };
@@ -161,8 +158,8 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
     const updatedWorktype: Partial<WorkType> = {
       updatedAt: new Date().toISOString(),
       updatedBy: user.id,
-      viewName: formValues.viewName,
-      workType: formValues.workType,
+      // viewName: formValues.viewName,
+      name: formValues.name,
       rate: formValues.rate
     };
 

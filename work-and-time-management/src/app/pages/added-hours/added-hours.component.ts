@@ -40,7 +40,8 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.worksiteQuery.selectTableHours(elements);
             }),
             tap(res => {
-                const sortedByDates = this.sortData(res);
+                const result = (res as any) as TableHours[];
+                const sortedByDates = this.sortData(result);
                 this.dataSource = new MatTableDataSource(sortedByDates);
             }),
         ).subscribe();
@@ -50,8 +51,7 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sortData(data: TableHours[]) {
         return data.sort((a, b) => {
-            // tslint:disable-next-line: no-angle-bracket-type-assertion
-            return new Date(b.updateAt) as any - <any> new Date(a.updateAt);
+            return new Date(b.updatedAt) as any - (new Date(a.updatedAt) as any);
         });
     }
 

@@ -95,8 +95,7 @@ export class WorkTypeService {
                 ...worktype,
                 updatedAt: updated.updatedAt,
                 updatedBy: updated.updatedBy,
-                viewName: updated.viewName,
-                workType: updated.workType,
+                name: updated.name,
                 rate: updated.rate
             });
     }

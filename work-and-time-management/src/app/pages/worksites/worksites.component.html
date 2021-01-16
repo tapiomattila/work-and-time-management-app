@@ -4,7 +4,7 @@
  <!-- @fadeInEnter -->
 <div class="cards">
   <ng-container *ngIf="worksites$ | async as worksites">
-    <app-card *ngFor="let worksite of worksites" [name]="worksite.nickname" [worksite]="worksite" (click)="navigate('add-hours', worksite.id)"></app-card>
+    <app-card *ngFor="let worksite of worksites" [name]="worksite.name" [worksite]="worksite" (click)="navigate('add-hours', worksite.id)"></app-card>
   </ng-container>
   
 </div>

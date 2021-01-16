@@ -3,8 +3,8 @@ export interface TableHours {
     hours: number;
     hoursFormatted: string;
     createdAt: string;
-    updateAt: string;
-    updateAtFormatted: string;
+    updatedAt: string;
+    updatedAtFormatted: string;
     createdBy: string;
     updatedBy: string;
     worksiteId: string;
