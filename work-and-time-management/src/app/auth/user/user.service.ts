@@ -5,7 +5,7 @@ import { map, first, delay, catchError, tap } from 'rxjs/operators';
 import { User, createUser } from './user.model';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { HoursService } from '../hours';
-import { WorksitesService } from 'src/app/pages/worksites/state';
+import { WorksitesService } from 'src/app/stores/worksites/state';
 import { of, throwError, forkJoin, from } from 'rxjs';
 import { Auth } from '../state';
 

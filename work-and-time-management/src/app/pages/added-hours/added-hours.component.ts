@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
-import { WorksitesQuery } from '../worksites/state';
+import { WorksitesQuery } from '../../stores/worksites/state';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { HoursQuery, TableHours } from 'src/app/auth/hours';

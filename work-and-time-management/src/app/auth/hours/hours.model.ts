@@ -18,7 +18,7 @@ export interface Hours {
     userId: string;
     worksiteId: string;
     worktypeId: string;
-    markedHours: number;
+    hours: number;
     createdAt: string;
     updatedAt: string;
     createdBy: string;

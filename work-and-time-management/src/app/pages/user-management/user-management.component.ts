@@ -6,7 +6,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { UsersQuery } from 'src/app/auth/admin/users';
 import { AuthQuery } from 'src/app/auth/state';
 import { User, UserService } from 'src/app/auth/user';
-import { Worksite, WorksitesQuery, WorksitesService } from '../worksites/state';
+import { Worksite, WorksitesQuery, WorksitesService } from '../../stores/worksites/state';
 
 interface ComponentData {
   user: Partial<User>;

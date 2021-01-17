@@ -2,24 +2,29 @@
   <div class="slider-container" #slider>
     <input
       type="range"
-      [min]="sliderMin"
-      [max]="sliderMax"
-      [value]="value"
-      [step]="step"
       class="slider"
+      [min]="rangeConfig.min"
+      [max]="rangeConfig.max"
+      [value]="rangeValue"
+      [step]="rangeConfig.step"
       (change)="getSliderValue($event)"
-      (input)="inputValue($event)"
+      (input)="getDynamicInputValue($event)"
     />
-    <ng-container *ngIf="valueObs$ | async as valueObs; else noValue">
+    <ng-container *ngIf="rangeValue > 0; else noValue">
       <p>
-        Time added: 
-        <span style="font-weight: bold; font-size: 20px;">{{ formatHoursFunc(valueObs) }}</span>
+        Time added:
+        <span style="font-weight: bold; font-size: 20px">
+          {{ formatHoursFunc(rangeValue) }}
+        </span>
       </p>
     </ng-container>
     <ng-template #noValue>
-      
-      <p>Time added: <span style="font-weight: bold; font-size: 20px;">0h</span></p>
+      <p>
+        Time added: <span style="font-weight: bold; font-size: 20px">0h</span>
+      </p>
     </ng-template>
-    <h5 *ngIf="showError" style="color: #AD0028;">Field cannot be value 0</h5>
+    <ng-container *ngIf="showError">
+      <h5 style="color: #ad0028">Field cannot be value 0</h5>
+    </ng-container>
   </div>
 </div>

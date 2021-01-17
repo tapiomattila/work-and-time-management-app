@@ -3,10 +3,10 @@ import { interval, Observable, of, Subscription, timer } from 'rxjs';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
 import { User, UserQuery, UserService } from './auth/user';
-import { WorksitesService } from './pages/worksites/state';
+import { WorksitesService } from './stores/worksites/state';
 import { HoursService } from './auth/hours';
 import { Auth, AuthQuery, AuthService } from './auth/state';
-import { WorkTypeService } from './pages/worktype/state';
+import { WorkTypeService } from './stores/worktypes/state';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ManageService } from './pages/manage,service';
@@ -33,14 +33,31 @@ export class AppComponent implements OnInit, OnDestroy {
   // add new form add hours dropdown (own custom)
   // with this dropdown add day hours selection with add hours default dropdown selection
 
-  // admin user show all worksites always, set
+  // // admin user show all worksites always, set
 
-  // store changes:
-  // -> current worksites -> user worksites
-  // -> current worktypes -> user worktypes
-  // new:
-  // -> all worksites
-  // -> all worktypes
+  // // store changes:
+  // // -> current worksites -> user worksites
+  // // -> current worktypes -> user worktypes
+  // // new:
+  // // -> all worksites
+  // // -> all worktypes
+
+  // // TODO
+  // // add-hours table select update bug ?
+
+  // TODO
+  // normalize store and firebase data
+  // simplify
+
+  /**
+   *
+   * Stores:
+   * - hours
+   * - worksites
+   * - worktypes
+   * - users
+   *
+   */
 
   firebaseSubs: Subscription[] = [];
   storeSubs: Subscription[] = [];

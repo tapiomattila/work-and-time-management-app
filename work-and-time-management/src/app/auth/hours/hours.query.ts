@@ -25,7 +25,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
                 el => el.worksiteId === worksiteId
             ]
         }).pipe(
-            map((hours: Hours[]) => hours.map(el => el.markedHours)),
+            map((hours: Hours[]) => hours.map(el => el.hours)),
             map(hoursArr => {
                 return hoursArr.reduce((a, b) => a + b, 0);
             }),
@@ -51,7 +51,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             map(el => {
                 return el.filter(elx => moment(elx.updatedAt).isSame(day, 'day'));
             }),
-            map(res => res.map(el => el.markedHours)),
+            map(res => res.map(el => el.hours)),
             map(hoursArr => {
                 return hoursArr.reduce((a, b) => a + b, 0);
             }),
@@ -98,7 +98,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             ]
         }).pipe(
             map(hours => {
-                return hours.map(el => el.markedHours);
+                return hours.map(el => el.hours);
             }),
             map(hoursArr => {
                 return hoursArr.reduce((acc, val) => acc + val, 0);
@@ -116,7 +116,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             map(hours => {
                 return hours.map(el => {
                     return {
-                        hours: el.markedHours,
+                        hours: el.hours,
                         createdAt: el.createdAt,
                         updatedAt: el.updatedAt
                     };

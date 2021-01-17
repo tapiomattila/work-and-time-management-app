@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
+import { WorksitesQuery, Worksite, WorksitesService } from '../../stores/worksites/state';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserQuery, User, UserService } from 'src/app/auth/user';

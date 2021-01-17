@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User, UserQuery } from '../auth/user/';
 import * as moment from 'moment';
-import { Worksite, WorksitesQuery } from '../pages/worksites/state';
+import { Worksite, WorksitesQuery } from '../stores/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { WindowService } from '../services/window.service';
 import { fadeInEnterTrigger, fadeInEnterWithDelayTrigger, fadeInOutTrigger } from '../animations/animations';

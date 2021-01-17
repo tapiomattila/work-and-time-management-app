@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Worksite } from 'src/app/pages/worksites/state';
-import { WorkType } from 'src/app/pages/worktype/state';
+import { Worksite } from 'src/app/stores/worksites/state';
+import { WorkType } from 'src/app/stores/worktypes/state';
 import { DropdownReset } from 'src/app/helpers/interfaces/helpers';
 
 @Component({

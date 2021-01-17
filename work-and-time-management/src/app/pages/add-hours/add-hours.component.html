@@ -1,74 +1,108 @@
 <app-header [title]="'Add Hours'" [momentDay]="momentDay"></app-header>
 
-<ng-container *ngIf="(worksite$ | async) as worksite">
+<ng-container *ngIf="worksite$ | async as worksite">
   <div class="address" @fadeInOut>
     <p>{{ worksite.name }}</p>
-    <p><span>{{ worksite.streetAddress }}, </span> <span>{{ worksite.postalCode }}
-      </span><span>{{ worksite.city }}</span></p>
+    <p>
+      <span>{{ worksite.streetAddress }}, </span>
+      <span>{{ worksite.postalCode }} </span><span>{{ worksite.city }}</span>
+    </p>
   </div>
 </ng-container>
 
 <div class="marked-hours">
-  <h4>Total marked hours for the day: </h4>
+  <h4>Total marked hours for the day:</h4>
   <ng-container *ngIf="dayHours$ | async as hours">
     <ng-container *ngIf="hoursAddedMoment$ | async as hoursAdded">
-      <span [@hoursAddedState]="hoursAdded === 'added' ? 'addition' : 'noAddition'"
-        class="marked-hours__hours">{{ hours }}</span>
+      <span
+        [@hoursAddedState]="hoursAdded === 'added' ? 'addition' : 'noAddition'"
+        class="marked-hours__hours"
+        >{{ hours }}</span
+      >
     </ng-container>
   </ng-container>
 </div>
 
 <form class="form" [formGroup]="dataForm">
-
   <app-hours-date-selection
     [parentForm]="dataForm"
     [controlName]="'date'"
+    [tableContent]="dayTableHours$ | async"
     (showForm)="showFormToggleEmit($event)"
-    [tableContent]="dayTableHours$ | async">
+  >
   </app-hours-date-selection>
 
   <div class="worksite-drd">
-    <app-hours-dropdown
-      *ngIf="showFormData"
-      [defaultName]="'Worksite selection'"
-      [content]="worksites$ | async"
-      (itemSelection)="getItemSelectionFromDropdown($event)" 
-      [activeSelection]="worksite$ | async"
-      [setErrors]="showErrors && !dataForm.get('worksite').valid"></app-hours-dropdown>
+    <ng-container *ngIf="showFormData">
+      <app-hours-dropdown
+        [defaultName]="'Worksite selection'"
+        [content]="worksites$ | async"
+        [activeSelection]="worksite$ | async"
+        [setErrors]="showErrors && !dataForm.get('worksite').valid"
+        (itemSelection)="getItemSelectionFromDropdown($event)"
+      ></app-hours-dropdown>
+    </ng-container>
   </div>
 
   <div class="worktype-drd">
-    <app-hours-dropdown
-      *ngIf="showFormData"
-      [defaultName]="'Worktype selection'"
-      [content]="worktypes$ | async"
-      (itemSelection)="getItemSelectionFromDropdown($event)"
-      [activeSelection]="worktype$ | async"
-      [setErrors]="showErrors && !dataForm.get('worktype').valid"></app-hours-dropdown>
+    <ng-container *ngIf="showFormData">
+      <app-hours-dropdown
+        [defaultName]="'Worktype selection'"
+        [content]="worktypes$ | async"
+        [activeSelection]="worktype$ | async"
+        [setErrors]="showErrors && !dataForm.get('worktype').valid"
+        (itemSelection)="getItemSelectionFromDropdown($event)"
+      ></app-hours-dropdown>
+    </ng-container>
   </div>
 
-  <app-hours-slider *ngIf="showFormData" formControlName="slider" [setErrors]="showErrors && !dataForm.get('slider').valid"></app-hours-slider>
+  <ng-container *ngIf="showFormData">
+    <app-hours-slider22
+      formControlName="slider"
+      [rangeValue]="dataForm.get('slider').value"
+      [setErrors]="showErrors && !dataForm.get('slider').valid"
+    ></app-hours-slider22>
+  </ng-container>
 
-  <div style="display: flex; justify-content: space-between; transition: 0.3s all;">
+  <div
+    style="display: flex; justify-content: space-between; transition: 0.3s all"
+  >
     <ng-container *ngIf="activeHours$ | async as active; else add">
       <!-- @fadeInSecondary  -->
-      <button class="form__submit" type="submit" (click)="onValidateAndSubmit()"
-        *ngIf="showFormData">Edit</button>
-        <!-- @fadeInSecondary  -->
-      <button class="form__remove" style="justify-self: end;" (click)="remove()">Delete</button>
+      <button
+        class="form__submit"
+        type="submit"
+        *ngIf="showFormData"
+        (click)="onValidateAndSubmit()"
+      >
+        Edit
+      </button>
+      <!-- @fadeInSecondary  -->
+      <button class="form__remove" style="justify-self: end" (click)="remove()">
+        Delete
+      </button>
     </ng-container>
     <ng-template #add>
       <!-- @fadeInSecondary  -->
-      <button class="form__submit" type="submit" (click)="onValidateAndSubmit()" *ngIf="showFormData" [disabled]="disable || !dataForm.valid">Add</button>
+      <!-- [disabled]="disable || !dataForm.valid" -->
+      <button
+        *ngIf="showFormData"
+        class="form__submit"
+        type="submit"
+        (click)="onValidateAndSubmit()"
+      >
+        Add
+      </button>
     </ng-template>
-  </div>  
+  </div>
 </form>
 
 <div class="table-container">
   <app-hours-table
     [tableHours]="dayTableHours$ | async"
+    [changeIndex]="tableSelectionObs$ | async"
     (hoursSelection)="handleTableSelection($event)"
-    [changeIndex]="tableSelectionObs$ | async">
+  >
   </app-hours-table>
 </div>
 

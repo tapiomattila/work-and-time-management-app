@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
 import { Observable, of } from 'rxjs';
-import { Worksite } from 'src/app/pages/worksites/state/worksites.model';
+import { Worksite } from 'src/app/stores/worksites/state/worksites.model';
 import { HoursQuery } from 'src/app/auth/hours';
 
 @Component({

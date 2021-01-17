@@ -64,7 +64,7 @@ export class HoursService {
             {
                 ...hours,
                 updatedAt: updated.updatedAt,
-                markedHours: updated.markedHours,
+                hours: updated.hours,
                 worksiteId: updated.worksiteId,
                 worktypeId: updated.worktypeId
             });

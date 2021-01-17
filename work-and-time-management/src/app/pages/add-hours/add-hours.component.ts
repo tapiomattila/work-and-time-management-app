@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { WorksitesQuery, Worksite, WorksitesService } from '../worksites/state';
+import { WorksitesQuery, Worksite, WorksitesService } from '../../stores/worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/pages/worktype/state';
+import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/stores/worktypes/state';
 import { map, distinctUntilChanged, delay, tap, switchMap, finalize } from 'rxjs/operators';
 import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
 import { UserQuery } from 'src/app/auth/user';
@@ -53,6 +53,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     showFormData = true;
     showErrors = false;
     disable = false;
+
+    tableSelection;
 
     dataForm: FormGroup;
     momentDay: moment.Moment;
@@ -114,7 +116,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             date: new FormControl(new Date(), Validators.required),
             worksite: new FormControl(null, Validators.required),
             worktype: new FormControl(null, Validators.required),
-            slider: new FormControl(null, [Validators.required, this.sliderValidator.bind(this)])
+            slider: new FormControl(0, [Validators.required, this.sliderValidator.bind(this)])
         });
     }
 
@@ -297,7 +299,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             updatedAt: values.date.toISOString(),
             createdBy: this.userQuery.getValue().id,
             updatedBy: this.userQuery.getValue().id,
-            markedHours: parseFloat(sliderStr),
+            hours: parseFloat(sliderStr),
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id,
             _c: this.authQuery.getValue().clientId
@@ -319,7 +321,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     updateHours(values: FormData) {
         const sliderStr = values.slider.toString();
         const updatedHours: Partial<Hours> = {
-            markedHours: parseFloat(sliderStr),
+            hours: parseFloat(sliderStr),
             updatedAt: new Date().toISOString(),
             updatedBy: this.userQuery.getValue().id,
             worksiteId: values.worksite.id,

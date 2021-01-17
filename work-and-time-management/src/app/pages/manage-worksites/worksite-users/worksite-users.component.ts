@@ -6,7 +6,7 @@ import { Users, UsersQuery, UsersService } from 'src/app/auth/admin/users';
 import { AuthQuery } from 'src/app/auth/state';
 import { User, UserQuery, UserService } from 'src/app/auth/user';
 import { ManageService } from '../../manage,service';
-import { Worksite, WorksitesQuery, WorksitesService } from '../../worksites/state';
+import { Worksite, WorksitesQuery, WorksitesService } from '../../../stores/worksites/state';
 
 interface Data {
   worksites: Worksite[];

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
-import { WorksitesQuery, WorksitesService } from '../pages/worksites/state';
+import { WorksitesQuery, WorksitesService } from '../stores/worksites/state';
 
 @Injectable({
     providedIn: 'root'

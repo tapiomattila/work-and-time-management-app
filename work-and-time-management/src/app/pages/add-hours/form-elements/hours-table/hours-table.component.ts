@@ -13,10 +13,8 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
 export class HoursTableComponent implements OnInit {
 
     @Output() hoursSelection = new EventEmitter();
-    @Input() tableHours: object[];
-    dayTableSelectionIndex;
-    previousTableSelectionIndex;
 
+    @Input() tableHours: object[];
     @Input()
     set changeIndex(value: number) {
         if (value === 111) {
@@ -24,6 +22,9 @@ export class HoursTableComponent implements OnInit {
             this.hoursSelection.emit({ message: 'reset' });
         }
     }
+
+    dayTableSelectionIndex;
+    previousTableSelectionIndex;
 
     constructor() { }
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Users } from 'src/app/auth/admin/users';
-import { Worksite } from 'src/app/pages/worksites/state';
+import { Worksite } from 'src/app/stores/worksites/state';
 
 @Component({
   selector: 'app-users-element',
