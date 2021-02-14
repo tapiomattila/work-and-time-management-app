@@ -1,11 +1,11 @@
-<app-header [title]="'Add Hours'" [momentDay]="momentDay"></app-header>
+<app-header [title]="'Add Hours'" [momentDay]="momentDay" [back]="true"></app-header>
 
 <ng-container *ngIf="worksite$ | async as worksite">
   <div class="address" @fadeInOut>
     <p>{{ worksite.name }}</p>
     <p>
-      <span>{{ worksite.streetAddress }}, </span>
-      <span>{{ worksite.postalCode }} </span><span>{{ worksite.city }}</span>
+      <span>{{ worksite.info.streetAddress }}, </span>
+      <span>{{ worksite.info.postalCode }} </span><span>{{ worksite.info.city }}</span>
     </p>
   </div>
 </ng-container>
@@ -57,18 +57,17 @@
   </div>
 
   <ng-container *ngIf="showFormData">
-    <app-hours-slider22
+    <app-hours-slider
       formControlName="slider"
       [rangeValue]="dataForm.get('slider').value"
       [setErrors]="showErrors && !dataForm.get('slider').valid"
-    ></app-hours-slider22>
+    ></app-hours-slider>
   </ng-container>
 
   <div
     style="display: flex; justify-content: space-between; transition: 0.3s all"
   >
     <ng-container *ngIf="activeHours$ | async as active; else add">
-      <!-- @fadeInSecondary  -->
       <button
         class="form__submit"
         type="submit"
@@ -77,14 +76,11 @@
       >
         Edit
       </button>
-      <!-- @fadeInSecondary  -->
       <button class="form__remove" style="justify-self: end" (click)="remove()">
         Delete
       </button>
     </ng-container>
     <ng-template #add>
-      <!-- @fadeInSecondary  -->
-      <!-- [disabled]="disable || !dataForm.valid" -->
       <button
         *ngIf="showFormData"
         class="form__submit"

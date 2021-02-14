@@ -1,4 +1,9 @@
-<app-header class="heading" [user]="user$ | async" [momentDay]="momentDay"></app-header>
+<app-header
+  class="heading"
+  [user]="user$ | async"
+  [momentDay]="momentDay"
+  [icon]="profileIconUrl"
+></app-header>
 
 <!-- TODO, day selection to add-hours for given day -->
 <ng-container *ngIf="(windowService.windowSizeObs$ | async).width as width">
@@ -8,7 +13,8 @@
         *ngFor="let info of infos; let i = index"
         [hoursVal]="[info, true]"
         [index]="i"
-        (selectedDay)="daySelected($event)">
+        (selectedDay)="daySelected($event)"
+      >
       </app-day-hours>
     </div>
   </ng-container>
@@ -17,31 +23,32 @@
       <app-day-hours
         *ngFor="let info of infos; let i = index"
         [hoursVal]="[info, false]"
-        [index]="i">
+        [index]="i"
+      >
       </app-day-hours>
     </div>
   </ng-template>
 </ng-container>
 
 <div class="cards">
-  <ng-container *ngIf="currentWorksite$ | async as current">
+  <!-- <ng-container *ngIf="currentWorksite$ | async as current">
     <app-card
       @fadeInEnterWithDelay
       (click)="navigate('add-hours', current.id)"
       [name]="current.name"
       [worksite]="current">
     </app-card>
-  </ng-container>
+  </ng-container> -->
 
   <div class="card" (click)="navigate('worksites')">
     <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
   </div>
 
-  <div class="card" (click)="navigate('added-hours')">
+  <!-- <div class="card" (click)="navigate('added-hours')">
     <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
-  </div>
+  </div> -->
 
-  <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+  <!-- <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
     <div class="card" (click)="navigate('manage-worksites')">
       <app-card [name]="'Manage worksites'"></app-card>
     </div>
@@ -70,7 +77,7 @@
     <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
-  </ng-container>
+  </ng-container> -->
 </div>
 
 <div class="footer"></div>

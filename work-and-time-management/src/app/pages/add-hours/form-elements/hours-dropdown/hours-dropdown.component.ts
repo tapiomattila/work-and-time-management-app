@@ -61,7 +61,7 @@ export class HoursDropdownComponent implements OnInit {
     this.itemSelection.emit(nullType);
   }
 
-  clickOutsideEvent() {
+  clickOutsideEvent(event: any) {
     this.show = false;
   }
 }

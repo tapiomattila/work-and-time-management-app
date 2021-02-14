@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Hours } from 'src/app/auth/hours';
+// import { Hours } from 'src/app/auth/hours';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { Hours } from 'src/app/stores/hours';
 
 @Component({
     selector: 'app-hours-table',
@@ -31,6 +32,9 @@ export class HoursTableComponent implements OnInit {
     ngOnInit() { }
 
     selectDayTableHour(hours: Partial<Hours>, index: number) {
+
+        console.log('show table selection', hours);
+
         if (
             this.previousTableSelectionIndex !== index ||
             this.dayTableSelectionIndex === undefined

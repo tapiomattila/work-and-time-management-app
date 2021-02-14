@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/auth/user';
+// import { UserService } from 'src/app/auth/user';
 import { AuthService } from 'src/app/auth/state';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { UserService } from 'src/app/stores/users';
 
 @Component({
   selector: 'app-menu-modal',

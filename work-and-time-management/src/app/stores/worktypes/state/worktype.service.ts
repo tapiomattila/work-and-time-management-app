@@ -6,6 +6,7 @@ import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
 import { from, Observable } from 'rxjs';
 import { Auth } from 'src/app/auth/state';
+import { User } from '../../users';
 
 @Injectable({
     providedIn: 'root'
@@ -29,46 +30,57 @@ export class WorkTypeService {
         this.worktypeStore.set(worktypeArray);
     }
 
-    setWorkTypeStoreAdmin(auth: Auth) {
-        return this.fetchWorkTypes(auth)
-            .pipe(
-                tap(res => {
-                    if (res && res.length > 0) {
-                        this.setWorkTypes(res);
-                    }
-                }),
-            );
-    }
+    // setWorkTypeStoreAdmin(auth: Auth) {
+    //     return this.fetchWorkTypes(auth)
+    //         .pipe(
+    //             tap(res => {
+    //                 if (res && res.length > 0) {
+    //                     this.setWorkTypes(res);
+    //                 }
+    //             }),
+    //         );
+    // }
 
-    setWorkTypeStore(auth: Auth) {
-        return this.fetchWorkTypes(auth)
-            .pipe(
-                tap(res => {
-                    if (res && res.length > 0) {
-                        this.setWorkTypes(res);
-                    }
-                }),
-            );
-    }
+    // setWorkTypeStore(auth: Auth) {
+    //     return this.fetchWorkTypes(auth)
+    //         .pipe(
+    //             tap(res => {
+    //                 if (res && res.length > 0) {
+    //                     this.setWorkTypes(res);
+    //                 }
+    //             }),
+    //         );
+    // }
 
-    fetchWorkTypes(auth: Auth) {
-        return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`,
-            ref => ref.where('_c', '==', auth.clientId)
-        )
+    // fetchWorkTypes(auth: Auth) {
+    //     return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`,
+    //         ref => ref.where('_c', '==', auth.clientId)
+    //     )
+    //         .snapshotChanges()
+    //         .pipe(
+    //             delay(1000),
+    //             map(snaps => {
+    //                 return snaps.map(snap => {
+    //                     const id = snap.payload.doc.id;
+    //                     const data = snap.payload.doc.data();
+    //                     return {
+    //                         id,
+    //                         ...(data as object)
+    //                     };
+    //                 });
+
+    //             }),
+    //             first()
+    //         );
+    // }
+
+    fetchWorkTypes22(user: User) {
+        const params = ref => ref.where('clientId', '==', user.clientId);
+        return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`, params)
             .snapshotChanges()
             .pipe(
-                delay(1000),
                 map(snaps => {
-
-                    return snaps.map(snap => {
-                        const id = snap.payload.doc.id;
-                        const data = snap.payload.doc.data();
-                        return {
-                            id,
-                            ...(data as object)
-                        };
-                    });
-
+                    return this.snapsToObjects(snaps);
                 }),
                 first()
             );
@@ -126,6 +138,17 @@ export class WorkTypeService {
 
     resetStore() {
         this.worktypeStore.reset();
+    }
+
+    snapsToObjects(snaps: any[]) {
+        return snaps.map(snap => {
+            const id = snap.payload.doc.id;
+            const data = snap.payload.doc.data();
+            return {
+                id,
+                ...(data as object)
+            };
+        });
     }
 
 }

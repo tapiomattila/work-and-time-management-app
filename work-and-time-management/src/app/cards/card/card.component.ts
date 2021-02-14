@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
 import { Observable, of } from 'rxjs';
 import { Worksite } from 'src/app/stores/worksites/state/worksites.model';
-import { HoursQuery } from 'src/app/auth/hours';
+import { HoursQuery } from 'src/app/stores/hours';
 
 @Component({
   selector: 'app-card',

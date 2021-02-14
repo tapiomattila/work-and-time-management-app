@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ManageService } from 'src/app/pages/manage,service';
+import { ManageService } from 'src/app/pages/manage.service';
 
 @Component({
   selector: 'app-general-modal',

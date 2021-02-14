@@ -1,15 +1,22 @@
+// import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
+// import { BehaviorSubject, Observable, of } from 'rxjs';
+// import { map, switchMap } from 'rxjs/operators';
+// import { HoursQuery } from '../../hours';
+// import { WorkTypeQuery } from '../../worktypes/state';
+// import { Worksite } from './worksites.model';
 import { WorksiteStore, WorksitesState } from './worksites.store';
 import { Injectable } from '@angular/core';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { HoursQuery } from 'src/app/auth/hours/hours.query';
+// import { HoursQuery } from 'src/app/auth/hours/hours.query';
 import { of, Observable, BehaviorSubject, from } from 'rxjs';
-import { Hours } from 'src/app/auth/hours';
+// import { Hours } from 'src/app/auth/hours';
 import { WorkTypeQuery } from 'src/app/stores/worktypes/state';
 import * as moment from 'moment';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { Worksite } from './worksites.model';
-import { TableHours } from '../../../auth/hours/hours.model';
+import { Hours, HoursQuery } from '../../hours';
+// import { TableHours } from '../../../auth/hours/hours.model';
 
 @Injectable({
   providedIn: 'root'
@@ -145,7 +152,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
 
         return filteredHours;
       }),
-      map((hours: Hours[]) => hours ? hours.map(el => el.hours) : []),
+      map((hours: Hours[]) => hours ? hours.map(el => el.marked) : []),
       map(arr => {
         return arr.reduce((a, b) => a + b, 0);
       }),
@@ -171,7 +178,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
       const worktypeNameFound = worktype ? worktype.name : undefined;
 
       const formattedDate = moment(el.updatedAt).format('DD.MM.YYYY');
-      const hoursFormatted = formatHours(el.hours);
+      const hoursFormatted = formatHours(el.marked);
 
       return {
         ...el,

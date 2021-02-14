@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationHandlerService } from '../services/navigation-handler.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User, UserQuery } from '../auth/user/';
 import * as moment from 'moment';
 import { Worksite, WorksitesQuery } from '../stores/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { WindowService } from '../services/window.service';
 import { fadeInEnterTrigger, fadeInEnterWithDelayTrigger, fadeInOutTrigger } from '../animations/animations';
+import { Auth, AuthQuery, AuthService } from '../auth/state';
+import { User, UserQuery } from '../stores/users';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,19 +28,30 @@ export class DashboardComponent implements OnInit {
   user$: Observable<User>;
   momentDay: moment.Moment;
   infos;
+  profileIconUrl = '';
 
   constructor(
     private router: Router,
     private userQuery: UserQuery,
+    private authQuery: AuthQuery,
     private worksiteQuery: WorksitesQuery,
+    private authService: AuthService,
     public windowService: WindowService,
     public navigationHandlerService: NavigationHandlerService,
   ) { }
 
   ngOnInit() {
     this.momentDay = moment();
-    this.user$ = this.userQuery.user$;
-    this.currentWorksite$ = this.worksiteQuery.selectLastUpdatedWorksite();
+    this.user$ = this.authQuery.selectSignedInUser();
+    // this.user$ = this.userQuery.user$;
+    // this.user$ = this.authQuery.selectAuthUser();
+    // this.currentWorksite$ = this.worksiteQuery.selectLastUpdatedWorksite();
+    const authSub = this.authQuery.auth$.pipe(
+      map(auth => auth.profilePictureUrl)
+    ).subscribe(res => {
+      this.profileIconUrl = res;
+    });
+    this.authService.subscriptions.push(authSub);
 
     const arr = this.setDaysArray();
     const days = [];

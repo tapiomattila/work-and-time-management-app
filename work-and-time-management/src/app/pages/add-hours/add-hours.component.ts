@@ -7,13 +7,15 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/stores/worktypes/state';
 import { map, distinctUntilChanged, delay, tap, switchMap, finalize } from 'rxjs/operators';
-import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
-import { UserQuery } from 'src/app/auth/user';
+// import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
+// import { UserQuery } from 'src/app/auth/user';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { fadeInOutTrigger, fadeInEnterTrigger, fadeInSecondaryTrigger } from 'src/app/animations/animations';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AuthQuery } from 'src/app/auth/state';
 import { DropdownReset } from 'src/app/helpers/interfaces/helpers';
+import { Hours, HoursQuery, HoursService, TableHours } from 'src/app/stores/hours';
+import { UserQuery } from 'src/app/stores/users';
 
 interface FormData {
     date: Date;
@@ -270,7 +272,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             this.hoursService.setActive(hour.id);
             this.worktypeService.setActive(hour.worktypeId);
             this.worksiteService.setActive(hour.worksiteId);
-            this.dataForm.controls.slider.setValue(hour.hours);
+
+            this.dataForm.controls.slider.setValue(hour.marked);
         } else {
             this.hoursService.setActive(null);
             this.resetSlider();
@@ -294,18 +297,21 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     postHours(values: FormData) {
         const sliderStr = values.slider.toString();
         const newHours: Partial<Hours> = {
-            userId: this.userQuery.getValue().id,
+            userId: this.authQuery.getSignedInUser().id,
             createdAt: values.date.toISOString(),
             updatedAt: values.date.toISOString(),
-            createdBy: this.userQuery.getValue().id,
-            updatedBy: this.userQuery.getValue().id,
-            hours: parseFloat(sliderStr),
+            createdBy: this.authQuery.getSignedInUser().id,
+            updatedBy: this.authQuery.getSignedInUser().id,
+            marked: parseFloat(sliderStr),
             worksiteId: values.worksite.id,
+            worksiteName: values.worksite.name,
             worktypeId: values.worktype.id,
-            _c: this.authQuery.getValue().clientId
+            worktypeName: values.worktype.name,
+            clientId: this.authQuery.getValue().clientId
         };
 
         this.disable = true;
+
         const postSubs = this.hoursService.postNewHours(newHours)
             .pipe(
                 switchMap(() => {
@@ -320,10 +326,11 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
     updateHours(values: FormData) {
         const sliderStr = values.slider.toString();
+
         const updatedHours: Partial<Hours> = {
-            hours: parseFloat(sliderStr),
+            marked: parseFloat(sliderStr),
             updatedAt: new Date().toISOString(),
-            updatedBy: this.userQuery.getValue().id,
+            updatedBy: this.authQuery.getSignedInUser().id,
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id
         };

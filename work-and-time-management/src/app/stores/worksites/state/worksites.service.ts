@@ -5,7 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { Observable, from } from 'rxjs';
-import { Auth } from 'src/app/auth/state';
+import { Auth, AuthQuery } from 'src/app/auth/state';
+import { User, UserQuery } from '../../users';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,7 @@ import { Auth } from 'src/app/auth/state';
 export class WorksitesService {
     constructor(
         private worksitesStore: WorksiteStore,
+        private authQuery: AuthQuery,
         private af: AngularFirestore
     ) { }
 
@@ -111,6 +113,31 @@ export class WorksitesService {
         );
     }
 
+    fetchUserWorksites22(user: User) {
+        const query = this.af.collection<Worksite[]>(FireBaseCollectionsEnum.WORKSITES,
+            ref => ref
+                .where('users', 'array-contains', user.userId)
+                .where('clientId', '==', user.clientId)
+        );
+
+        return query.snapshotChanges().pipe(
+            map(snaps => {
+                return this.mapSnapToWorksite(snaps);
+            }),
+            first()
+        );
+    }
+
+    // snaps.map(snap => {
+    //     const id = snap.payload.doc.id;
+    //     const data = snap.payload.doc.data();
+    //     const worksite = {
+    //         id,
+    //         ...(data as object)
+    //     } as Worksite;
+    //     return worksite;
+    // });
+
     fetchAllWorksites() {
         return this.af.collection(FireBaseCollectionsEnum.WORKSITES)
             .snapshotChanges()
@@ -208,5 +235,17 @@ export class WorksitesService {
 
     resetStore() {
         this.worksitesStore.reset();
+    }
+
+    private mapSnapToWorksite(snaps) {
+        return snaps.map(snap => {
+            const id = snap.payload.doc.id;
+            const data = snap.payload.doc.data();
+            const worksite = {
+                id,
+                ...(data as object)
+            } as Worksite;
+            return worksite;
+        });
     }
 }

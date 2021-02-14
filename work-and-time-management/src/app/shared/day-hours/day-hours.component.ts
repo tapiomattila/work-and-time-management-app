@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as moment from 'moment';
-import { HoursQuery } from 'src/app/auth/hours';
+// import { HoursQuery } from 'src/app/auth/hours';
 import { Observable } from 'rxjs';
+import { HoursQuery } from 'src/app/stores/hours';
 
 @Component({
     selector: 'app-day-hours',

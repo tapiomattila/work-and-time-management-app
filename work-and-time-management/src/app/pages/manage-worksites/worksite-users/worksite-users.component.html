@@ -1,14 +1,14 @@
 <app-header [title]="'Worksite users'"></app-header>
 <div class="container">
     <div class="main-content">
-        <ng-container *ngIf="loading$ | async">
+        <!-- <ng-container *ngIf="loading$ | async">
             <div class="main-content__items" style="display: flex; justify-content: center; align-items: center;">
                 <app-loader></app-loader>
             </div>
-        </ng-container>
+        </ng-container> -->
     </div>
 
-    <ng-container *ngIf="data$ | async as data">
+    <!-- <ng-container *ngIf="data$ | async as data">
         <div class="main-content">
             <div class="main-content__items">
                 <div class="main-content__item no-shadow" *ngFor="let worksite of data.worksites">
@@ -22,6 +22,6 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    </ng-container> -->
 </div>
 <div class="footer"></div>

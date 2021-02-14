@@ -2,24 +2,30 @@ import { Injectable } from '@angular/core';
 import { AuthStore } from './auth.store';
 import { Auth, createAuth } from './auth.model';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { User } from '../user/user.model';
-import { UserService } from '../user/user.service';
-import { Observable, of } from 'rxjs';
-import { UserQuery } from '../user';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, Subscription, timer } from 'rxjs';
+import { User, UserService } from 'src/app/stores/users';
+import { AuthQuery } from './auth.query';
+import { ManageService } from 'src/app/pages/manage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
+    public subscriptions: Subscription[] = [];
     loader = false;
 
     constructor(
         private authStore: AuthStore,
+        private authQuery: AuthQuery,
         private afAuth: AngularFireAuth,
         private userService: UserService,
-        private userQuery: UserQuery
+        private manageService: ManageService
     ) { }
+
+    // ENDPOINTS:
+    // whitelisted-users
+    // users
 
     firebaseAuthUpdate(): Observable<boolean> {
         return this.afAuth.authState.pipe(
@@ -30,74 +36,100 @@ export class AuthService {
                 const isAuth = !!authenticated;
 
                 if (isAuth) {
-                    this.initialUpdateUser(authenticated);
+                    const authUser: Partial<Auth> = {
+                        id: authenticated.uid,
+                        displayName: authenticated.displayName,
+                        email: authenticated.email,
+                        isAuthenticated: !!authenticated,
+                        profilePictureUrl: authenticated.photoURL
+                    };
+
+                    this.userNotFoundTimer();
+                    this.checkAuthRole();
+                    this.updateAuthState(authUser);
                 }
             }),
-            switchMap((auth: any) => auth && auth.uid ? this.userService.fetchUserById(auth.uid) : of(null)),
-            map((user: Partial<User>) => {
-                if (user && user._c !== undefined) {
-                    this.updateAuthStateWithData(user);
-                    this.updateUserWithClientId(user);
-                    if (user.isAdmin) {
-                        this.postUserData(user);
-                    }
-                    return !!user;
+            this.streamFetchWhiteListed(),
+            this.streamFetchUserByIdAfterWhiteListed(),
+            switchMap(user => {
+                if (user) {
+                    return of(user);
                 }
-                return false;
+                const auth = this.authQuery.getValue();
+                if (auth.isAuthenticated) {
+                    this.streamAfterAuthPostNewUser(auth);
+                }
+                return of(false);
+
             }),
+            tap(user => {
+                if (user) {
+                    this.userService.addUsersToStore([user]);
+                }
+            })
         );
     }
 
-    updateAuthStateWithData(user: Partial<User>) {
-        const authState: Auth = {
-            id: user.id,
-            isAuthenticated: !!user,
-            clientId: user._c
-        };
-        this.updateAuthState(authState);
+    /**
+     * Checks for registered user and if not present
+     * show please register modal
+     */
+    userNotFoundTimer() {
+        const timer$ = timer(5000);
+        const timerSub = timer$.pipe(
+            switchMap(() => this.authQuery.selectSignedInUser()),
+            tap(user => !user ? this.manageService.setGeneralModal(true) : false),
+        ).subscribe();
+        this.subscriptions.push(timerSub);
     }
 
-    initialUpdateUser(authenticated: firebase.User) {
-        const nameArr = authenticated.displayName.split(' ');
-        const firstName = nameArr[0] ? nameArr[0] : null;
-        const lastName = nameArr[1] ? nameArr[1] : null;
-        const user: User = {
-            id: null,
-            firstName,
-            lastName,
-            displayName: authenticated.displayName,
-            isAdmin: false,
-            isManager: false,
-            email: authenticated.email,
-            profilePictureUrl: authenticated.photoURL,
-            _c: null
-        };
-        this.userService.updateUser(user);
-    }
-
-    updateUserWithClientId(user: Partial<User>) {
-        const userUpdate: Partial<User> = {
-            id: user.id,
-            isAdmin: user.isAdmin,
-            isManager: user.isManager,
-            _c: user._c
-        };
-        this.userService.updateUser(userUpdate);
-    }
-
-    postUserData(user: Partial<User>) {
-        const userGet = this.userQuery.getValue();
-        const postUser = {
-            firstName: userGet.firstName,
-            lastName: userGet.lastName,
-            email: userGet.email,
-            _c: user._c
-        };
-        this.userService.postUser(user.id, postUser).subscribe();
+    private checkAuthRole() {
+        const roleSubs = this.authQuery.selectSignedInUser()
+            .pipe(
+                switchMap((user: User) => {
+                    if (this.isAdminOrManager(user)) {
+                        return this.userService.fetchAllUsersByClientId(user.clientId);
+                    }
+                    return of(null);
+                }),
+                tap((users: Partial<User>[]) => {
+                    if (users) {
+                        this.addUsersToStore(users);
+                    }
+                })
+            ).subscribe();
+        this.subscriptions.push(roleSubs);
     }
 
     updateAuthState(authState: Partial<Auth>) {
         this.authStore.update(createAuth(authState));
+    }
+
+    streamFetchWhiteListed() {
+        return switchMap((auth: firebase.User) => auth && auth.uid ? this.userService.fetchWhiteListUser(auth.uid) : of(null));
+    }
+
+    streamFetchUserByIdAfterWhiteListed() {
+        return switchMap((user: { clientId: string, email: string, id: string }) => {
+            if (user && user.clientId) {
+                this.updateAuthState({ id: user.id, clientId: user.clientId });
+                return this.userService.fetchUserById(user);
+            }
+            return of(false);
+        });
+    }
+
+    streamAfterAuthPostNewUser(auth: Auth) {
+        const newUser = {
+            userId: auth.id,
+            clientId: auth.clientId,
+            info: {
+                email: auth.email,
+                displayName: auth.displayName,
+            },
+            roles: []
+        };
+        return this.userService.postNewUser(newUser);
     }
 
     signOut() {
@@ -108,5 +140,14 @@ export class AuthService {
 
     resetStore() {
         this.authStore.reset();
+    }
+
+    private isAdminOrManager(user: User): boolean {
+        return user && (user.roles.includes('admin') || user.roles.includes('manager'));
+    }
+
+    private addUsersToStore(users: Partial<User>[]) {
+        const filtered = users.filter(el => el.userId !== this.authQuery.getValue().id);
+        this.userService.addUsersToStore(filtered);
     }
 }

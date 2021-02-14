@@ -1,21 +1,21 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { UserHours } from './users-hours.model';
+import { User } from './user.model';
 
-export interface UsersHoursState extends EntityState<UserHours, string> { }
+export interface UserState extends EntityState<User, string> { }
 
 const initialState = {
-    usersHours: []
+    users: []
 };
 
 @Injectable({
     providedIn: 'root'
 })
 @StoreConfig({
-    name: 'users-hours',
+    name: 'users',
     resettable: true
 })
-export class UsersHoursStore extends EntityStore<UsersHoursState> {
+export class UserStore extends EntityStore<UserState> {
     constructor() {
         super(initialState);
     }

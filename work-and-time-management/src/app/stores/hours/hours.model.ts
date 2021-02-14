@@ -1,11 +1,11 @@
 export interface TableHours {
     id: string;
-    hours: number;
+    marked: number;
     hoursFormatted: string;
     createdAt: string;
+    createdBy: string;
     updatedAt: string;
     updatedAtFormatted: string;
-    createdBy: string;
     updatedBy: string;
     worksiteId: string;
     worksiteName: string;
@@ -17,13 +17,15 @@ export interface Hours {
     id: string;
     userId: string;
     worksiteId: string;
+    worksiteName: string;
     worktypeId: string;
-    hours: number;
+    worktypeName: string;
+    marked: number;
     createdAt: string;
     updatedAt: string;
     createdBy: string;
     updatedBy: string;
-    _c: string;
+    clientId: string;
 }
 
 export function createHours(hours: Partial<Hours>) {

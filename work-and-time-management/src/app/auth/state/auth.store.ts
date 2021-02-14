@@ -6,7 +6,10 @@ export function createInitialState(): Auth {
   return {
     id: null,
     isAuthenticated: false,
-    clientId: null
+    clientId: null,
+    email: null,
+    displayName: null,
+    profilePictureUrl: null
   };
 }
 

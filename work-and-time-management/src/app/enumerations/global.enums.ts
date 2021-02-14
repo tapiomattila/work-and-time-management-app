@@ -21,5 +21,6 @@ export enum FireBaseCollectionsEnum {
     USERS = 'users',
     USERS_INFOS = 'users-infos',
     HOURS = 'hours',
-    WORKTYPES = 'worktypes'
+    WORKTYPES = 'worktypes',
+    WHITELISTED = 'whitelisted-users'
 }

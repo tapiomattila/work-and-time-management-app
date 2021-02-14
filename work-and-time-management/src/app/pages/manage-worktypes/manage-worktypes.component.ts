@@ -4,9 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserQuery } from 'src/app/auth/user';
-import { ManageService } from '../manage,service';
+// import { UserQuery } from 'src/app/auth/user';
+import { ManageService } from '../manage.service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { UserQuery } from 'src/app/stores/users';
 
 @Component({
   selector: 'app-manage-worktypes',
@@ -52,7 +53,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
   routeParams() {
     const routeSubs = this.route.params.subscribe((res: Params) => {
       if (!res.id) {
-        console.warn('No route params id');
+        // console.warn('No route params id');
         return;
       }
 

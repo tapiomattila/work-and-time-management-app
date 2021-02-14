@@ -5,7 +5,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { from, Observable } from 'rxjs';
-import { Auth } from '../state';
+// import { Auth } from '../state';
+import { Auth } from '../../auth/state';
+import { User } from '../users';
 
 @Injectable({
     providedIn: 'root'
@@ -64,9 +66,11 @@ export class HoursService {
             {
                 ...hours,
                 updatedAt: updated.updatedAt,
-                hours: updated.hours,
+                marked: updated.marked,
                 worksiteId: updated.worksiteId,
-                worktypeId: updated.worktypeId
+                worksiteName: updated.worksiteName,
+                worktypeId: updated.worktypeId,
+                worktypeName: updated.worktypeName
             });
     }
 
@@ -91,6 +95,31 @@ export class HoursService {
             .snapshotChanges()
             .pipe(
                 delay(1000),
+                map(snaps => {
+
+                    return snaps.map(snap => {
+                        const id = snap.payload.doc.id;
+                        const data = snap.payload.doc.data();
+                        return {
+                            id,
+                            ...(data as object)
+                        };
+                    });
+
+                }),
+                first()
+            );
+    }
+
+    fetchHours22(user: User) {
+        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
+            ref =>
+                ref.where('userId', '==', user.id)
+                    .where('clientId', '==', user.clientId),
+        )
+            .snapshotChanges()
+            .pipe(
+                // delay(1000),
                 map(snaps => {
 
                     return snaps.map(snap => {

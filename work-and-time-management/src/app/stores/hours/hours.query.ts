@@ -25,7 +25,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
                 el => el.worksiteId === worksiteId
             ]
         }).pipe(
-            map((hours: Hours[]) => hours.map(el => el.hours)),
+            map((hours: Hours[]) => hours.map(el => el.marked)),
             map(hoursArr => {
                 return hoursArr.reduce((a, b) => a + b, 0);
             }),
@@ -35,7 +35,15 @@ export class HoursQuery extends QueryEntity<HoursState> {
     selectHoursForDay(millis: number, activeWorksiteId: string) {
 
         const dayMillis1 = new Date(millis);
-        const moment1 = moment(dayMillis1);
+        // const moment1 = moment(dayMillis1);
+
+        // return this.selectAll({
+        //     filterBy: [
+        //         el => {
+        //             return moment(el.createdAt).isSame(dayMillis1, 'day') && el.worksiteId === activeWorksiteId;
+        //         }
+        //     ]
+        // });
 
         return this.selectAll({
             filterBy: [
@@ -51,7 +59,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             map(el => {
                 return el.filter(elx => moment(elx.updatedAt).isSame(day, 'day'));
             }),
-            map(res => res.map(el => el.hours)),
+            map(res => res.map(el => el.marked)),
             map(hoursArr => {
                 return hoursArr.reduce((a, b) => a + b, 0);
             }),
@@ -98,7 +106,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             ]
         }).pipe(
             map(hours => {
-                return hours.map(el => el.hours);
+                return hours.map(el => el.marked);
             }),
             map(hoursArr => {
                 return hoursArr.reduce((acc, val) => acc + val, 0);
@@ -116,7 +124,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
             map(hours => {
                 return hours.map(el => {
                     return {
-                        hours: el.hours,
+                        hours: el.marked,
                         createdAt: el.createdAt,
                         updatedAt: el.updatedAt
                     };

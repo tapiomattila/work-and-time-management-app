@@ -36,10 +36,12 @@ export class WorksitesComponent implements OnInit {
 
   ngOnInit() {
     this.momentDay = moment();
-    this.worksites$ = this.authQuery.select().pipe(
-      map(auth => auth.id),
-      switchMap(id => id ? this.worksitesQuery.selectWorksitesByUserId(id) : of([]))
-    );
+    // this.worksites$ = this.authQuery.select().pipe(
+    //   map(auth => auth.id),
+    //   switchMap(id => id ? this.worksitesQuery.selectWorksitesByUserId(id) : of([]))
+    // );
+
+    this.worksites$ = this.worksitesQuery.selectWorksitesByUserId(this.authQuery.getValue().id);
   }
 
   locationBack() {
