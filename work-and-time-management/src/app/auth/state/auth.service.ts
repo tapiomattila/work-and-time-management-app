@@ -23,10 +23,6 @@ export class AuthService {
         private manageService: ManageService
     ) { }
 
-    // ENDPOINTS:
-    // whitelisted-users
-    // users
-
     firebaseAuthUpdate(): Observable<boolean> {
         return this.afAuth.authState.pipe(
             distinctUntilChanged(),

@@ -62,6 +62,10 @@ export class DashboardComponent implements OnInit {
       });
     }
     this.infos = days;
+
+
+    this.user$.subscribe(res => console.log('show in user', res));
+    this.authQuery.auth$.subscribe(res => console.log('show res in auth', res));
   }
 
   toWorksites() {

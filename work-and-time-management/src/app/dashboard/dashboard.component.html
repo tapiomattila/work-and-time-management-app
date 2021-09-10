@@ -31,14 +31,14 @@
 </ng-container>
 
 <div class="cards">
-  <!-- <ng-container *ngIf="currentWorksite$ | async as current">
+  <ng-container *ngIf="currentWorksite$ | async as current">
     <app-card
       @fadeInEnterWithDelay
       (click)="navigate('add-hours', current.id)"
       [name]="current.name"
       [worksite]="current">
     </app-card>
-  </ng-container> -->
+  </ng-container>
 
   <div class="card" (click)="navigate('worksites')">
     <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
@@ -48,32 +48,26 @@
     <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
   </div> -->
 
-  <!-- <ng-container *ngIf="(user$ | async).isAdmin; else noAdmin">
+  <!-- <ng-container *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin">
     <div class="card" (click)="navigate('manage-worksites')">
       <app-card [name]="'Manage worksites'"></app-card>
     </div>
   </ng-container>
   <ng-template #noAdmin>
-    <ng-container *ngIf="(user$ | async).isManager">
+    <ng-container *ngIf="(user$ | async)?.roles.includes('manager')">
       <div class="card" (click)="navigate('manage-worksites')">
         <app-card [name]="'Manage worksites'"></app-card>
       </div>
     </ng-container>
   </ng-template>
 
-  <ng-container *ngIf="(user$ | async).isAdmin">
+  <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
     <div class="card" (click)="navigate('manage-worktypes')">
       <app-card [name]="'Manage worktypes'"></app-card>
     </div>
-  </ng-container>
-
-  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('admin/manage-users')">
       <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
     </div>
-  </ng-container>
-
-  <ng-container *ngIf="(user$ | async).isAdmin">
     <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
     </div>
