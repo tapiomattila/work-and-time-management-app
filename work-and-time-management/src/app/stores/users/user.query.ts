@@ -22,6 +22,10 @@ export class UserQuery extends QueryEntity<UserState> {
           );
     }
 
+    getAllUsers() {
+        return this.getAll();
+    }
+
     getUserById(id: string) {
         return this.getAll().find(el => el.id === id);
     }

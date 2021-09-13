@@ -20,7 +20,9 @@ export class HeaderComponent implements OnInit {
   get back() { return this._back; }
 
   @Input()
-  set user(user: User) { this._user = user; }
+  set user(user: User) {
+    this._user = user;
+   }
   get user() { return this._user; }
 
   @Input()

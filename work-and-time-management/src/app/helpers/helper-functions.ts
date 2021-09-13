@@ -16,3 +16,23 @@ export function formatHours(hours: number) {
         return hours;
     }
 }
+
+export function mapSnaps(snaps: any) {
+    return snaps.map(snap => {
+        return {
+            id: snap.payload.doc.id,
+            ...snap.payload.doc.data()
+        };
+    });
+}
+
+export function takeSnap(snap: any) {
+    return {
+        id: snap.payload.id,
+        ...(snap.payload.data() as object)
+    };
+}
+
+export function removeDublicates(array: any[]) {
+    return [...new Set(array)]
+}

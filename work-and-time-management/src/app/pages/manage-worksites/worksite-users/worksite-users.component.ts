@@ -7,11 +7,12 @@ import { AuthQuery } from 'src/app/auth/state';
 // import { User, UserQuery, UserService } from 'src/app/auth/user';
 import { ManageService } from '../../manage.service';
 import { Worksite, WorksitesQuery, WorksitesService } from '../../../stores/worksites/state';
+import { User, UserQuery, UserService } from 'src/app/stores/users';
 
-// interface Data {
-//   worksites: Worksite[];
-//   users: Users[];
-// }
+interface Data {
+  worksites: Worksite[];
+  users: User[];
+}
 
 @Component({
   selector: 'app-worksite-users',
@@ -20,32 +21,27 @@ import { Worksite, WorksitesQuery, WorksitesService } from '../../../stores/work
 })
 export class WorksiteUsersComponent implements OnInit {
 
-  // private subscriptions: Subscription[] = [];
-  // user$: Observable<User>;
-  // activeWorksite$: Observable<Worksite>;
-  // worksites$: Observable<Worksite[]>;
-  // showModal$: Observable<boolean>;
+  private subscriptions: Subscription[] = [];
+  user$: Observable<User>;
+  activeWorksite$: Observable<Worksite>;
+  worksites$: Observable<Worksite[]>;
+  showModal$: Observable<boolean>;
 
-  // data$: Observable<Data>;
-  // loading$: Observable<boolean>;
+  data$: Observable<Data>;
+  loading$: Observable<boolean>;
 
-  // constructor(
-  //   private worksitesQuery: WorksitesQuery,
-  //   private worksitesService: WorksitesService,
-  //   private userQuery: UserQuery,
-  //   public manageService: ManageService,
-  //   private userService: UserService,
-  //   private usersService: UsersService,
-  //   private usersQuery: UsersQuery,
-  //   private authQuery: AuthQuery
-  // ) { }
-
-  constructor() { }
+  constructor(
+    private worksitesQuery: WorksitesQuery,
+    private worksitesService: WorksitesService,
+    private userQuery: UserQuery,
+    public manageService: ManageService,
+    private userService: UserService,
+    private authQuery: AuthQuery
+  ) { }
 
   ngOnInit() {
-    // this.worksites$ = this.worksitesQuery.selectAllLiveWorksites();
-    // this.user$ = this.userQuery.select();
-
+    this.worksites$ = this.worksitesQuery.selectAllLiveWorksites();
+    const user$ = this.userQuery.selectAll();
     // const allInfosSubs = this.authQuery.auth$.pipe(
     //   switchMap(auth => {
     //     if (!auth) {
@@ -61,67 +57,69 @@ export class WorksiteUsersComponent implements OnInit {
     // ).subscribe();
     // this.subscriptions.push(allInfosSubs);
 
-    // this.data$ = this.constructData();
+    this.data$ = this.constructData();
 
-    // this.loading$ = this.data$.pipe(
-    //   startWith(false),
-    //   map(el => {
-    //     const element = el as Data;
-    //     if (element) {
-    //       return !(element.worksites.length > 0 && element.users.length > 0);
-    //     }
+    this.loading$ = this.data$.pipe(
+      startWith(false),
+      map(el => {
+        const element = el as Data;
+        if (element) {
+          return !(element.worksites.length > 0 && element.users.length > 0);
+        }
 
-    //   })
-    // );
+      })
+    );
   }
 
-  // constructData(): Observable<Data> {
-  //   const worksites$ = this.worksitesQuery.selectAllLiveWorksites();
-  //   const users$ = this.usersQuery.users$;
-  //   return combineQueries([
-  //     worksites$,
-  //     users$
-  //   ]).pipe(
-  //     map(([worksites, users]) => {
-  //       const data: Data = {
-  //         worksites,
-  //         users
-  //       };
-  //       return data;
-  //     })
-  //   );
-  // }
+  constructData(): Observable<Data> {
+    const worksites$ = this.worksitesQuery.selectAllLiveWorksites();
+    // const users$ = this.userQuery.selectAll();
+    // return combineQueries([
+    //   worksites$,
+    //   users$
+    // ]).pipe(
+    //   map(([worksites, users]) => {
+    //     const data: Data = {
+    //       worksites,
+    //       users
+    //     };
+    //     return data;
+    //   })
+    // );
 
-  // worksiteChange(event: { userId: string, worksiteId: string, checked: boolean }) {
-  //   const worksites = this.worksitesQuery.getLiveWorksites();
-  //   const worksite = worksites.find(el => el.id === event.worksiteId);
-  //   const findUser = worksite.users.find(el => el === event.userId);
+    return of(null);
+  }
 
-  //   if (event.checked && !findUser) {
-  //     const copy = worksite.users.slice(0);
-  //     copy.push(event.userId);
-  //     this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'add', this.authQuery.getValue().id);
-  //   }
+  worksiteChange(event: { userId: string, worksiteId: string, checked: boolean }) {
+    const worksites = this.worksitesQuery.getLiveWorksites();
+    const worksite = worksites.find(el => el.id === event.worksiteId);
+    const findUser = worksite.users.find(el => el === event.userId);
 
-  //   if (!event.checked) {
-  //     const index = worksite.users.findIndex(el => el === event.userId);
-  //     if (findUser && index !== -1) {
-  //       const copy = worksite.users.slice(0);
-  //       copy.splice(index, 1);
-  //       this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'remove', this.authQuery.getValue().id);
-  //     }
-  //   }
+    if (event.checked && !findUser) {
+      const copy = worksite.users.slice(0);
+      copy.push(event.userId);
+      this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'add', this.authQuery.getValue().id);
+    }
 
-  //   const putWorksiteSubs = this.worksitesQuery.selectLiveWorksiteById(event.worksiteId)
-  //     .pipe(
-  //       switchMap(worksiteX => {
-  //         if (!worksiteX) {
-  //           return of(null);
-  //         }
-  //         return this.worksitesService.putWorksite(event.worksiteId, worksiteX);
-  //       }),
-  //     ).subscribe();
-  //   this.subscriptions.push(putWorksiteSubs);
-  // }
+    if (!event.checked) {
+      const index = worksite.users.findIndex(el => el === event.userId);
+      if (findUser && index !== -1) {
+        const copy = worksite.users.slice(0);
+        copy.splice(index, 1);
+        this.worksitesService.updateStoreWorksiteUsers(worksite, copy, 'remove', this.authQuery.getValue().id);
+      }
+    }
+
+    const putWorksiteSubs = this.worksitesQuery.selectLiveWorksiteById(event.worksiteId)
+      .pipe(
+        switchMap(worksiteX => {
+          if (!worksiteX) {
+            return of(null);
+          }
+          return this.worksitesService.putWorksite(event.worksiteId, worksiteX);
+        }),
+      ).subscribe();
+    this.subscriptions.push(putWorksiteSubs);
+  }
 
 }

@@ -1,4 +1,4 @@
-<app-header [title]="'Manage Worksites'"></app-header>
+<app-header [title]="'Manage Worksites'" [back]="true" [momentDay]="momentDay"></app-header>
 
 <div class="container">
     <ng-container *ngIf="worksites$ | async as worksites">
@@ -18,10 +18,10 @@
         </div>
     </ng-container>
     <button class="button button__worksite" type="button" (click)="addNew()">ADD NEW WORKSITE</button>
-    <button class="button button__users" type="button" (click)="worksiteUsers()">WORKSITE USERS</button>
+    <!-- <button class="button button__users" type="button" (click)="worksiteUsers()">WORKSITE USERS</button> -->
 </div>
 
-<!-- <app-edit-form>
+<app-edit-form>
     <div class="blur" [ngClass]="{ 'active': manageService.modalObs$ | async }" (click)="closeModal()"></div>
     <ng-container *ngIf="manageService.modalObs$ | async">
         <div class="editForm">
@@ -76,6 +76,6 @@
 
         </div>
     </ng-container>
-</app-edit-form> -->
+</app-edit-form>
 
 <div class="footer"></div>

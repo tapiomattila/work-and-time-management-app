@@ -297,11 +297,11 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     postHours(values: FormData) {
         const sliderStr = values.slider.toString();
         const newHours: Partial<Hours> = {
-            userId: this.authQuery.getSignedInUser().id,
+            userId: this.authQuery.getSignedInUser().userId,
             createdAt: values.date.toISOString(),
             updatedAt: values.date.toISOString(),
-            createdBy: this.authQuery.getSignedInUser().id,
-            updatedBy: this.authQuery.getSignedInUser().id,
+            createdBy: this.authQuery.getSignedInUser().userId,
+            updatedBy: this.authQuery.getSignedInUser().userId,
             marked: parseFloat(sliderStr),
             worksiteId: values.worksite.id,
             worksiteName: values.worksite.name,
@@ -317,7 +317,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
                 switchMap(() => {
                     this.resetSlider();
                     this.resetTableSelection();
-                    return this.hoursService.setUserHours(this.authQuery.getValue());
+                    return this.hoursService.setUserHours(this.userQuery.getUserById(this.authQuery.getValue().id));
                 }),
                 finalize(() => this.disable = false)
             ).subscribe();
@@ -330,7 +330,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         const updatedHours: Partial<Hours> = {
             marked: parseFloat(sliderStr),
             updatedAt: new Date().toISOString(),
-            updatedBy: this.authQuery.getSignedInUser().id,
+            updatedBy: this.authQuery.getSignedInUser().userId,
             worksiteId: values.worksite.id,
             worktypeId: values.worktype.id
         };

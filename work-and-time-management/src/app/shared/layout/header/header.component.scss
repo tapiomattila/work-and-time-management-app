@@ -56,3 +56,9 @@ svg {
   height: 25px;
   width: 25px;
 }
+
+app-back-arrow {
+  &:hover {
+    cursor: pointer;
+  }
+}

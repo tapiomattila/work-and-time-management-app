@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { UserStore } from './user.store';
 import { createUser, User } from './user.model';
 import { from, of } from 'rxjs';
+import { mapSnaps, takeSnap } from 'src/app/helpers/helper-functions';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,15 @@ export class UserService {
         this.userStore.upsert(id, user);
     }
 
-    addUsersToStore(users: Partial<User>[]) {
+    setStore(user: User) {
+        this.userStore.set([user]);
+    }
+
+    updateStore(id: string, user: Partial<User>) {
+        this.userStore.update(id, user);
+    }
+
+    addUsers(users: Partial<User>[]) {
         const userArray = new Array();
         users.forEach(el => {
             userArray.push(createUser(el));
@@ -32,28 +41,22 @@ export class UserService {
             .snapshotChanges()
             .pipe(
                 map((snap: any) => {
-                    return {
-                        id: snap.payload.id,
-                        ...(snap.payload.data() as object)
-                    };
+                    return takeSnap(snap);
                 }),
                 first()
             );
     }
 
-    fetchUserById222(id: string) {
-        return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
-            .snapshotChanges()
-            .pipe(
-                map((snap: any) => {
-                    return {
-                        id: snap.payload.id,
-                        ...(snap.payload.data() as object)
-                    };
-                }),
-                first()
-            );
-    }
+    // fetchUserById222(id: string) {
+    //     return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
+    //         .snapshotChanges()
+    //         .pipe(
+    //             map((snap: any) => {
+    //                 return takeSnap(snap);
+    //             }),
+    //             first()
+    //         );
+    // }
 
     fetchUserById(user: { clientId: string, email: string, id: string }) {
         const query = this.af.collection(FireBaseCollectionsEnum.USERS,
@@ -64,12 +67,7 @@ export class UserService {
         return query.snapshotChanges()
             .pipe(
                 map((snaps: any) => {
-                    return snaps.map(snap => {
-                        return {
-                            id: snap.payload.doc.id,
-                            ...snap.payload.doc.data()
-                        };
-                    });
+                    return mapSnaps(snaps);
                 }),
                 map(snaps => snaps.length > 0 ? snaps[0] : null),
                 first()
@@ -84,12 +82,7 @@ export class UserService {
         return query.snapshotChanges()
             .pipe(
                 map((snaps: any) => {
-                    return snaps.map(snap => {
-                        return {
-                            id: snap.payload.doc.id,
-                            ...snap.payload.doc.data()
-                        };
-                    });
+                    return mapSnaps(snaps);
                 }),
                 first()
             );
@@ -103,15 +96,11 @@ export class UserService {
         return from(this.af.collection(`${FireBaseCollectionsEnum.USERS}`).add(user))
             .pipe(
                 map((snap: any) => {
-                    return {
-                        id: snap.payload.id,
-                        ...(snap.payload.data() as object)
-                    };
+                    return takeSnap(snap);
                 }),
                 first()
             );
     }
-
 
     resetAllStores() {
         this.userStore.reset();
@@ -121,9 +110,5 @@ export class UserService {
 
     resetStore() {
         this.userStore.reset();
-    }
-
-    takeSnap() {
-
     }
 }

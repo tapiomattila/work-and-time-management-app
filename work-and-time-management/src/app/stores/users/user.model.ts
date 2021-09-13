@@ -1,7 +1,6 @@
 export interface User {
     id: string;
     clientId: string;
-    displayName: string;
     userId: string;
     roles: string[];
     info?: UserInfo;
@@ -9,6 +8,7 @@ export interface User {
 
 interface UserInfo {
     email: string;
+    displayName: string;
     address?: UserAddress;
     firstName?: string;
     lastName?: string;
@@ -20,9 +20,10 @@ interface UserAddress {
     postalCode: string;
 }
 
+
 export function createUser(user: Partial<User>) {
     return {
-        id: user.userId,
+        // id: user.userId,
         ...user,
     } as User;
 }

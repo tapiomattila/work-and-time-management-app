@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { WindowService } from './services/window.service';
 import { NavigationHandlerService } from './services/navigation-handler.service';
-import { WorksitesService } from './stores/worksites/state';
+import { Worksite, WorksitesService } from './stores/worksites/state';
 import { AuthQuery, AuthService } from './auth/state';
 import { WorkTypeService } from './stores/worktypes/state';
 import { switchMap, tap } from 'rxjs/operators';
@@ -46,6 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private hoursQuery: HoursQuery,
     private userService: UserService,
     private authQuery: AuthQuery,
+    private userQuery: UserQuery,
     public manageService: ManageService,
     public authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
@@ -57,18 +58,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authenticatedUserStoreUpdate();
     this.user$ = this.authQuery.selectSignedInUser();
 
-    const worksiteSub = this.user$.pipe(
-      switchMap(user => user && user.id ? this.worksiteService.fetchUserWorksites22(user) : of(null)),
-      tap(worksites => {
-        // TODO
-        // normal user: fetch user worksites, and update store
-        // if admin/manager, fetch all worksites, update store
-        // query store for signed in user or selected user worksites
-
+    const adminUserWorksitesSub = this.user$.pipe(
+      switchMap((user: User) => {
+        const adminUser = user && user.id && user.roles.includes('admin');
+        return adminUser ? this.worksiteService.fetchAllClientWorksites(user.clientId) : of(null);
+      }),
+      tap((worksites: Worksite[]) => {
         if (worksites) {
           this.worksiteService.setWorksites(worksites);
         }
-
       })
     ).subscribe();
 
@@ -82,7 +80,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     const hoursSub = this.user$.pipe(
-      switchMap((user: User) => user && user.id ? this.hoursService.fetchHours22(user) : of(null)),
+      switchMap((user: User) => user && user.id ? this.hoursService.fetchHours(user) : of(null)),
       tap(res => {
         if (this.doesArrayExist(res)) {
           this.hoursService.setHours(res);
@@ -90,7 +88,8 @@ export class AppComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-    this.storeSubs.push(worksiteSub);
+    // this.storeSubs.push(testSub);
+    this.storeSubs.push(adminUserWorksitesSub);
     this.storeSubs.push(worktypeSub);
     this.storeSubs.push(hoursSub);
   }

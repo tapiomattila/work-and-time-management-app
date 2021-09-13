@@ -31,8 +31,8 @@ export class HoursService {
         this.hoursStore.set(hoursArray);
     }
 
-    setUserHours(auth: Auth) {
-        return this.fetchHours(auth)
+    setUserHours(user: User) {
+        return this.fetchHours(user)
             .pipe(
                 tap(hours => {
                     if (hours && hours.length) {
@@ -86,32 +86,7 @@ export class HoursService {
         this.hoursStore.reset();
     }
 
-    fetchHours(auth: Auth) {
-        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
-            ref =>
-                ref.where('userId', '==', auth.id)
-                    .where('_c', '==', auth.clientId),
-        )
-            .snapshotChanges()
-            .pipe(
-                delay(1000),
-                map(snaps => {
-
-                    return snaps.map(snap => {
-                        const id = snap.payload.doc.id;
-                        const data = snap.payload.doc.data();
-                        return {
-                            id,
-                            ...(data as object)
-                        };
-                    });
-
-                }),
-                first()
-            );
-    }
-
-    fetchHours22(user: User) {
+    fetchHours(user: User) {
         return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
             ref =>
                 ref.where('userId', '==', user.id)
@@ -119,7 +94,7 @@ export class HoursService {
         )
             .snapshotChanges()
             .pipe(
-                // delay(1000),
+                delay(1000),
                 map(snaps => {
 
                     return snaps.map(snap => {

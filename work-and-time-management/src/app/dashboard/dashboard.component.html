@@ -44,11 +44,11 @@
     <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
   </div>
 
-  <!-- <div class="card" (click)="navigate('added-hours')">
+  <div class="card" (click)="navigate('added-hours')">
     <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
-  </div> -->
+  </div>
 
-  <!-- <ng-container *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin">
+  <ng-container *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin">
     <div class="card" (click)="navigate('manage-worksites')">
       <app-card [name]="'Manage worksites'"></app-card>
     </div>
@@ -61,7 +61,7 @@
     </ng-container>
   </ng-template>
 
-  <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
+  <!-- <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
     <div class="card" (click)="navigate('manage-worktypes')">
       <app-card [name]="'Manage worktypes'"></app-card>
     </div>

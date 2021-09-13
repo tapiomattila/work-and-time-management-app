@@ -27,7 +27,6 @@ export class AuthService {
         return this.afAuth.authState.pipe(
             distinctUntilChanged(),
             tap((authenticated: firebase.User) => {
-                console.log('show authenticated', authenticated);
                 this.loader = false;
                 const isAuth = !!authenticated;
 
@@ -39,7 +38,6 @@ export class AuthService {
                         isAuthenticated: !!authenticated,
                         profilePictureUrl: authenticated.photoURL
                     };
-
                     this.userNotFoundTimer();
                     this.checkAuthRole();
                     this.updateAuthState(authUser);
@@ -60,7 +58,8 @@ export class AuthService {
             }),
             tap(user => {
                 if (user) {
-                    this.userService.addUsersToStore([user]);
+                    const usx = user as User;
+                    this.userService.upsertUsersStore(usx.id, usx);
                 }
             })
         );
@@ -90,7 +89,7 @@ export class AuthService {
                 }),
                 tap((users: Partial<User>[]) => {
                     if (users) {
-                        this.addUsersToStore(users);
+                        this.addUsersToUsersStore(users);
                     }
                 })
             ).subscribe();
@@ -142,8 +141,7 @@ export class AuthService {
         return user && (user.roles.includes('admin') || user.roles.includes('manager'));
     }
 
-    private addUsersToStore(users: Partial<User>[]) {
-        const filtered = users.filter(el => el.userId !== this.authQuery.getValue().id);
-        this.userService.addUsersToStore(filtered);
+    private addUsersToUsersStore(users: Partial<User>[]) {
+        this.userService.addUsers(users);
     }
 }

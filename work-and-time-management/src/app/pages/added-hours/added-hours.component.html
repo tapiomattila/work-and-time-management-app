@@ -1,4 +1,4 @@
-<app-header [title]="'Added Hours'"></app-header>
+<app-header [title]="'Added Hours'" [back]="true" [momentDay]="momentDay"></app-header>
 
 <mat-form-field class="table-filter">
     <input type="text" matInput (keyup)="doFilter($event.target.value)" placeholder="Filter result">

@@ -32,9 +32,6 @@ export class HoursTableComponent implements OnInit {
     ngOnInit() { }
 
     selectDayTableHour(hours: Partial<Hours>, index: number) {
-
-        console.log('show table selection', hours);
-
         if (
             this.previousTableSelectionIndex !== index ||
             this.dayTableSelectionIndex === undefined
