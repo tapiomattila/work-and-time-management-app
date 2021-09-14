@@ -5,8 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { Observable, from } from 'rxjs';
-import { Auth, AuthQuery } from 'src/app/auth/state';
-import { User, UserQuery } from '../../users';
+import { Auth} from 'src/app/auth/state';
+import { User } from '../../users';
 import { mapSnaps } from 'src/app/helpers/helper-functions';
 
 @Injectable({
@@ -15,7 +15,6 @@ import { mapSnaps } from 'src/app/helpers/helper-functions';
 export class WorksitesService {
     constructor(
         private worksitesStore: WorksiteStore,
-        private authQuery: AuthQuery,
         private af: AngularFirestore
     ) { }
 
@@ -44,7 +43,6 @@ export class WorksitesService {
             );
     }
 
-    // setWorksiteStoreAdmin(auth: Auth) {
     setWorksiteStoreAdmin(clientId: string) {
         return this.fetchAllClientWorksites(clientId)
             .pipe(
@@ -57,7 +55,6 @@ export class WorksitesService {
             );
     }
 
-    // fetchAllClientWorksites(auth: Auth) {
     fetchAllClientWorksites(clientId: string) {
         const worksitesRef = this.af.collection<Worksite[]>(FireBaseCollectionsEnum.WORKSITES,
             ref => ref.where('clientId', '==', clientId)
@@ -68,29 +65,6 @@ export class WorksitesService {
                 return this.mapSnapToWorksite(snaps);
             }),
             first());
-
-        // return worksitesRef.snapshotChanges().pipe(
-        //     delay(1000),
-        //     map(snaps => {
-        //         return snaps.map(snap => {
-        //             const id = snap.payload.doc.id;
-        //             const data = snap.payload.doc.data();
-        //             const worksite = {
-        //                 id,
-        //                 ...(data as object)
-        //             } as Worksite;
-        //             return worksite;
-        //         });
-        //     }),
-        //     map(worksites => {
-        //         return worksites.filter(el => {
-        //             if (el._c === clientId) {
-        //                 return el;
-        //             }
-        //         });
-        //     }),
-        //     first()
-        // );
     }
 
     fetchUserWorksites(auth: Auth) {
@@ -137,32 +111,12 @@ export class WorksitesService {
         );
     }
 
-    // snaps.map(snap => {
-    //     const id = snap.payload.doc.id;
-    //     const data = snap.payload.doc.data();
-    //     const worksite = {
-    //         id,
-    //         ...(data as object)
-    //     } as Worksite;
-    //     return worksite;
-    // });
-
     fetchAllWorksites() {
         return this.af.collection(FireBaseCollectionsEnum.WORKSITES)
             .snapshotChanges()
             .pipe(
                 delay(1000),
                 map(snaps => {
-
-                    // return snaps.map(snap => {
-                    //     const id = snap.payload.doc.id;
-                    //     const data = snap.payload.doc.data();
-                    //     return {
-                    //         id,
-                    //         ...(data as object)
-                    //     };
-                    // });
-
                     return mapSnaps(snaps);
                 }),
                 first()

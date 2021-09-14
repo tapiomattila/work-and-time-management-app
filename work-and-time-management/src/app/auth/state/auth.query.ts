@@ -2,8 +2,7 @@ import { Query } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { Auth } from './auth.model';
 import { AuthStore } from './auth.store';
-// import { UserQuery } from '../user';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { User, UserQuery } from 'src/app/stores/users';
 
@@ -24,14 +23,13 @@ export class AuthQuery extends Query<Auth> {
 
     selectSignedInUser(): Observable<User> {
         return this.auth$.pipe(
-            switchMap(auth => auth && auth.id ? this.userQuery.selectUserById(auth.id) : of(null))
+            switchMap(auth => auth && auth.id ? this.userQuery.selectUserByUserId(auth.id) : of(null))
         );
     }
 
     getSignedInUser() {
         const authUser = this.getValue();
-        const userById = this.userQuery.getUserById(authUser.id);
-        return userById;
+        return this.userQuery.getUserById(authUser.id);
     }
 
     getUserRoles() {

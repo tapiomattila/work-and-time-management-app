@@ -40,21 +40,31 @@ export class AuthService {
                     };
                     this.userNotFoundTimer();
                     this.checkAuthRole();
+
+                    // Initial auth state update
                     this.updateAuthState(authUser);
                 }
             }),
+
+            // fetch auth user from whitelisted users
             this.streamFetchWhiteListed(),
+
+            // fetch whitelisted auth user from users collection
             this.streamFetchUserByIdAfterWhiteListed(),
+
+
             switchMap(user => {
                 if (user) {
                     return of(user);
                 }
                 const auth = this.authQuery.getValue();
                 if (auth.isAuthenticated) {
+
+                    // post new user to users collection if authenticated and whitelisted user
+                    // is not found in that collection
                     this.streamAfterAuthPostNewUser(auth);
                 }
                 return of(false);
-
             }),
             tap(user => {
                 if (user) {

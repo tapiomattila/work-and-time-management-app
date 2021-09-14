@@ -7,8 +7,8 @@ import { Worksite, WorksitesQuery } from '../stores/worksites/state';
 import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { WindowService } from '../services/window.service';
 import { fadeInEnterTrigger, fadeInEnterWithDelayTrigger, fadeInOutTrigger } from '../animations/animations';
-import { Auth, AuthQuery, AuthService } from '../auth/state';
-import { User, UserQuery } from '../stores/users';
+import { AuthQuery, AuthService } from '../auth/state';
+import { User } from '../stores/users';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -32,7 +32,6 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userQuery: UserQuery,
     private authQuery: AuthQuery,
     private worksiteQuery: WorksitesQuery,
     private authService: AuthService,
@@ -43,9 +42,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.momentDay = moment();
     this.user$ = this.authQuery.selectSignedInUser();
-    // this.user$ = this.userQuery.user$;
-    // this.user$ = this.authQuery.selectAuthUser();
-    // this.currentWorksite$ = this.worksiteQuery.selectLastUpdatedWorksite();
+    this.currentWorksite$ = this.worksiteQuery.selectLastUpdatedWorksite();
     const authSub = this.authQuery.auth$.pipe(
       map(auth => auth.profilePictureUrl)
     ).subscribe(res => {

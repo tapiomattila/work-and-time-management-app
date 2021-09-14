@@ -33,18 +33,7 @@ export class HoursQuery extends QueryEntity<HoursState> {
     }
 
     selectHoursForDay(millis: number, activeWorksiteId: string) {
-
         const dayMillis1 = new Date(millis);
-        // const moment1 = moment(dayMillis1);
-
-        // return this.selectAll({
-        //     filterBy: [
-        //         el => {
-        //             return moment(el.createdAt).isSame(dayMillis1, 'day') && el.worksiteId === activeWorksiteId;
-        //         }
-        //     ]
-        // });
-
         return this.selectAll({
             filterBy: [
                 el => {

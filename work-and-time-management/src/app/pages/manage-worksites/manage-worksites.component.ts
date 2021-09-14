@@ -52,7 +52,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.manageService.modalControl(this.route);
         // this.user$ = this.userQuery.select();
         this.user$ = this.authQuery.auth$.pipe(
-            switchMap(auth => this.userQuery.selectUserById(auth.id))
+            switchMap(auth => this.userQuery.selectUserByUserId(auth.id))
         );
 
         // this.user$ = this.authQuery.selectAuthUser();

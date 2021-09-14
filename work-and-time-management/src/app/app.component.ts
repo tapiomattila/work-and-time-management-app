@@ -8,8 +8,8 @@ import { WorkTypeService } from './stores/worktypes/state';
 import { switchMap, tap } from 'rxjs/operators';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ManageService } from './pages/manage.service';
-import { HoursQuery, HoursService } from './stores/hours';
-import { User, UserQuery, UserService } from './stores/users';
+import { HoursService } from './stores/hours';
+import { User } from './stores/users';
 
 @Component({
   selector: 'app-root',
@@ -43,10 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private worksiteService: WorksitesService,
     private worktypeService: WorkTypeService,
     private hoursService: HoursService,
-    private hoursQuery: HoursQuery,
-    private userService: UserService,
     private authQuery: AuthQuery,
-    private userQuery: UserQuery,
     public manageService: ManageService,
     public authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
@@ -88,21 +85,13 @@ export class AppComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-    // this.storeSubs.push(testSub);
     this.storeSubs.push(adminUserWorksitesSub);
     this.storeSubs.push(worktypeSub);
     this.storeSubs.push(hoursSub);
   }
 
   authenticatedUserStoreUpdate() {
-    const authSubs = this.authService.firebaseAuthUpdate().pipe(
-      tap((user: any) => {
-        if (user) {
-          const userMod = user as User;
-          this.userService.upsertUsersStore(userMod.userId, userMod);
-        }
-      })
-    ).subscribe();
+    const authSubs = this.authService.firebaseAuthUpdate().subscribe();
     this.firebaseSubs.push(authSubs);
   }
 

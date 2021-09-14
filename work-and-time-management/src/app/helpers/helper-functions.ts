@@ -1,5 +1,5 @@
 export function formatHours(hours: number) {
-    if (typeof(hours) === 'number') {
+    if (typeof (hours) === 'number') {
         const frac = hours % 1;
         const full = hours - frac;
 
@@ -15,6 +15,17 @@ export function formatHours(hours: number) {
     } else {
         return hours;
     }
+}
+
+export function mapSnapsWithId(snaps: any) {
+    return snaps.map(snap => {
+        const id = snap.payload.doc.id;
+        const data = snap.payload.doc.data();
+        return {
+            id,
+            ...(data as object)
+        };
+    });
 }
 
 export function mapSnaps(snaps: any) {

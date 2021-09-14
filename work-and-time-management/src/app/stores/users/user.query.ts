@@ -14,9 +14,9 @@ export class UserQuery extends QueryEntity<UserState> {
         super(store);
     }
 
-    selectUserById(id: string) {
+    selectUserByUserId(id: string) {
         return this.selectAll({
-            filterBy: entity => entity.id === id
+            filterBy: entity => entity.userId === id
           }).pipe(
               map(els => els.length > 0 ? els[0] : null)
           );
@@ -27,6 +27,6 @@ export class UserQuery extends QueryEntity<UserState> {
     }
 
     getUserById(id: string) {
-        return this.getAll().find(el => el.id === id);
+        return this.getAll().find(el => el.userId === id);
     }
 }

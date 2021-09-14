@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { UserStore } from './user.store';
 import { createUser, User } from './user.model';
 import { from, of } from 'rxjs';
@@ -46,17 +46,6 @@ export class UserService {
                 first()
             );
     }
-
-    // fetchUserById222(id: string) {
-    //     return this.af.collection(FireBaseCollectionsEnum.USERS).doc(id)
-    //         .snapshotChanges()
-    //         .pipe(
-    //             map((snap: any) => {
-    //                 return takeSnap(snap);
-    //             }),
-    //             first()
-    //         );
-    // }
 
     fetchUserById(user: { clientId: string, email: string, id: string }) {
         const query = this.af.collection(FireBaseCollectionsEnum.USERS,

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { combineQueries } from '@datorama/akita';
 import { Observable, of, Subscription } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
-// import { Users, UsersQuery, UsersService } from 'src/app/auth/admin/users';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { AuthQuery } from 'src/app/auth/state';
-// import { User, UserQuery, UserService } from 'src/app/auth/user';
 import { ManageService } from '../../manage.service';
 import { Worksite, WorksitesQuery, WorksitesService } from '../../../stores/worksites/state';
-import { User, UserQuery, UserService } from 'src/app/stores/users';
+import { User, UserQuery } from 'src/app/stores/users';
+import * as moment from 'moment';
 
 interface Data {
   worksites: Worksite[];
@@ -30,33 +29,19 @@ export class WorksiteUsersComponent implements OnInit {
   data$: Observable<Data>;
   loading$: Observable<boolean>;
 
+  momentDay: moment.Moment;
+
   constructor(
     private worksitesQuery: WorksitesQuery,
     private worksitesService: WorksitesService,
     private userQuery: UserQuery,
     public manageService: ManageService,
-    private userService: UserService,
     private authQuery: AuthQuery
   ) { }
 
   ngOnInit() {
+    this.momentDay = moment();
     this.worksites$ = this.worksitesQuery.selectAllLiveWorksites();
-    const user$ = this.userQuery.selectAll();
-    // const allInfosSubs = this.authQuery.auth$.pipe(
-    //   switchMap(auth => {
-    //     if (!auth) {
-    //       return of(null);
-    //     }
-    //     return this.userService.fetchAllUsersInfos(auth);
-    //   }),
-    //   tap(res => {
-    //     if (res) {
-    //       this.usersService.updateUsersStore(res);
-    //     }
-    //   })
-    // ).subscribe();
-    // this.subscriptions.push(allInfosSubs);
-
     this.data$ = this.constructData();
 
     this.loading$ = this.data$.pipe(
@@ -73,21 +58,19 @@ export class WorksiteUsersComponent implements OnInit {
 
   constructData(): Observable<Data> {
     const worksites$ = this.worksitesQuery.selectAllLiveWorksites();
-    // const users$ = this.userQuery.selectAll();
-    // return combineQueries([
-    //   worksites$,
-    //   users$
-    // ]).pipe(
-    //   map(([worksites, users]) => {
-    //     const data: Data = {
-    //       worksites,
-    //       users
-    //     };
-    //     return data;
-    //   })
-    // );
-
-    return of(null);
+    const users$ = this.userQuery.selectAll();
+    return combineQueries([
+      worksites$,
+      users$
+    ]).pipe(
+      map(([worksites, users]) => {
+        const data: Data = {
+          worksites,
+          users
+        };
+        return data;
+      })
+    );
   }
 
   worksiteChange(event: { userId: string, worksiteId: string, checked: boolean }) {
