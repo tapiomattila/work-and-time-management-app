@@ -96,16 +96,7 @@ export class HoursService {
             .pipe(
                 delay(1000),
                 map(snaps => {
-
-                    return snaps.map(snap => {
-                        const id = snap.payload.doc.id;
-                        const data = snap.payload.doc.data();
-                        return {
-                            id,
-                            ...(data as object)
-                        };
-                    });
-
+                    return mapSnapsWithId(snaps);
                 }),
                 first()
             );
@@ -122,15 +113,6 @@ export class HoursService {
             .pipe(
                 delay(1000),
                 map(snaps => {
-                    // return snaps.map(snap => {
-                    //     const id = snap.payload.doc.id;
-                    //     const data = snap.payload.doc.data();
-                    //     return {
-                    //         id,
-                    //         ...(data as object)
-                    //     };
-                    // });
-
                     return mapSnapsWithId(snaps);
                 }),
                 first()

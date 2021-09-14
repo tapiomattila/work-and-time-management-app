@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { Role, RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { WorksitesQuery, Worksite, WorksitesService } from '../../stores/worksites/state';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ManageService } from '../manage.service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
 import { AuthQuery } from 'src/app/auth/state';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { User, UserQuery, UserService } from 'src/app/stores/users';
 
@@ -29,6 +29,7 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
     worksiteForm: FormGroup;
 
     momentDay: moment.Moment;
+    isAdmin: boolean | undefined;
 
     constructor(
         private router: Router,
@@ -50,12 +51,13 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.routeParams();
         this.manageService.routeEvents(RouterRoutesEnum.ADD_WORKTYPE, RouterRoutesEnum.EDIT_WORKSITE);
         this.manageService.modalControl(this.route);
-        // this.user$ = this.userQuery.select();
         this.user$ = this.authQuery.auth$.pipe(
             switchMap(auth => this.userQuery.selectUserByUserId(auth.id))
         );
 
-        // this.user$ = this.authQuery.selectAuthUser();
+        const userSub = this.user$.subscribe((user: User) => {
+            this.isAdmin = user ? user.roles.includes(Role.ADMIN) : false;
+        });
 
         const allInfosSubs = this.authQuery.auth$.pipe(
             switchMap(auth => {
@@ -63,21 +65,10 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
                     return of(null);
                 }
                 return this.userService.fetchAllUsersByClientId(auth.clientId);
-                // return this.userService.fetchAllUsersInfos(auth);
             }),
-            // map((res: Partial<User>) => {
-            //     return {
-            //         ...res,
-            //         userId: res.id
-            //     };
-            // }),
-            tap((res: Partial<User>) => {
-                if (res) {
-                    // this.userService.upsertUsersStore(res.id, res);
-                    // this.userService.updateUsersStore(res);
-                }
-            })
         ).subscribe();
+
+        this.subscriptions.push(userSub);
         this.subscriptions.push(allInfosSubs);
     }
 
@@ -138,10 +129,6 @@ export class ManageWorksitesComponent implements OnInit, OnDestroy {
         this.worksiteForm.controls.postalCode.setValue(worksite.info.postalCode);
         this.worksiteForm.controls.city.setValue(worksite.info.city);
     }
-
-    // backArrowPressed() {
-    //     this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-    // }
 
     edit(worksite: Worksite, index: number) {
         this.worksiteService.setActive(worksite.id);

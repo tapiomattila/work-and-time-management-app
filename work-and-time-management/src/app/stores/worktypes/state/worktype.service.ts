@@ -52,29 +52,7 @@ export class WorkTypeService {
     //         );
     // }
 
-    // fetchWorkTypes(auth: Auth) {
-    //     return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`,
-    //         ref => ref.where('_c', '==', auth.clientId)
-    //     )
-    //         .snapshotChanges()
-    //         .pipe(
-    //             delay(1000),
-    //             map(snaps => {
-    //                 return snaps.map(snap => {
-    //                     const id = snap.payload.doc.id;
-    //                     const data = snap.payload.doc.data();
-    //                     return {
-    //                         id,
-    //                         ...(data as object)
-    //                     };
-    //                 });
-
-    //             }),
-    //             first()
-    //         );
-    // }
-
-    fetchWorkTypes22(user: User) {
+    fetchWorkTypes(user: User) {
         const params = ref => ref.where('clientId', '==', user.clientId);
         return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`, params)
             .snapshotChanges()

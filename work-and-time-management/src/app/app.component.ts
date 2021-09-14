@@ -9,7 +9,8 @@ import { switchMap, tap } from 'rxjs/operators';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ManageService } from './pages/manage.service';
 import { HoursService } from './stores/hours';
-import { User } from './stores/users';
+import { User, UserQuery } from './stores/users';
+import { Role } from './enumerations/global.enums';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,28 @@ export class AppComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   handleRoles$: Observable<any[]>;
 
+  /*
+  ROLES:
+  admin:
+    - CRUD worksites (done)
+    - CRUD worktypes (done)
+    - see all users, assign users to worksites (done)
+    - assign hours to any user (by own client id)
+    - see all users hours
+    - analytics for the data
+  manager:
+    - read worksites (done)
+    - read worktypes (done)
+    - see all users, assign users to own worksites (done)
+    - assign hours to own user (done)
+    - analytics for own user
+  basic:
+    - read worksites (done)
+    - read worktypes (done)
+    - assign hours to own user (done)
+    - analytics for own user
+   */
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.windowService.updateCurrentDimensions(window.innerWidth, window.innerHeight);
@@ -44,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private worktypeService: WorkTypeService,
     private hoursService: HoursService,
     private authQuery: AuthQuery,
+    private userQuery: UserQuery,
     public manageService: ManageService,
     public authService: AuthService,
     public navigationHandlerService: NavigationHandlerService,
@@ -55,10 +79,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authenticatedUserStoreUpdate();
     this.user$ = this.authQuery.selectSignedInUser();
 
-    const adminUserWorksitesSub = this.user$.pipe(
+    const accessWorksitesSub = this.user$.pipe(
       switchMap((user: User) => {
-        const adminUser = user && user.id && user.roles.includes('admin');
-        return adminUser ? this.worksiteService.fetchAllClientWorksites(user.clientId) : of(null);
+        const access = user && user.id && (user.roles.includes(Role.ADMIN) || user.roles.includes(Role.MANAGER));
+        return access ? this.worksiteService.fetchAllClientWorksites(user.clientId) : of(null);
+      }),
+      tap((worksites: Worksite[]) => {
+        if (worksites) {
+          this.worksiteService.setWorksites(worksites);
+        }
+      }),
+      switchMap(() => this.user$),
+      switchMap((user: User) => {
+        const access = user && user.id;
+        return access ? this.worksiteService.fetchUserWorksites(user) : of(null);
       }),
       tap((worksites: Worksite[]) => {
         if (worksites) {
@@ -68,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     const worktypeSub = this.user$.pipe(
-      switchMap((user: User) => user && user.id ? this.worktypeService.fetchWorkTypes22(user) : of(null)),
+      switchMap((user: User) => user && user.id ? this.worktypeService.fetchWorkTypes(user) : of(null)),
       tap(res => {
         if (this.doesArrayExist(res)) {
           this.worktypeService.setWorkTypes(res);
@@ -85,7 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-    this.storeSubs.push(adminUserWorksitesSub);
+    this.storeSubs.push(accessWorksitesSub);
     this.storeSubs.push(worktypeSub);
     this.storeSubs.push(hoursSub);
   }

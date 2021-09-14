@@ -24,3 +24,8 @@ export enum FireBaseCollectionsEnum {
     WORKTYPES = 'worktypes',
     WHITELISTED = 'whitelisted-users'
 }
+
+export enum Role {
+    ADMIN = 'admin',
+    MANAGER = 'manager'
+}

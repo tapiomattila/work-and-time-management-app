@@ -7,6 +7,7 @@ import { Observable, of, Subscription, timer } from 'rxjs';
 import { User, UserService } from 'src/app/stores/users';
 import { AuthQuery } from './auth.query';
 import { ManageService } from 'src/app/pages/manage.service';
+import { Role } from 'src/app/enumerations/global.enums';
 
 @Injectable({
     providedIn: 'root'
@@ -148,7 +149,7 @@ export class AuthService {
     }
 
     private isAdminOrManager(user: User): boolean {
-        return user && (user.roles.includes('admin') || user.roles.includes('manager'));
+        return user && (user.roles.includes(Role.ADMIN) || user.roles.includes(Role.MANAGER));
     }
 
     private addUsersToUsersStore(users: Partial<User>[]) {
