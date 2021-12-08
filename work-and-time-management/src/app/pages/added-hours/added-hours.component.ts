@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    ViewChild,
+    OnDestroy,
+} from '@angular/core';
 import { WorksitesQuery } from '../../stores/worksites/state';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
@@ -16,15 +22,17 @@ import * as moment from 'moment';
     selector: 'app-added-hours',
     templateUrl: './added-hours.component.html',
     styleUrls: ['./added-hours.component.scss'],
-    animations: [
-        fadeInEnterTrigger
-    ]
+    animations: [fadeInEnterTrigger],
 })
 export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
-
     private subscriptions: Subscription[] = [];
     momentDay: moment.Moment;
-    displayedColumns: string[] = ['updateAt', 'worksiteName', 'worktypeName', 'hoursFormatted'];
+    displayedColumns: string[] = [
+        'updateAt',
+        'worksiteName',
+        'worktypeName',
+        'hoursFormatted',
+    ];
     dataSource;
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -35,27 +43,32 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         private worksiteQuery: WorksitesQuery,
         private router: Router,
         private hoursQuery: HoursQuery
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.momentDay = moment();
-        const data$ = this.hoursQuery.selectAll().pipe(
-            map(elements => {
-                return this.worksiteQuery.selectTableHours(elements);
-            }),
-            tap(res => {
-                const result = (res as any) as TableHours[];
-                const sortedByDates = this.sortData(result);
-                this.dataSource = new MatTableDataSource(sortedByDates);
-            }),
-        ).subscribe();
+        const data$ = this.hoursQuery
+            .selectAll()
+            .pipe(
+                map(elements => {
+                    return this.worksiteQuery.selectTableHours(elements);
+                }),
+                tap(res => {
+                    const result = res as any as TableHours[];
+                    const sortedByDates = this.sortData(result);
+                    this.dataSource = new MatTableDataSource(sortedByDates);
+                })
+            )
+            .subscribe();
 
         this.subscriptions.push(data$);
     }
 
     sortData(data: TableHours[]) {
         return data.sort((a, b) => {
-            return new Date(b.updatedAt) as any - (new Date(a.updatedAt) as any);
+            return (
+                (new Date(b.updatedAt) as any) - (new Date(a.updatedAt) as any)
+            );
         });
     }
 

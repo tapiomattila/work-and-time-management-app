@@ -1,13 +1,18 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
+import {
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Output,
+} from '@angular/core';
 
 @Directive({
-    selector: '[appClickOutside]'
+    selector: '[appClickOutside]',
 })
 export class ClickOutsideDirective {
-
     @Output() clickOutside = new EventEmitter<void>();
 
-    constructor(private elementRef: ElementRef) { }
+    constructor(private elementRef: ElementRef) {}
 
     @HostListener('document:click', ['$event.target'])
     public onClick(target) {
@@ -16,5 +21,4 @@ export class ClickOutsideDirective {
             this.clickOutside.emit();
         }
     }
-
 }

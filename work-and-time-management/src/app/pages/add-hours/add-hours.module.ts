@@ -10,12 +10,7 @@ import { HoursTableComponent } from './form-elements/hours-table/hours-table.com
 import { HoursSlider22Component } from './form-elements/hours-slider/hours-slider.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        SharedModule,
-        CardsModule,
-        DirectivesModule
-    ],
+    imports: [CommonModule, SharedModule, CardsModule, DirectivesModule],
     exports: [],
     declarations: [
         AddHoursComponent,
@@ -26,4 +21,4 @@ import { HoursSlider22Component } from './form-elements/hours-slider/hours-slide
     ],
     providers: [],
 })
-export class AddHoursModule { }
+export class AddHoursModule {}

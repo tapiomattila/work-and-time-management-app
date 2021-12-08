@@ -5,10 +5,9 @@ import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { WorksitesQuery, WorksitesService } from '../stores/worksites/state';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NavigationHandlerService {
-
     private navigationSubj = new BehaviorSubject<string>('current-worksite');
     navigationObs$ = this.navigationSubj.asObservable();
 
@@ -22,7 +21,10 @@ export class NavigationHandlerService {
 
     routeInfo() {
         const index = window.location.href.indexOf('//');
-        const part1 = window.location.href.substring(index + 2, window.location.href.length);
+        const part1 = window.location.href.substring(
+            index + 2,
+            window.location.href.length
+        );
         const index2 = part1.indexOf('/');
         const part2 = part1.substring(index2 + 1, part1.length);
         const index3 = part2.indexOf('/');
@@ -71,16 +73,12 @@ export class NavigationHandlerService {
     }
 
     navigateToRoute(route: string, id?: string) {
-
         if (route === RouterRoutesEnum.ADD_HOURS && id) {
             this.worksiteService.setActive(id);
         }
 
         if (id) {
-            this.router.navigate([
-                route,
-                id
-            ]);
+            this.router.navigate([route, id]);
         } else {
             this.router.navigate([route]);
         }

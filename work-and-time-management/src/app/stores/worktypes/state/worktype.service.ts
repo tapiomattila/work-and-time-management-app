@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap, delay } from 'rxjs/operators';
+import { map, first, tap, delay, switchMap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { Auth } from 'src/app/auth/state';
 import { User } from '../../users';
+import { doesArrayExist } from 'src/app/helpers/helper-functions';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class WorkTypeService {
     constructor(
         private worktypeStore: WorktypeStore,
         private af: AngularFirestore
-    ) { }
+    ) {}
 
     setActive(id: string) {
         this.worktypeStore.setActive(id);
@@ -30,31 +31,10 @@ export class WorkTypeService {
         this.worktypeStore.set(worktypeArray);
     }
 
-    // setWorkTypeStoreAdmin(auth: Auth) {
-    //     return this.fetchWorkTypes(auth)
-    //         .pipe(
-    //             tap(res => {
-    //                 if (res && res.length > 0) {
-    //                     this.setWorkTypes(res);
-    //                 }
-    //             }),
-    //         );
-    // }
-
-    // setWorkTypeStore(auth: Auth) {
-    //     return this.fetchWorkTypes(auth)
-    //         .pipe(
-    //             tap(res => {
-    //                 if (res && res.length > 0) {
-    //                     this.setWorkTypes(res);
-    //                 }
-    //             }),
-    //         );
-    // }
-
     fetchWorkTypes(user: User) {
         const params = ref => ref.where('clientId', '==', user.clientId);
-        return this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`, params)
+        return this.af
+            .collection(`${FireBaseCollectionsEnum.WORKTYPES}`, params)
             .snapshotChanges()
             .pipe(
                 map(snaps => {
@@ -65,7 +45,9 @@ export class WorkTypeService {
     }
 
     fetchWorktypeById(id: string) {
-        return this.af.collection(FireBaseCollectionsEnum.WORKTYPES).doc(id)
+        return this.af
+            .collection(FireBaseCollectionsEnum.WORKTYPES)
+            .doc(id)
             .snapshotChanges()
             .pipe(
                 map(snap => {
@@ -75,23 +57,43 @@ export class WorkTypeService {
             );
     }
 
+    fetchWorktypesByUser(user$: Observable<User>) {
+        return user$.pipe(
+            switchMap((user: User) =>
+                user && user.id ? this.fetchWorkTypes(user) : of(null)
+            ),
+            tap(res => {
+                if (doesArrayExist(res)) {
+                    this.setWorkTypes(res);
+                }
+            })
+        );
+    }
+
     putWorktype(id: string, changes: Partial<WorkType>): Observable<any> {
-        return from(this.af.doc(`${FireBaseCollectionsEnum.WORKTYPES}/${id}`).update(changes));
+        return from(
+            this.af
+                .doc(`${FireBaseCollectionsEnum.WORKTYPES}/${id}`)
+                .update(changes)
+        );
     }
 
     updateWorktype(worktype: WorkType, updated: Partial<WorkType>): void {
-        this.worktypeStore.update(worktype.id,
-            {
-                ...worktype,
-                updatedAt: updated.updatedAt,
-                updatedBy: updated.updatedBy,
-                name: updated.name,
-                rate: updated.rate
-            });
+        this.worktypeStore.update(worktype.id, {
+            ...worktype,
+            updatedAt: updated.updatedAt,
+            updatedBy: updated.updatedBy,
+            name: updated.name,
+            rate: updated.rate,
+        });
     }
 
     postNewWorktype(worktype: Partial<WorkType>) {
-        return from(this.af.collection(`${FireBaseCollectionsEnum.WORKTYPES}`).add(worktype));
+        return from(
+            this.af
+                .collection(`${FireBaseCollectionsEnum.WORKTYPES}`)
+                .add(worktype)
+        );
     }
 
     addNewWorktypeToStore(worktype: Partial<WorkType>, id: string) {
@@ -100,18 +102,20 @@ export class WorkTypeService {
         this.worktypeStore.add(newworktype);
     }
 
-    updateDeleted(worktype: WorkType, changes: {
-        updatedAt: string,
-        updatedBy: string,
-        deleted: true
-    }) {
-        this.worktypeStore.update(worktype.id,
-            {
-                ...worktype,
-                deleted: changes.deleted,
-                updatedAt: changes.updatedAt,
-                updatedBy: changes.updatedBy
-            });
+    updateDeleted(
+        worktype: WorkType,
+        changes: {
+            updatedAt: string;
+            updatedBy: string;
+            deleted: true;
+        }
+    ) {
+        this.worktypeStore.update(worktype.id, {
+            ...worktype,
+            deleted: changes.deleted,
+            updatedAt: changes.updatedAt,
+            updatedBy: changes.updatedBy,
+        });
     }
 
     resetStore() {
@@ -124,9 +128,8 @@ export class WorkTypeService {
             const data = snap.payload.doc.data();
             return {
                 id,
-                ...(data as object)
+                ...(data as object),
             };
         });
     }
-
 }

@@ -31,6 +31,6 @@ export interface Hours {
 export function createHours(hours: Partial<Hours>) {
     return {
         id: hours.id,
-        ...hours
+        ...hours,
     } as Hours;
 }

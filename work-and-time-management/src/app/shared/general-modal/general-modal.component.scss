@@ -1,41 +1,38 @@
 .container-wrapper {
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-  width: 100vw;
-  height: 100vh;
+    width: 100vw;
+    height: 100vh;
 }
 
 .container {
-  box-shadow: 1px 7px 10px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 7px 10px 3px rgba(0, 0, 0, 0.5);
 
-  position: absolute;
-  top: 50%;
-  left: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
-  width: 90vw;
-  max-width: 450px;
+    width: 90vw;
+    max-width: 450px;
 
-  min-height: 200px;
+    min-height: 200px;
 
-  background: #fff;
-  border: 2px solid var(--primary-color);
-  border-radius: 5px;
+    background: #fff;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
 }
 
 .blur {
-  width: 100%;
-  transition: 0.4s all;
-  backdrop-filter: none;
+    width: 100%;
+    transition: 0.4s all;
+    backdrop-filter: none;
 
-  &.active {
-    backdrop-filter: blur(5px);
-  }
+    &.active {
+        backdrop-filter: blur(5px);
+    }
 }
-
-// TODO
-// central blur manager service

@@ -1,45 +1,29 @@
 :host {
-  padding-top: 20px;
-  display: grid;
-  grid-template-columns: 2px repeat(6, 1fr) 2px;
-  // grid-template-rows: 45px 45px min-content 1fr;
-  grid-template-rows: 125px min-content 1fr;
-  gap: 15px;
-
-  position: relative;
+    grid-column: 1 / -1;
 }
-
-.heading {
-  grid-column: 2 / span 6;
-  grid-row: 1 / 2;
-}
-
-// .header {
-//   grid-column: 2 / span 6;
-// }
 
 .circles {
-  grid-column: 2 / span 6;
+    grid-column: 2 / span 6;
 }
 
 .cards {
-  grid-column: 2 / span 6;
-  display: grid;
-  gap: 10px;
+    grid-column: 2 / span 6;
+    display: grid;
+    gap: 10px;
 }
 
 .date {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer {
-  grid-column: 1 / -1;
-  height: 20px;
+    grid-column: 1 / -1;
+    height: 20px;
 }
 
 svg {
-  height: 65px;
-  width: 65px;
+    height: 65px;
+    width: 65px;
 }

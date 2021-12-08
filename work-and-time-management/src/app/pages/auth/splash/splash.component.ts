@@ -5,15 +5,12 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 @Component({
     selector: 'app-splash',
     templateUrl: 'splash.component.html',
-    styleUrls: ['./splash.component.scss']
+    styleUrls: ['./splash.component.scss'],
 })
-
 export class SplashComponent implements OnInit {
-    constructor(
-        private router: Router
-    ) { }
+    constructor(private router: Router) {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     login() {
         this.router.navigate([`/${RouterRoutesEnum.LOGIN}`]);

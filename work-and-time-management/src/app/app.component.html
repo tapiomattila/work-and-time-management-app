@@ -1,16 +1,31 @@
-<div style="display: flex; justify-content: center; align-items: center; font-size: 40px; min-height: 100vh;">
-  <app-loader *ngIf="authService.loader"></app-loader>
-</div>
+<ng-container *ngIf="authService.loader; else content">
+    <div class="loader-container">
+        <app-loader></app-loader>
+    </div>
+</ng-container>
 
-<div *ngIf="!authService.loader" class="app-container">
-  <router-outlet></router-outlet>
-</div>
+<ng-template #content>
+    <div class="app-container">
+        <app-header [user]="user$ | async"></app-header>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</ng-template>
 
 <ng-container *ngIf="manageService.genModalObs$ | async">
-  <app-general-modal>
-    <div class="register-modal-content">
-      <h4>You as a user is not yet registered in this application. <br><br>Please contact your organization.</h4>
-      <button (click)="manageService.setGeneralModal(false)" style="color: #fff; text-transform: uppercase; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);">Close</button>
-    </div>
-  </app-general-modal>
+    <app-general-modal>
+        <div class="register-modal-content">
+            <h4>
+                You as a user is not yet registered in this application.
+                <br /><br />Please contact your organization.
+            </h4>
+            <button
+                (click)="manageService.setGeneralModal(false)"
+                class="modal-btn"
+            >
+                Close
+            </button>
+        </div>
+    </app-general-modal>
 </ng-container>

@@ -1,6 +1,6 @@
 :host {
-  width: 100%;
-  border: 1px solid red;
+    width: 100%;
+    border: 1px solid red;
 }
 // .container {
 //     min-width: 100px;
@@ -11,114 +11,114 @@
 // }
 
 .datepicker {
-//   margin: 1rem;
-//   padding: 1rem;
-  //   width: 300px;
-  width: 100%;
-  border: 1px solid #ccc;
+    //   margin: 1rem;
+    //   padding: 1rem;
+    //   width: 300px;
+    width: 100%;
+    border: 1px solid #ccc;
 }
 
 .month {
-  display: grid;
-  grid-template-columns: 24px auto 24px;
-  height: 50px;
-  gap: 6px;
-
-  .arrow-left,
-  .arrow-right,
-  .selected-month {
-    text-align: center;
-    align-self: center;
-    cursor: pointer;
-  }
-
-  .selected-month {
-    button {
-      text-transform: capitalize;
-      cursor: pointer;
-      padding: 8px 0;
-      width: 200px;
-      margin: 0 auto;
-      background-color: transparent;
-      border: none;
-      outline: none;
-
-      &:hover {
-        background-color: #eeeeee;
-      }
-    }
+    display: grid;
+    grid-template-columns: 24px auto 24px;
+    height: 50px;
+    gap: 6px;
 
     .arrow-left,
-    .arrow-right {
-      border: none;
-      background: none;
-      outline: none;
-      cursor: pointer;
-      &:hover {
-        background-color: #eee;
-      }
-    }
-  }
-
-  .weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    height: 24px;
-
-    span {
-      text-align: center;
-      align-self: center;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-  }
-
-  .days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-
-    .previous-days,
-    .current-days,
-    .next-days {
-      padding: 4px;
-      text-align: center;
-      align-self: center;
-      font-size: 0.8rem;
-      border: 1px solid transparent;
-    }
-
-    .previous-days,
-    .next-days {
-      opacity: 0.4;
-    }
-
-    .current-days {
-      cursor: pointer;
-      &:hover {
-        background-color: #cccccc;
-      }
-    }
-
-    .selected-day {
-      border: 1px solid #cccccc;
-      background-color: #eeeeee;
-    }
-
-    .month-selector {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-
-      span {
-        padding: 24px 0;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        cursor: pointer;
+    .arrow-right,
+    .selected-month {
         text-align: center;
-
-        &:hover {
-          background-color: #eeeeee;
-        }
-      }
+        align-self: center;
+        cursor: pointer;
     }
-  }
+
+    .selected-month {
+        button {
+            text-transform: capitalize;
+            cursor: pointer;
+            padding: 8px 0;
+            width: 200px;
+            margin: 0 auto;
+            background-color: transparent;
+            border: none;
+            outline: none;
+
+            &:hover {
+                background-color: #eeeeee;
+            }
+        }
+
+        .arrow-left,
+        .arrow-right {
+            border: none;
+            background: none;
+            outline: none;
+            cursor: pointer;
+            &:hover {
+                background-color: #eee;
+            }
+        }
+    }
+
+    .weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        height: 24px;
+
+        span {
+            text-align: center;
+            align-self: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+
+        .previous-days,
+        .current-days,
+        .next-days {
+            padding: 4px;
+            text-align: center;
+            align-self: center;
+            font-size: 0.8rem;
+            border: 1px solid transparent;
+        }
+
+        .previous-days,
+        .next-days {
+            opacity: 0.4;
+        }
+
+        .current-days {
+            cursor: pointer;
+            &:hover {
+                background-color: #cccccc;
+            }
+        }
+
+        .selected-day {
+            border: 1px solid #cccccc;
+            background-color: #eeeeee;
+        }
+
+        .month-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            span {
+                padding: 24px 0;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                cursor: pointer;
+                text-align: center;
+
+                &:hover {
+                    background-color: #eeeeee;
+                }
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 <div class="day-hours">
     <ng-container *ngIf="hours">
         <!-- (click)="daySelected()" -->
-        <div class="circle" [ngClass]="{ 'active-circle': activeDay}">
+        <div class="circle" [ngClass]="{ 'active-circle': activeDay }">
             <ng-container *ngIf="hours$ | async as hours; else noHours">
                 {{ hours }}h
             </ng-container>

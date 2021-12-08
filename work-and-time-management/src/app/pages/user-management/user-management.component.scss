@@ -1,46 +1,46 @@
 :host {
-  padding-top: 20px;
-  display: grid;
-  grid-template-columns: 2px repeat(6, 1fr) 2px;
-  grid-template-rows:
-    [heading-start] 45px
-    [heading-end header-start] 65px
-    [header-end container-start] 1fr
-    [container-end];
-  gap: 15px;
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 2px repeat(6, 1fr) 2px;
+    grid-template-rows:
+        [heading-start] 45px
+        [heading-end header-start] 65px
+        [header-end container-start] 1fr
+        [container-end];
+    gap: 15px;
 
-  // min-height: calc(100vh - 20px);
-  box-sizing: border-box;
+    // min-height: calc(100vh - 20px);
+    box-sizing: border-box;
 
-  position: relative;
-  z-index: 10;
+    position: relative;
+    z-index: 10;
 }
 
 .name-container {
-  grid-column: 2 / 3;
-  height: 40px;
+    grid-column: 2 / 3;
+    height: 40px;
 
-  h4 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+    h4 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
 }
 
 .main-content__item {
-  &:hover {
-    box-shadow: 2px 0 2px rgba(0, 0, 0, 0.25);
-    transform: none;
-    cursor: pointer;
-  }
+    &:hover {
+        box-shadow: 2px 0 2px rgba(0, 0, 0, 0.25);
+        transform: none;
+        cursor: pointer;
+    }
 }
 
 .text {
-  &__display {
-    margin-right: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    &__display {
+        margin-right: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

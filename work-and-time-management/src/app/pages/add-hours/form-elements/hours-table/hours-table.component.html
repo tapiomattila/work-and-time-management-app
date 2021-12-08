@@ -3,8 +3,11 @@
         <th>Hours</th>
         <th>Work type</th>
     </tr>
-    <tr *ngFor="let hours of tableHours; let i = index" (click)="selectDayTableHour(hours, i)"
-        [ngClass]="{ 'active': dayTableSelectionIndex === i}">
+    <tr
+        *ngFor="let hours of tableHours; let i = index"
+        (click)="selectDayTableHour(hours, i)"
+        [ngClass]="{ active: dayTableSelectionIndex === i }"
+    >
         <td>{{ hours.hoursFormatted }}</td>
         <td>{{ hours.worktypeName }}</td>
     </tr>

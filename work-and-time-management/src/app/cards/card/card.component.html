@@ -1,7 +1,12 @@
 <div class="card">
     <div class="card__ribbon"></div>
     <div class="card__content">
-        <p class="card__name current-worksite" [ngClass]="{ 'largeFont': !hoursNum }">{{ name }}</p>
+        <p
+            class="card__name current-worksite"
+            [ngClass]="{ largeFont: !hoursNum }"
+        >
+            {{ name }}
+        </p>
         <ng-container *ngIf="hours$ | async as hours; else noHours">
             <p class="card__hours">{{ hours }} <span>h</span></p>
         </ng-container>

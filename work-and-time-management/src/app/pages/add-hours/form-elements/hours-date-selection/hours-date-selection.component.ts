@@ -6,12 +6,9 @@ import { fadeInEnterTrigger } from 'src/app/animations/animations';
     selector: 'app-hours-date-selection',
     templateUrl: './hours-date-selection.component.html',
     styleUrls: ['./hours-date-selection.component.scss'],
-    animations: [
-        fadeInEnterTrigger
-    ],
+    animations: [fadeInEnterTrigger],
 })
 export class HoursDateSelectionComponent implements OnInit {
-
     private showFormData = true;
     tableContentValues;
 
@@ -30,9 +27,9 @@ export class HoursDateSelectionComponent implements OnInit {
 
     maxDate = new Date();
 
-    constructor() { }
+    constructor() {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     toggleDatePicker(picker) {
         picker.open();

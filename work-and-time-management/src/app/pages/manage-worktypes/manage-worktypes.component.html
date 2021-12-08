@@ -1,32 +1,46 @@
-<app-header [title]="'Work types'"></app-header>
+<!-- <app-header [title]="'Work types'"></app-header> -->
 
 <div class="container">
     <div class="main-content">
         <ng-container *ngIf="worktypes$ | async as worktypes">
             <div class="main-content__items">
-                <div class="main-content__item" *ngFor="let worktype of worktypes; let i = index"
-                    (click)="edit(worktype, i)">
+                <div
+                    class="main-content__item"
+                    *ngFor="let worktype of worktypes; let i = index"
+                    (click)="edit(worktype, i)"
+                >
                     <p>
                         {{ worktype.name }}
                     </p>
-                    <span class="rate">Rate: <span>{{ worktype.rate }}</span></span>
-                    <img src="../../../assets/svg/SVG/edit2.svg" alt="edit-worksites">
+                    <span class="rate"
+                        >Rate: <span>{{ worktype.rate }}</span></span
+                    >
+                    <img
+                        src="../../../assets/svg/SVG/edit2.svg"
+                        alt="edit-worksites"
+                    />
                 </div>
             </div>
         </ng-container>
-        <button class="button button__work" type="button" (click)="addNew()">ADD NEW WORKTYPE</button>
+        <button class="button button__work" type="button" (click)="addNew()">
+            ADD NEW WORKTYPE
+        </button>
     </div>
 </div>
 
 <app-edit-form>
-
-    <div class="blur" [ngClass]="{ 'active': manageService.modalObs$ | async }" (click)="closeModal()"></div>
+    <div
+        class="blur"
+        [ngClass]="{ active: manageService.modalObs$ | async }"
+        (click)="closeModal()"
+    ></div>
     <ng-container *ngIf="manageService.modalObs$ | async">
         <div class="editForm">
-
             <div class="header">
                 <ng-container>
-                    <h4 class="editForm__header" style="text-indent: 0;">Edit</h4>
+                    <h4 class="editForm__header" style="text-indent: 0">
+                        Edit
+                    </h4>
                 </ng-container>
 
                 <div class="close__x editForm__close" (click)="closeModal()">
@@ -39,27 +53,57 @@
                 <div class="form__inputs">
                     <label for="name">
                         <span>Name</span>
-                        <input type="text" placeholder="ex. Normal man hours" id="name" formControlName="name">
+                        <input
+                            type="text"
+                            placeholder="ex. Normal man hours"
+                            id="name"
+                            formControlName="name"
+                        />
                     </label>
 
                     <label for="rate">
                         <span>Rate</span>
-                        <input type="number" placeholder="Hourly rate: ex. 12.25" id="rate" (focus)="onFocus()" formControlName="rate">
+                        <input
+                            type="number"
+                            placeholder="Hourly rate: ex. 12.25"
+                            id="rate"
+                            (focus)="onFocus()"
+                            formControlName="rate"
+                        />
                     </label>
                 </div>
-                <div style="display: flex; justify-content: space-between;">
+                <div style="display: flex; justify-content: space-between">
                     <ng-container *ngIf="activeWorktype$ | async; else addBtn">
-                        <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
-                            [ngClass]="{ 'disabled': !worktypeForm.valid}">EDIT</button>
-                        <button type="button" class="delete" (click)="deleteWorktype()">DELETE</button>
+                        <button
+                            type="button"
+                            (click)="submit()"
+                            class="submit"
+                            [disabled]="!worktypeForm.valid"
+                            [ngClass]="{ disabled: !worktypeForm.valid }"
+                        >
+                            EDIT
+                        </button>
+                        <button
+                            type="button"
+                            class="delete"
+                            (click)="deleteWorktype()"
+                        >
+                            DELETE
+                        </button>
                     </ng-container>
                     <ng-template #addBtn>
-                        <button type="button" (click)="submit()" class="submit" [disabled]="!worktypeForm.valid"
-                            [ngClass]="{ 'disabled': !worktypeForm.valid}">ADD</button>
+                        <button
+                            type="button"
+                            (click)="submit()"
+                            class="submit"
+                            [disabled]="!worktypeForm.valid"
+                            [ngClass]="{ disabled: !worktypeForm.valid }"
+                        >
+                            ADD
+                        </button>
                     </ng-template>
                 </div>
             </form>
-
         </div>
     </ng-container>
 </app-edit-form>

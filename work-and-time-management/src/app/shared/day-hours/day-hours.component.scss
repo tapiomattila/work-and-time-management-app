@@ -1,26 +1,25 @@
-
 :host {
     display: block;
     text-align: center;
 }
 
 .circle {
-  border: 3px solid #359a94;
-  height: 45.5px;
-  width: 45.5px;
-  border-radius: 50%;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    border: 3px solid #359a94;
+    height: 45.5px;
+    width: 45.5px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .circle-plus {
-  color: #359a94;
-  font-size: 3.6rem;
-  align-self: flex-start;
+    color: #359a94;
+    font-size: 3.6rem;
+    align-self: flex-start;
 }
 
 .date {
-  margin-top: 5px;
+    margin-top: 5px;
 }

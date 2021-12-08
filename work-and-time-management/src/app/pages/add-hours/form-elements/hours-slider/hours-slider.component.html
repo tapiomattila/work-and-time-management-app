@@ -1,30 +1,31 @@
 <div class="slider-box">
-  <div class="slider-container" #slider>
-    <input
-      type="range"
-      class="slider"
-      [min]="rangeConfig.min"
-      [max]="rangeConfig.max"
-      [value]="rangeValue"
-      [step]="rangeConfig.step"
-      (change)="getSliderValue($event)"
-      (input)="getDynamicInputValue($event)"
-    />
-    <ng-container *ngIf="rangeValue > 0; else noValue">
-      <p>
-        Time added:
-        <span style="font-weight: bold; font-size: 20px">
-          {{ formatHoursFunc(rangeValue) }}
-        </span>
-      </p>
-    </ng-container>
-    <ng-template #noValue>
-      <p>
-        Time added: <span style="font-weight: bold; font-size: 20px">0h</span>
-      </p>
-    </ng-template>
-    <ng-container *ngIf="showError">
-      <h5 style="color: #ad0028">Field cannot be value 0</h5>
-    </ng-container>
-  </div>
+    <div class="slider-container" #slider>
+        <input
+            type="range"
+            class="slider"
+            [min]="rangeConfig.min"
+            [max]="rangeConfig.max"
+            [value]="rangeValue"
+            [step]="rangeConfig.step"
+            (change)="getSliderValue($event)"
+            (input)="getDynamicInputValue($event)"
+        />
+        <ng-container *ngIf="rangeValue > 0; else noValue">
+            <p>
+                Time added:
+                <span style="font-weight: bold; font-size: 20px">
+                    {{ formatHoursFunc(rangeValue) }}
+                </span>
+            </p>
+        </ng-container>
+        <ng-template #noValue>
+            <p>
+                Time added:
+                <span style="font-weight: bold; font-size: 20px">0h</span>
+            </p>
+        </ng-template>
+        <ng-container *ngIf="showError">
+            <h5 style="color: #ad0028">Field cannot be value 0</h5>
+        </ng-container>
+    </div>
 </div>

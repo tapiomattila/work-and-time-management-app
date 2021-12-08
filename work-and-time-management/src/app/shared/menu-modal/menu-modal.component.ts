@@ -7,35 +7,33 @@ import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { UserService } from 'src/app/stores/users';
 
 @Component({
-  selector: 'app-menu-modal',
-  templateUrl: './menu-modal.component.html',
-  styleUrls: ['./menu-modal.component.scss']
+    selector: 'app-menu-modal',
+    templateUrl: './menu-modal.component.html',
+    styleUrls: ['./menu-modal.component.scss'],
 })
 export class MenuModalComponent implements OnInit {
+    @Input() openMenuModal = false;
+    @Output() closed = new EventEmitter();
 
-  @Input() openMenuModal = false;
-  @Output() closed = new EventEmitter();
+    constructor(
+        private router: Router,
+        private userService: UserService,
+        private authService: AuthService,
+        private afAuth: AngularFireAuth
+    ) {}
 
-  constructor(
-    private router: Router,
-    private userService: UserService,
-    private authService: AuthService,
-    private afAuth: AngularFireAuth,
-  ) { }
+    ngOnInit() {}
 
-  ngOnInit() { }
+    closeModal() {
+        this.openMenuModal = false;
+        this.closed.emit();
+    }
 
-  closeModal() {
-    this.openMenuModal = false;
-    this.closed.emit();
-  }
-
-  signout() {
-    this.openMenuModal = false;
-    this.userService.resetAllStores();
-    this.authService.signOut();
-    this.afAuth.auth.signOut();
-    this.router.navigate([RouterRoutesEnum.WELCOME]);
-  }
-
+    signout() {
+        this.openMenuModal = false;
+        this.userService.resetAllStores();
+        this.authService.signOut();
+        this.afAuth.auth.signOut();
+        this.router.navigate([RouterRoutesEnum.WELCOME]);
+    }
 }

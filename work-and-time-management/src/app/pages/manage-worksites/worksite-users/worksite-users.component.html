@@ -1,8 +1,15 @@
-<app-header [title]="'Worksite users'" [back]="true" [momentDay]="momentDay"></app-header>
+<!-- <app-header [title]="'Worksite users'" [back]="true" [momentDay]="momentDay"></app-header> -->
 <div class="container">
     <div class="main-content">
         <ng-container *ngIf="loading$ | async">
-            <div class="main-content__items" style="display: flex; justify-content: center; align-items: center;">
+            <div
+                class="main-content__items"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
                 <app-loader></app-loader>
             </div>
         </ng-container>
@@ -11,14 +18,20 @@
     <ng-container *ngIf="data$ | async as data">
         <div class="main-content">
             <div class="main-content__items">
-                <div class="main-content__item no-shadow" *ngFor="let worksite of data.worksites">
+                <div
+                    class="main-content__item no-shadow"
+                    *ngFor="let worksite of data.worksites"
+                >
                     <div>
                         <p class="main-content__item--text">
-                            <!-- {{ worksite | json }} -->
                             {{ worksite.name }}
                         </p>
-                        <app-users-element style="cursor: pointer;" [users]="data.users" [worksite]="worksite"
-                            (worksiteUserChange)="worksiteChange($event)"></app-users-element>
+                        <app-users-element
+                            style="cursor: pointer"
+                            [users]="data.users"
+                            [worksite]="worksite"
+                            (worksiteUserChange)="worksiteChange($event)"
+                        ></app-users-element>
                     </div>
                 </div>
             </div>

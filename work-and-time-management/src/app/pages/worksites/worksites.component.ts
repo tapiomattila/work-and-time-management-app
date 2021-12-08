@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { WindowService } from 'src/app/services/window.service';
-import { fadeInEnterWithDelayTrigger, fadeInEnterTrigger } from 'src/app/animations/animations';
+import {
+    fadeInEnterWithDelayTrigger,
+    fadeInEnterTrigger,
+} from 'src/app/animations/animations';
 import { WorksitesQuery } from 'src/app/stores/worksites/state/worksites.query';
 import { Observable, of } from 'rxjs';
 import { Worksite } from 'src/app/stores/worksites/state/worksites.model';
@@ -13,47 +16,40 @@ import { AuthQuery } from 'src/app/auth/state';
 import { map, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-worksites',
-  templateUrl: './worksites.component.html',
-  styleUrls: ['./worksites.component.scss'],
-  animations: [
-    fadeInEnterTrigger,
-  ]
+    selector: 'app-worksites',
+    templateUrl: './worksites.component.html',
+    styleUrls: ['./worksites.component.scss'],
+    animations: [fadeInEnterTrigger],
 })
 export class WorksitesComponent implements OnInit {
+    worksites$: Observable<Worksite[]>;
+    momentDay: moment.Moment;
 
-  worksites$: Observable<Worksite[]>;
-  momentDay: moment.Moment;
+    constructor(
+        private location: Location,
+        private worksitesQuery: WorksitesQuery,
+        private authQuery: AuthQuery,
+        private router: Router,
+        private navigationHandlerService: NavigationHandlerService,
+        public windowService: WindowService
+    ) {}
 
-  constructor(
-    private location: Location,
-    private worksitesQuery: WorksitesQuery,
-    private authQuery: AuthQuery,
-    private router: Router,
-    private navigationHandlerService: NavigationHandlerService,
-    public windowService: WindowService,
-  ) { }
+    ngOnInit() {
+        this.momentDay = moment();
+        this.worksites$ = this.worksitesQuery.selectWorksitesByUserId(
+            this.authQuery.getValue().id
+        );
+    }
 
-  ngOnInit() {
-    this.momentDay = moment();
-    // this.worksites$ = this.authQuery.select().pipe(
-    //   map(auth => auth.id),
-    //   switchMap(id => id ? this.worksitesQuery.selectWorksitesByUserId(id) : of([]))
-    // );
+    locationBack() {
+        this.location.back();
+    }
 
-    this.worksites$ = this.worksitesQuery.selectWorksitesByUserId(this.authQuery.getValue().id);
-  }
+    backArrowPressed(event: any) {
+        this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]);
+    }
 
-  locationBack() {
-    this.location.back();
-  }
-
-  backArrowPressed(event: any) {
-    this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]);
-  }
-
-  navigate(route: string, id?: string) {
-    this.navigationHandlerService.navigateToRoute(route, id);
-  }
-
+    navigate(route: string, id?: string) {
+        this.navigationHandlerService.navigateToRoute(route, id);
+    }
 }

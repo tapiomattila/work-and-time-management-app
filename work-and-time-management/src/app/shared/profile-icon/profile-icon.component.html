@@ -1,0 +1,8 @@
+<ng-container *ngIf="profileIconUrl && profileIconUrl.length > 0; else noIcon">
+    <img [src]="profileIconUrl" alt="picture" />
+</ng-container>
+<ng-template #noIcon>
+    <svg>
+        <use [attr.xlink:href]="iconUrl"></use>
+    </svg>
+</ng-template>

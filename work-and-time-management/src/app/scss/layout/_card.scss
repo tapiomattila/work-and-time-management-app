@@ -1,61 +1,62 @@
 .card-container {
-  width: 100%;
-  max-width: 380px;
+    width: 100%;
+    max-width: 380px;
 
-  display: grid;
-  grid-template-columns:
-    [left-side-color-start] minmax(min-content, 200px)
-    [left-side-color-end content-start] minmax(min-content, 140px)
-    [content-end];
-  grid-auto-rows: minmax(140px, min-content);
-  background-color: rgb(24, 199, 134);
-  color: #ffffff;
-  min-width: 100%;
-
-  border-radius: 10px;
-  transition: 0.5s all;
-  font-size: 2.2rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(64, 221, 164);
-  }
-
-  &.active {
-    box-shadow: -1px 1px 20px rgb(16, 180, 245), 2px 3px 15px rgb(19, 190, 212);
-    transform: scale(1.10);
-  }
-
-  @media only screen and (min-width: 400px) {
-    font-size: 2.1rem;
+    display: grid;
     grid-template-columns:
-    [left-side-color-start] minmax(min-content, 240px)
-    [left-side-color-end content-start] minmax(min-content, 140px)
-    [content-end];
-  }
+        [left-side-color-start] minmax(min-content, 200px)
+        [left-side-color-end content-start] minmax(min-content, 140px)
+        [content-end];
+    grid-auto-rows: minmax(140px, min-content);
+    background-color: rgb(24, 199, 134);
+    color: #ffffff;
+    min-width: 100%;
 
-  .side {
-    align-self: center;
-    padding: 15px;
-  }
+    border-radius: 10px;
+    transition: 0.5s all;
+    font-size: 2.2rem;
+    cursor: pointer;
 
-  .content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    fill: #fff;
-
-    svg {
-      height: 95px;
-      width: 95px;
-      color: #fff;
-
-      transition: 0.5s all;
-
-      @media only screen and (min-width: 400px) {
-        height: 110px;
-        width: 110px;
-      }
+    &:hover {
+        background-color: rgb(64, 221, 164);
     }
-  }
+
+    &.active {
+        box-shadow: -1px 1px 20px rgb(16, 180, 245),
+            2px 3px 15px rgb(19, 190, 212);
+        transform: scale(1.1);
+    }
+
+    @media only screen and (min-width: 400px) {
+        font-size: 2.1rem;
+        grid-template-columns:
+            [left-side-color-start] minmax(min-content, 240px)
+            [left-side-color-end content-start] minmax(min-content, 140px)
+            [content-end];
+    }
+
+    .side {
+        align-self: center;
+        padding: 15px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        fill: #fff;
+
+        svg {
+            height: 95px;
+            width: 95px;
+            color: #fff;
+
+            transition: 0.5s all;
+
+            @media only screen and (min-width: 400px) {
+                height: 110px;
+                width: 110px;
+            }
+        }
+    }
 }

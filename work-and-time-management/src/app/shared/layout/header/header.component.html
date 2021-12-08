@@ -1,63 +1,42 @@
 <app-menu-modal
-  *ngIf="openMenuModal"
-  [openMenuModal]="openMenuModal"
-  (closed)="closedModal($event)"
+    *ngIf="openMenuModal"
+    [openMenuModal]="openMenuModal"
+    (closed)="closedModal($event)"
 >
 </app-menu-modal>
 
-<div class="heading-container" *ngIf="!back">
-  <div class="heading">
-    <ng-container *ngIf="icon">
-      <div class="heading__profile-icon">
-        <ng-container *ngIf="icon && icon.length > 0; else noIcon">
-          <img [src]="icon" alt="picture" />
-        </ng-container>
-        <ng-template #noIcon>
-          <svg>
-            <use [attr.xlink:href]="iconUrl"></use>
-          </svg>
+<div class="heading-container">
+    <div class="heading">
+        <div class="heading__back-arrow">
+            <app-back-arrow
+                (backPressed)="backArrowPressed()"
+                *ngIf="backArrow$ | async; else profile"
+            ></app-back-arrow>
+        </div>
+        <ng-template #profile>
+            <div class="heading__profile-icon">
+                <app-profile-icon
+                    *ngIf=""
+                    [profileIconUrl]="icon"
+                ></app-profile-icon>
+            </div>
         </ng-template>
-      </div>
-    </ng-container>
-    <div class="heading__name">
-      <ng-container *ngIf="user">
-        <p>{{ user.info.displayName }}</p>
-      </ng-container>
+        <div class="heading__name">
+            <ng-container *ngIf="user">
+                <p>{{ user.info.displayName }}</p>
+            </ng-container>
+        </div>
+        <div class="heading__settings-btn">
+            <img
+                src="../../assets/svg/SVG/settings-btn.svg"
+                alt="settings btn"
+                (click)="openMenu()"
+            />
+        </div>
     </div>
-    <div class="heading__settings-btn">
-      <img
-        src="../../assets/svg/SVG/settings-btn.svg"
-        alt="settings btn"
-        (click)="openMenu()"
-      />
+    <div class="header" [ngClass]="{ small: true }">
+        <ng-container *ngIf="momentDay">
+            <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
+        </ng-container>
     </div>
-  </div>
-  <div class="header" [ngClass]="{ small: momentDay }">
-    <ng-container *ngIf="momentDay && user">
-      <p *ngIf="momentDay">{{ momentDay.format("DD.MM.YYYY dddd") }}</p>
-    </ng-container>
-  </div>
-</div>
-
-<div class="heading-container" *ngIf="back">
-  <div class="heading">
-    <div class="heading__back-arrow">
-      <app-back-arrow (backPressed)="backArrowPressed()"></app-back-arrow>
-    </div>
-    <div class="heading__name">
-      <p *ngIf="momentDay">{{ momentDay.format("DD.MM.YYYY dddd") }}</p>
-    </div>
-    <div class="heading__settings-btn">
-      <img
-        src="../../assets/svg/SVG/settings-btn.svg"
-        alt="settings btn"
-        (click)="openMenu()"
-      />
-    </div>
-  </div>
-  <div class="header" [ngClass]="{ small: momentDay }">
-    <ng-container *ngIf="title">
-      <p>{{ title }}</p>
-    </ng-container>
-  </div>
 </div>

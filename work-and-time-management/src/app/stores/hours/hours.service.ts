@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { HoursStore } from './hours.store';
 import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap, delay } from 'rxjs/operators';
+import { map, first, tap, delay, switchMap } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { Auth } from '../../auth/state';
 import { User } from '../users';
-import { mapSnapsWithId } from 'src/app/helpers/helper-functions';
+import {
+    doesArrayExist,
+    mapSnapsWithId,
+} from 'src/app/helpers/helper-functions';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HoursService {
-    constructor(
-        private hoursStore: HoursStore,
-        private af: AngularFirestore
-    ) { }
+    constructor(private hoursStore: HoursStore, private af: AngularFirestore) {}
 
     setActive(id: string) {
         this.hoursStore.setActive(id);
@@ -32,14 +32,13 @@ export class HoursService {
     }
 
     setUserHours(user: User) {
-        return this.fetchHours(user)
-            .pipe(
-                tap(hours => {
-                    if (hours && hours.length) {
-                        this.setHours(hours);
-                    }
-                })
-            );
+        return this.fetchHours(user).pipe(
+            tap(hours => {
+                if (hours && hours.length) {
+                    this.setHours(hours);
+                }
+            })
+        );
     }
 
     setAllHours(auth: Auth) {
@@ -58,20 +57,21 @@ export class HoursService {
     }
 
     postNewHours(hours: Partial<Hours>) {
-        return from(this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).add(hours));
+        return from(
+            this.af.collection(`${FireBaseCollectionsEnum.HOURS}`).add(hours)
+        );
     }
 
     updateHours(hours: Hours, updated: Partial<Hours>) {
-        this.hoursStore.update(hours.id,
-            {
-                ...hours,
-                updatedAt: updated.updatedAt,
-                marked: updated.marked,
-                worksiteId: updated.worksiteId,
-                worksiteName: updated.worksiteName,
-                worktypeId: updated.worktypeId,
-                worktypeName: updated.worktypeName
-            });
+        this.hoursStore.update(hours.id, {
+            ...hours,
+            updatedAt: updated.updatedAt,
+            marked: updated.marked,
+            worksiteId: updated.worksiteId,
+            worksiteName: updated.worksiteName,
+            worktypeId: updated.worktypeId,
+            worktypeName: updated.worktypeName,
+        });
     }
 
     removeHours(id: string) {
@@ -79,7 +79,9 @@ export class HoursService {
     }
 
     deleteHours(id: string) {
-        return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete());
+        return from(
+            this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).delete()
+        );
     }
 
     resetStore() {
@@ -87,11 +89,12 @@ export class HoursService {
     }
 
     fetchHours(user: User) {
-        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
-            ref =>
-                ref.where('userId', '==', user.userId)
-                    .where('clientId', '==', user.clientId),
-        )
+        return this.af
+            .collection(`${FireBaseCollectionsEnum.HOURS}`, ref =>
+                ref
+                    .where('userId', '==', user.userId)
+                    .where('clientId', '==', user.clientId)
+            )
             .snapshotChanges()
             .pipe(
                 delay(1000),
@@ -100,15 +103,34 @@ export class HoursService {
                 }),
                 first()
             );
+    }
+
+    fetchUserHoursXX2(user$: Observable<User>) {
+        return user$.pipe(
+            switchMap((user: User) =>
+                user && user.id ? this.fetchHours(user) : of(null)
+            ),
+            tap(res => {
+                if (doesArrayExist(res)) {
+                    this.setHours(res);
+                }
+            })
+        );
     }
 
     putHours(id: string, changes: Partial<Hours>): Observable<any> {
-        return from(this.af.doc(`${FireBaseCollectionsEnum.HOURS}/${id}`).update(changes));
+        return from(
+            this.af
+                .doc(`${FireBaseCollectionsEnum.HOURS}/${id}`)
+                .update(changes)
+        );
     }
 
     fetchAllUsersHours(auth: Auth) {
-        return this.af.collection(`${FireBaseCollectionsEnum.HOURS}`,
-            ref => ref.where('_c', '==', auth.clientId))
+        return this.af
+            .collection(`${FireBaseCollectionsEnum.HOURS}`, ref =>
+                ref.where('_c', '==', auth.clientId)
+            )
             .snapshotChanges()
             .pipe(
                 delay(1000),
@@ -118,5 +140,4 @@ export class HoursService {
                 first()
             );
     }
-
 }

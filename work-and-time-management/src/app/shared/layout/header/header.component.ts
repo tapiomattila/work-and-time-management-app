@@ -3,55 +3,47 @@ import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import * as moment from 'moment';
 import { User } from 'src/app/stores/users';
+import { Observable } from 'rxjs';
+import { GlobalHelperService } from 'src/app/services/global-helper.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+    icon = '';
+    backArrow$: Observable<boolean>;
+    openMenuModal = false;
 
-  private _user: User;
-  private _profileIconUrl = '';
-  private _back = false;
+    @Input()
+    set value(profileIconUrl: any) {
+        this.icon = profileIconUrl;
+    }
 
-  @Input()
-  set back(value: boolean) { this._back = value; }
-  get back() { return this._back; }
+    @Input() user: User;
 
-  @Input()
-  set user(user: User) {
-    this._user = user;
-   }
-  get user() { return this._user; }
+    momentDay: moment.Moment;
 
-  @Input()
-  set icon(value: string) { this._profileIconUrl = value; }
-  get icon() { return this._profileIconUrl; }
+    constructor(
+        private globalhelper: GlobalHelperService,
+        private router: Router
+    ) {}
 
-  @Input() title: string;
-  @Input() momentDay: moment.Moment;
+    ngOnInit() {
+        this.momentDay = moment();
+        this.backArrow$ = this.globalhelper.backButtonObs$;
+    }
 
-  iconUrl = '../../../assets/svg/sprite.svg#icon-user';
-  openMenuModal = false;
+    backArrowPressed() {
+        this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+    }
 
-  constructor(
-    private router: Router
-  ) { }
+    openMenu() {
+        this.openMenuModal = true;
+    }
 
-  ngOnInit() {
-  }
-
-  backArrowPressed() {
-    this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-  }
-
-  openMenu() {
-    this.openMenuModal = true;
-  }
-
-  closedModal($event) {
-    this.openMenuModal = false;
-  }
-
+    closedModal($event) {
+        this.openMenuModal = false;
+    }
 }

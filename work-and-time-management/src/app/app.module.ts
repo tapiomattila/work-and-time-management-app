@@ -18,29 +18,27 @@ import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-
+import { CardsModule } from './cards/cards.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PagenotfoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    DashboardModule,
-    SharedModule,
-    PagesModule,
+    declarations: [AppComponent, PagenotfoundComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        DashboardModule,
+        SharedModule,
+        PagesModule,
+        CardsModule,
 
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule.enablePersistence(),
+        AngularFireAuthModule,
 
-    [environment.production ? [] : AkitaNgDevtools.forRoot()]
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+        [environment.production ? [] : AkitaNgDevtools.forRoot()],
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

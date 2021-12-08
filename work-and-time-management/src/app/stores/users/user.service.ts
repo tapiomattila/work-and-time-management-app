@@ -8,13 +8,10 @@ import { from, of } from 'rxjs';
 import { mapSnaps, takeSnap } from 'src/app/helpers/helper-functions';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UserService {
-    constructor(
-        private userStore: UserStore,
-        private af: AngularFirestore
-    ) { }
+    constructor(private userStore: UserStore, private af: AngularFirestore) {}
 
     upsertUsersStore(id: string, user: Partial<User>) {
         this.userStore.upsert(id, user);
@@ -37,7 +34,9 @@ export class UserService {
     }
 
     fetchWhiteListUser(id: string) {
-        return this.af.collection(FireBaseCollectionsEnum.WHITELISTED).doc(id)
+        return this.af
+            .collection(FireBaseCollectionsEnum.WHITELISTED)
+            .doc(id)
             .snapshotChanges()
             .pipe(
                 map((snap: any) => {
@@ -47,34 +46,31 @@ export class UserService {
             );
     }
 
-    fetchUserById(user: { clientId: string, email: string, id: string }) {
-        const query = this.af.collection(FireBaseCollectionsEnum.USERS,
-            ref => ref
+    fetchUserById(user: { clientId: string; email: string; id: string }) {
+        const query = this.af.collection(FireBaseCollectionsEnum.USERS, ref =>
+            ref
                 .where('userId', '==', user.id)
                 .where('clientId', '==', user.clientId)
         );
-        return query.snapshotChanges()
-            .pipe(
-                map((snaps: any) => {
-                    return mapSnaps(snaps);
-                }),
-                map(snaps => snaps.length > 0 ? snaps[0] : null),
-                first()
-            );
+        return query.snapshotChanges().pipe(
+            map((snaps: any) => {
+                return mapSnaps(snaps);
+            }),
+            map(snaps => (snaps.length > 0 ? snaps[0] : null)),
+            first()
+        );
     }
 
     fetchAllUsersByClientId(clientId: string) {
-        const query = this.af.collection(FireBaseCollectionsEnum.USERS,
-            ref => ref
-                .where('clientId', '==', clientId)
+        const query = this.af.collection(FireBaseCollectionsEnum.USERS, ref =>
+            ref.where('clientId', '==', clientId)
         );
-        return query.snapshotChanges()
-            .pipe(
-                map((snaps: any) => {
-                    return mapSnaps(snaps);
-                }),
-                first()
-            );
+        return query.snapshotChanges().pipe(
+            map((snaps: any) => {
+                return mapSnaps(snaps);
+            }),
+            first()
+        );
     }
 
     postNewUser(user: Partial<User>) {
@@ -82,13 +78,14 @@ export class UserService {
             return of(false);
         }
 
-        return from(this.af.collection(`${FireBaseCollectionsEnum.USERS}`).add(user))
-            .pipe(
-                map((snap: any) => {
-                    return takeSnap(snap);
-                }),
-                first()
-            );
+        return from(
+            this.af.collection(`${FireBaseCollectionsEnum.USERS}`).add(user)
+        ).pipe(
+            map((snap: any) => {
+                return takeSnap(snap);
+            }),
+            first()
+        );
     }
 
     resetAllStores() {

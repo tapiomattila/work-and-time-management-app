@@ -7,12 +7,9 @@ import { Hours } from 'src/app/stores/hours';
     selector: 'app-hours-table',
     templateUrl: './hours-table.component.html',
     styleUrls: ['./hours-table.component.scss'],
-    animations: [
-        fadeInEnterTrigger
-    ]
+    animations: [fadeInEnterTrigger],
 })
 export class HoursTableComponent implements OnInit {
-
     @Output() hoursSelection = new EventEmitter();
 
     @Input() tableHours: object[];
@@ -27,9 +24,9 @@ export class HoursTableComponent implements OnInit {
     dayTableSelectionIndex;
     previousTableSelectionIndex;
 
-    constructor() { }
+    constructor() {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     selectDayTableHour(hours: Partial<Hours>, index: number) {
         if (

@@ -14,6 +14,6 @@ export function createWorkType(worktype: Partial<WorkType>) {
     return {
         id: worktype.id,
         deleted: false,
-        ...worktype
+        ...worktype,
     } as WorkType;
 }

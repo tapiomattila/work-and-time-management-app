@@ -1,13 +1,32 @@
-<mat-form-field style="visibility: hidden; height: 1px; margin: 0; padding: 0;" [formGroup]="parentForm">
-    <mat-label style="visibility: hidden;">Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker" style="visibility: hidden;" [max]="maxDate"
-        [formControlName]="controlName">
-    <mat-datepicker #picker color="primary" style="visibility: hidden;"></mat-datepicker>
+<mat-form-field
+    style="visibility: hidden; height: 1px; margin: 0; padding: 0"
+    [formGroup]="parentForm"
+>
+    <mat-label style="visibility: hidden">Choose a date</mat-label>
+    <input
+        matInput
+        [matDatepicker]="picker"
+        style="visibility: hidden"
+        [max]="maxDate"
+        [formControlName]="controlName"
+    />
+    <mat-datepicker
+        #picker
+        color="primary"
+        style="visibility: hidden"
+    ></mat-datepicker>
 </mat-form-field>
-<div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 15px">
     <button type="button" class="form__date" (click)="toggleDatePicker(picker)">
         <span class="form__date--text">Date</span>
         <span class="form__date--arrow"></span>
     </button>
-    <button *ngIf="tableContentValues" @fadeInEnter class="form__date--toggle-data" (click)="toggleFormData()">Toggle</button>
+    <button
+        *ngIf="tableContentValues"
+        @fadeInEnter
+        class="form__date--toggle-data"
+        (click)="toggleFormData()"
+    >
+        Toggle
+    </button>
 </div>

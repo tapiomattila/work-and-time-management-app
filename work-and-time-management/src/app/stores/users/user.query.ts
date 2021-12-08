@@ -4,22 +4,18 @@ import { UserState, UserStore } from './user.store';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UserQuery extends QueryEntity<UserState> {
     users$ = this.selectAll();
-    constructor(
-        protected store: UserStore,
-    ) {
+    constructor(protected store: UserStore) {
         super(store);
     }
 
     selectUserByUserId(id: string) {
         return this.selectAll({
-            filterBy: entity => entity.userId === id
-          }).pipe(
-              map(els => els.length > 0 ? els[0] : null)
-          );
+            filterBy: entity => entity.userId === id,
+        }).pipe(map(els => (els.length > 0 ? els[0] : null)));
     }
 
     getAllUsers() {

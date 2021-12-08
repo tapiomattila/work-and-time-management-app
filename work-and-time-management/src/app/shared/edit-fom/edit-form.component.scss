@@ -1,129 +1,127 @@
-
 ::ng-deep .editForm {
-  z-index: 100;
-  position: absolute;
-  // top: 50%;
-  top: 50vh;
-  left: 50%;
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
-  width: 90vw;
-  max-width: 450px;
+    width: 90vw;
+    max-width: 450px;
 
-  min-height: 200px;
-  background-color: #fff;
-  border: 2px solid var(--primary-color);
-  border-radius: 5px;
+    min-height: 200px;
+    background-color: #fff;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
 
-  display: grid;
-  grid-template-columns: 20px 1fr 20px;
-  grid-template-rows: 8px 50px 1fr;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-rows: 8px 50px 1fr;
 
-  transition: 0.2s width;
+    transition: 0.2s width;
 
-  @media only screen and (min-width: 576px) {
-    width: 74vw;
-  }
-
-  .header {
-    position: relative;
-
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .editForm__close {
-      height: 100%;
-      transform: translate(10px, 5px);
-      padding: 0 23px;
+    @media only screen and (min-width: 576px) {
+        width: 74vw;
     }
-  }
 
-  .form {
-    margin: 20px 0;
+    .header {
+        position: relative;
 
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
 
-    &__inputs {
-      & > * {
-        margin-top: 10px;
-      }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-      label {
-        display: grid;
-        grid-template-rows: repeat(2, min-content);
+        .editForm__close {
+            height: 100%;
+            transform: translate(10px, 5px);
+            padding: 0 23px;
+        }
+    }
 
-        font-family: Bitter;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 17px;
+    .form {
+        margin: 20px 0;
 
-        color: #000000;
+        grid-column: 2 / 3;
+        grid-row: 3 / 4;
 
-        span {
-          margin-left: 10px;
-          margin-bottom: 8px;
+        &__inputs {
+            & > * {
+                margin-top: 10px;
+            }
+
+            label {
+                display: grid;
+                grid-template-rows: repeat(2, min-content);
+
+                font-family: Bitter;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 17px;
+
+                color: #000000;
+
+                span {
+                    margin-left: 10px;
+                    margin-bottom: 8px;
+                }
+
+                input {
+                    border: none;
+                    outline: none;
+                    border: 2px solid #1f524f;
+                    box-sizing: border-box;
+                    text-indent: 10px;
+                    color: #000;
+                    font-size: 18px;
+                    height: 45px;
+                    border-radius: 5px;
+                }
+            }
         }
 
-        input {
-          border: none;
-          outline: none;
-          border: 2px solid #1f524f;
-          box-sizing: border-box;
-          text-indent: 10px;
-          color: #000;
-          font-size: 18px;
-          height: 45px;
-          border-radius: 5px;
+        button.submit {
+            width: 45%;
+            max-width: 230px;
+            margin-top: 12px;
+            color: #fff;
+
+            &.disabled {
+                background-color: #bdbdbd;
+            }
         }
-      }
+
+        button.delete {
+            width: 45%;
+            max-width: 230px;
+            margin-top: 12px;
+
+            border: 3px solid rgb(71, 13, 13);
+            background-color: transparent;
+            color: rgb(71, 13, 13);
+
+            &.disabled {
+                background-color: #bdbdbd;
+            }
+        }
     }
-
-    button.submit {
-      width: 45%;
-      max-width: 230px;
-      margin-top: 12px;
-      color: #fff;
-
-      &.disabled {
-        background-color: #BDBDBD;
-      }
-    }
-
-    button.delete {
-      width: 45%;
-      max-width: 230px;
-      margin-top: 12px;
-
-      border: 3px solid rgb(71, 13, 13);
-      background-color: transparent;
-      color: rgb(71, 13, 13);
-
-      &.disabled {
-        background-color: #BDBDBD;
-      }
-    }
-  }
 }
 
 ::ng-deep .blur {
-  transition: 0.4s all;
-  backdrop-filter: none;
+    transition: 0.4s all;
+    backdrop-filter: none;
 
-  &.active {
-    width: 100vw;
-    z-index: 50;
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
+    &.active {
+        width: 100vw;
+        z-index: 50;
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
 
-    backdrop-filter: blur(5px);
-  }
+        backdrop-filter: blur(5px);
+    }
 }

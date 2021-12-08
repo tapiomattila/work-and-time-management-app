@@ -19,12 +19,12 @@ import { Hours, HoursQuery } from '../../hours';
 // import { TableHours } from '../../../auth/hours/hours.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WorksitesQuery extends QueryEntity<WorksitesState> {
-
   private addHoursSelectedDayMillisSubj = new BehaviorSubject<number>(null);
-  addHoursSelectedDayMillisObs$ = this.addHoursSelectedDayMillisSubj.asObservable();
+  addHoursSelectedDayMillisObs$ =
+    this.addHoursSelectedDayMillisSubj.asObservable();
 
   active$ = this.selectActive();
 
@@ -37,29 +37,27 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   }
 
   selectActiveWorksite(): Observable<Worksite> {
-    return this.selectActiveId()
-      .pipe(
-        switchMap(id => id ? this.selectEntity(id) : of(null))
-      );
+    return this.selectActiveId().pipe(
+      switchMap(id => (id ? this.selectEntity(id) : of(null)))
+    );
   }
 
   selectWorksiteById(worksiteId: string) {
     return this.selectAll({
-      filterBy: entity => entity.id === worksiteId
+      filterBy: entity => entity.id === worksiteId,
     });
   }
 
   selectAllLiveWorksites() {
     return this.selectAll({
-      filterBy: entity => !entity.deleted
+      filterBy: entity => !entity.deleted,
     });
   }
 
   selectLiveWorksiteById(id: string) {
-    return this.selectAllLiveWorksites()
-      .pipe(
-        map(el => el.find(elx => elx.id === id))
-      );
+    return this.selectAllLiveWorksites().pipe(
+      map(el => el.find(elx => elx.id === id))
+    );
   }
 
   selectWorksitesByUserId(id: string) {
@@ -93,20 +91,21 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
       }),
       switchMap(stamps => {
         stamps.forEach(el => stampsArr.push(el));
-        return this.selectAllLiveWorksites()
-          .pipe(
-            map(worksites => worksites.map(el => el.id))
-          );
+        return this.selectAllLiveWorksites().pipe(
+          map(worksites => worksites.map(el => el.id))
+        );
       }),
       map(idList => {
         const newArr = stampsArr.filter(el => idList.includes(el.worksiteId));
         return newArr.sort((a, b) => b.millis - a.millis);
       }),
-      map(list => list.length ? list[0].worksiteId : ''),
+      map(list => (list.length ? list[0].worksiteId : '')),
       switchMap(worksiteId => {
-        return worksiteId.length > 0 ? this.selectWorksiteById(worksiteId) : of(null);
+        return worksiteId.length > 0
+          ? this.selectWorksiteById(worksiteId)
+          : of(null);
       }),
-      map(worksites => worksites ? worksites[0] : null)
+      map(worksites => (worksites ? worksites[0] : null))
     );
   }
 
@@ -116,9 +115,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
     return this.selectActiveId().pipe(
       switchMap(id => {
         return this.hoursQuery.selectAll({
-          filterBy: [
-            el => el.worksiteId === id
-          ]
+          filterBy: [el => el.worksiteId === id],
         });
       }),
       tap((hours: Hours[]) => {
@@ -136,7 +133,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
         selectedDay = {
           day: dayMillisDate,
           month: dayMillistMonth,
-          year: dayMillisYear
+          year: dayMillisYear,
         };
 
         const filteredHours = hoursArr.filter(el => {
@@ -144,7 +141,10 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
           const date = lastUpdated.getDate();
           const month = lastUpdated.getMonth() + 1;
           const year = lastUpdated.getFullYear();
-          const testDate = date === selectedDay.day && month === selectedDay.month && year === selectedDay.year;
+          const testDate =
+            date === selectedDay.day &&
+            month === selectedDay.month &&
+            year === selectedDay.year;
           if (testDate) {
             return el;
           }
@@ -152,11 +152,10 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
 
         return filteredHours;
       }),
-      map((hours: Hours[]) => hours ? hours.map(el => el.marked) : []),
+      map((hours: Hours[]) => (hours ? hours.map(el => el.marked) : [])),
       map(arr => {
         return arr.reduce((a, b) => a + b, 0);
-      }),
-
+      })
     );
   }
 
@@ -171,7 +170,10 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   selectTableHours(hours: Hours[]) {
     return hours.map(el => {
       const worksiteName = this.getWorksiteById(el.worksiteId);
-      const worksiteNameFound = worksiteName && worksiteName.length > 0 ? worksiteName[0].name : undefined;
+      const worksiteNameFound =
+        worksiteName && worksiteName.length > 0
+          ? worksiteName[0].name
+          : undefined;
 
       const worktypeId = this.hoursQuery.getHourWorktype(el.id);
       const worktype = this.worktypeQuery.getWorktypeById(worktypeId);
@@ -186,11 +188,8 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
         worksiteName: worksiteNameFound,
         worktypeName: worktypeNameFound,
         worktypeId,
-        hoursFormatted
+        hoursFormatted,
       };
     });
   }
-
 }
-
-

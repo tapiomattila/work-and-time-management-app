@@ -11,6 +11,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { MenuModalComponent } from './menu-modal/menu-modal.component';
 import { GeneralModalComponent } from './general-modal/general-modal.component';
 import { DirectivesModule } from './directives/directives.module';
+import { ProfileIconComponent } from './profile-icon/profile-icon.component';
 
 @NgModule({
     imports: [
@@ -18,7 +19,7 @@ import { DirectivesModule } from './directives/directives.module';
         MaterialModule,
         FormsModule,
         ReactiveFormsModule,
-        DirectivesModule
+        DirectivesModule,
     ],
     exports: [
         MaterialModule,
@@ -33,6 +34,7 @@ import { DirectivesModule } from './directives/directives.module';
         LoaderComponent,
         MenuModalComponent,
         GeneralModalComponent,
+        ProfileIconComponent,
     ],
     declarations: [
         BackArrowComponent,
@@ -43,7 +45,8 @@ import { DirectivesModule } from './directives/directives.module';
         LoaderComponent,
         MenuModalComponent,
         GeneralModalComponent,
+        ProfileIconComponent,
     ],
     providers: [],
 })
-export class SharedModule { }
+export class SharedModule {}

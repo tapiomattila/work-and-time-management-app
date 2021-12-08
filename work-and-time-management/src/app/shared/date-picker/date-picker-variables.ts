@@ -1,4 +1,3 @@
-
 // constants
 export const MONTHS = {
     en: [
@@ -13,7 +12,7 @@ export const MONTHS = {
         'september',
         'october',
         'november',
-        'december'
+        'december',
     ],
     es: [
         'enero',
@@ -27,7 +26,7 @@ export const MONTHS = {
         'septiembre',
         'octubre',
         'noviembre',
-        'diciembre'
+        'diciembre',
     ],
     pr: [
         'janeiro',
@@ -41,24 +40,18 @@ export const MONTHS = {
         'setembro',
         'outubro',
         'novembro',
-        'dezembro'
-    ]
-}
+        'dezembro',
+    ],
+};
 
 export const WEEKDAYS = {
-    en: [
-        'm', 't', 'w', 't', 'f', 's', 's'
-    ],
-    es: [
-        'l', 'm', 'm', 'j', 'v', 's', 'd'
-    ],
-    pr: [
-        's', 't', 'q', 'q', 's', 's', 'd'
-    ]
-}
+    en: ['m', 't', 'w', 't', 'f', 's', 's'],
+    es: ['l', 'm', 'm', 'j', 'v', 's', 'd'],
+    pr: ['s', 't', 'q', 'q', 's', 's', 'd'],
+};
 
 export enum ShowSelector {
     DAY = 'day',
     MONTH = 'month',
-    YEAR = 'year'
+    YEAR = 'year',
 }

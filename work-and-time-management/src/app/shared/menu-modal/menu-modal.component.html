@@ -1,14 +1,18 @@
-<div class="layer" [ngClass]="{ 'active': openMenuModal }" (click)="closeModal()"></div>
+<div
+    class="layer"
+    [ngClass]="{ active: openMenuModal }"
+    (click)="closeModal()"
+></div>
 <ng-container *ngIf="openMenuModal">
     <div class="menu-modal">
-      <div class="close__x" (click)="closeModal()">
-        <div class="line1"></div>
-        <div class="line2"></div>
+        <div class="close__x" (click)="closeModal()">
+            <div class="line1"></div>
+            <div class="line2"></div>
+        </div>
+        <div class="menu-modal__content">
+            <ul>
+                <li (click)="signout()">SignOut</li>
+            </ul>
+        </div>
     </div>
-      <div class="menu-modal__content">
-        <ul>
-          <li (click)="signout()">SignOut</li>
-        </ul>
-      </div>
-    </div>
-  </ng-container>
+</ng-container>

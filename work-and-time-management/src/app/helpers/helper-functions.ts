@@ -1,5 +1,5 @@
 export function formatHours(hours: number) {
-    if (typeof (hours) === 'number') {
+    if (typeof hours === 'number') {
         const frac = hours % 1;
         const full = hours - frac;
 
@@ -23,7 +23,7 @@ export function mapSnapsWithId(snaps: any) {
         const data = snap.payload.doc.data();
         return {
             id,
-            ...(data as object)
+            ...(data as object),
         };
     });
 }
@@ -32,7 +32,7 @@ export function mapSnaps(snaps: any) {
     return snaps.map(snap => {
         return {
             id: snap.payload.doc.id,
-            ...snap.payload.doc.data()
+            ...snap.payload.doc.data(),
         };
     });
 }
@@ -40,10 +40,14 @@ export function mapSnaps(snaps: any) {
 export function takeSnap(snap: any) {
     return {
         id: snap.payload.id,
-        ...(snap.payload.data() as object)
+        ...(snap.payload.data() as object),
     };
 }
 
 export function removeDublicates(array: any[]) {
-    return [...new Set(array)]
+    return [...new Set(array)];
+}
+
+export function doesArrayExist(array: any[]) {
+    return array && array.length > 0;
 }

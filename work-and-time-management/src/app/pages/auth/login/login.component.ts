@@ -9,10 +9,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 @Component({
     selector: 'app-login',
     templateUrl: 'login.component.html',
-    styleUrls: [ './login.component.scss' ]
+    styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
     ui: firebaseui.auth.AuthUI;
 
     loader = false;
@@ -21,17 +20,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         private afAuth: AngularFireAuth,
         private router: Router,
         private ngZone: NgZone
-    ) { }
+    ) {}
 
     ngOnInit() {
         const uiConfig = {
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                firebase.auth.EmailAuthProvider.PROVIDER_ID
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
             ],
             callbacks: {
-                signInSuccessWithAuthResult: this.onLoginSuccessfull.bind(this)
-            }
+                signInSuccessWithAuthResult: this.onLoginSuccessfull.bind(this),
+            },
         };
         this.ui = new firebaseui.auth.AuthUI(this.afAuth.auth);
         this.ui.start('#firebaseui-auth-container', uiConfig);
@@ -39,7 +38,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     onLoginSuccessfull(result) {
         this.loader = false;
-        this.ngZone.run(() => this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`]));
+        this.ngZone.run(() =>
+            this.router.navigate([`/${RouterRoutesEnum.DASHBOARD}`])
+        );
     }
 
     route() {

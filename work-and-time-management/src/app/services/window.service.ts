@@ -8,8 +8,14 @@ export class WindowService {
     windowSizeObs$ = this.windowSizeSubj.asObservable();
 
     constructor() {
-        this.windowSize = { width: window.innerWidth, height: window.innerHeight };
-        this.windowSizeSubj.next({ width: window.innerWidth, height: window.innerHeight });
+        this.windowSize = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+        };
+        this.windowSizeSubj.next({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
     }
 
     updateCurrentDimensions(windowWidth: number, windowHeight: number) {

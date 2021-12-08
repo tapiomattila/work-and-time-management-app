@@ -20,7 +20,6 @@ interface UserAddress {
     postalCode: string;
 }
 
-
 export function createUser(user: Partial<User>) {
     return {
         // id: user.userId,

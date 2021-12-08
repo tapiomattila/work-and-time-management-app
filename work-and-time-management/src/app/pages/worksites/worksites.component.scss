@@ -1,37 +1,34 @@
 :host {
-  width: 100%;
-  padding-top: 20px;
-  display: grid;
-
-  grid-template-columns: 2px repeat(6, 1fr) 2px;
-  grid-template-rows:
-    [heading-start] 45px
-    [heading-end header-start] 65px
-    [header-end container-start] 1fr
-    [container-end];
-  gap: 15px;
-  gap: 15px;
+    grid-column: 1 / -1;
 }
 
 .cards {
-  grid-row: container-start / container-end;
-  grid-column: 2 / span 6;
-  display: grid;
-  gap: 10px;
+    grid-column: 2 / span 6;
+    display: grid;
+    gap: 10px;
 }
 
 .date {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer {
-  grid-column: 1 / -1;
-  height: 20px;
+    grid-column: 1 / -1;
+    height: 20px;
 }
 
 svg {
-  height: 65px;
-  width: 65px;
+    height: 65px;
+    width: 65px;
+}
+
+.header {
+    background: #fff;
+    height: 65px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
 }

@@ -4,11 +4,10 @@ import * as variables from './date-picker-variables';
 @Component({
     selector: 'app-date-picker',
     templateUrl: 'date-picker.component.html',
-    styleUrls: ['./date-picker.component.scss']
+    styleUrls: ['./date-picker.component.scss'],
 })
 export class DatePickerComponent implements OnInit {
-
-    constructor() { }
+    constructor() {}
 
     public lang = 'en';
     public months: Array<string>;
@@ -18,7 +17,7 @@ export class DatePickerComponent implements OnInit {
     public currentMonth;
     public currentYear;
     public daysInPreviousMonthWeek = [];
-    public daysInCurrentMonth: Array<{ day: number, status: 'string' }> = [];
+    public daysInCurrentMonth: Array<{ day: number; status: 'string' }> = [];
     public daysInNextMonthWeek = [];
 
     // selected day
@@ -45,7 +44,9 @@ export class DatePickerComponent implements OnInit {
     }
 
     changeMonth(next: boolean) {
-        this.date.setMonth(next ? this.date.getMonth() + 1 : this.date.getMonth() - 1);
+        this.date.setMonth(
+            next ? this.date.getMonth() + 1 : this.date.getMonth() - 1
+        );
         this.currentMonth = this.date.getMonth();
         this.currentYear = this.date.getFullYear();
         this.setCalendar();
@@ -60,13 +61,17 @@ export class DatePickerComponent implements OnInit {
     }
 
     changeYear(next: boolean) {
-        this.yearMultiplier = next ? this.yearMultiplier + 12 : this.yearMultiplier - 12;
+        this.yearMultiplier = next
+            ? this.yearMultiplier + 12
+            : this.yearMultiplier - 12;
     }
 
     private getDaysInCalendar() {
         // days in current month
         const daysOfCurrentMonth = new Date(
-            this.currentYear, this.currentMonth + 1, 0
+            this.currentYear,
+            this.currentMonth + 1,
+            0
         ).getDate();
         const currentMonthDays = [];
 
@@ -78,12 +83,12 @@ export class DatePickerComponent implements OnInit {
             ) {
                 currentMonthDays.push({
                     day: i + 1,
-                    status: 'selected'
+                    status: 'selected',
                 });
             } else {
                 currentMonthDays.push({
                     day: i + 1,
-                    status: 'available'
+                    status: 'available',
                 });
             }
         }
@@ -91,7 +96,8 @@ export class DatePickerComponent implements OnInit {
         this.daysInCurrentMonth = currentMonthDays;
 
         // dasy in previous month week
-        this.daysInPreviousMonthWeek = this.getPreviousMonth(daysOfCurrentMonth);
+        this.daysInPreviousMonthWeek =
+            this.getPreviousMonth(daysOfCurrentMonth);
 
         // days in next month week
         this.daysInNextMonthWeek = this.getNextMonth();
@@ -99,7 +105,9 @@ export class DatePickerComponent implements OnInit {
 
     private getPreviousMonth(daysOfCurrentMonth): Array<number> {
         const firstDayOfCurrentMonth = new Date(
-            this.currentYear, this.currentMonth, 0
+            this.currentYear,
+            this.currentMonth,
+            0
         ).getDay();
         const previousWeekDays = [];
 
@@ -112,11 +120,13 @@ export class DatePickerComponent implements OnInit {
 
     private getNextMonth(): Array<number> {
         const lastDayOfMonth = new Date(
-            this.currentYear, this.currentMonth + 1, 0
+            this.currentYear,
+            this.currentMonth + 1,
+            0
         ).getDay();
         const nextWeekDays = [];
 
-        for (let i = 0; i < (7 - lastDayOfMonth); i++) {
+        for (let i = 0; i < 7 - lastDayOfMonth; i++) {
             nextWeekDays.push(i + 1);
         }
 

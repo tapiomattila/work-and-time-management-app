@@ -1,18 +1,18 @@
 .back-arrow {
-  width: 45px;
-  height: 45px;
-  background-color: #fff;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 45px;
+    height: 45px;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &__triangle {
-    background-color: #359A94;
-    width: 85%;
-    height: 73%;
+    &__triangle {
+        background-color: #359a94;
+        width: 85%;
+        height: 73%;
 
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    transform: rotate(270deg) translateY(-2px);
-  }
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        transform: rotate(270deg) translateY(-2px);
+    }
 }

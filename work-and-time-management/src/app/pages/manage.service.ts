@@ -5,7 +5,7 @@ import { RouterRoutesEnum } from '../enumerations/global.enums';
 import { first } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ManageService {
     subscriptions: Subscription[] = [];
@@ -16,12 +16,12 @@ export class ManageService {
     private genModalSubj = new BehaviorSubject<boolean>(false);
     genModalObs$ = this.genModalSubj.asObservable();
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router
-    ) { }
+    constructor(private route: ActivatedRoute, private router: Router) {}
 
-    routeEvents(routesEnumAdd: RouterRoutesEnum, routesEnumEdit: RouterRoutesEnum) {
+    routeEvents(
+        routesEnumAdd: RouterRoutesEnum,
+        routesEnumEdit: RouterRoutesEnum
+    ) {
         const routerEventSubs = this.router.events.subscribe(event => {
             if (event instanceof NavigationStart) {
                 if (event.url.includes(`/${routesEnumEdit}`)) {
@@ -37,21 +37,18 @@ export class ManageService {
     }
 
     modalControl(route: ActivatedRoute) {
-        const modalSubs = this.modalObs$
-            .pipe(
-                first()
-            ).subscribe(showModal => {
-                if (!showModal) {
-                    const url = route.snapshot.url;
-                    if (url) {
-                        url.forEach(el => {
-                            if (el && el.path === 'add') {
-                                this.modalSubj.next(true);
-                            }
-                        });
-                    }
+        const modalSubs = this.modalObs$.pipe(first()).subscribe(showModal => {
+            if (!showModal) {
+                const url = route.snapshot.url;
+                if (url) {
+                    url.forEach(el => {
+                        if (el && el.path === 'add') {
+                            this.modalSubj.next(true);
+                        }
+                    });
                 }
-            });
+            }
+        });
         this.subscriptions.push(modalSubs);
     }
 

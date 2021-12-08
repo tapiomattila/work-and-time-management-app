@@ -10,6 +10,6 @@ export interface Auth {
 export function createAuth(auth: Partial<Auth>) {
     return {
         id: auth.id,
-        ...auth
+        ...auth,
     } as Auth;
 }

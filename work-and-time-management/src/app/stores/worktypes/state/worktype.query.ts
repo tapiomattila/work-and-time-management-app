@@ -6,10 +6,9 @@ import { Observable, of } from 'rxjs';
 import { WorkType } from './worktype.model';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
-
     constructor(protected store: WorktypeStore) {
         super(store);
     }
@@ -23,16 +22,14 @@ export class WorkTypeQuery extends QueryEntity<WorkTypeState> {
     }
 
     selectActiveWorktype(): Observable<WorkType> {
-        return this.selectActiveId()
-            .pipe(
-                switchMap(id => id ? this.selectEntity(id) : of(null))
-            );
+        return this.selectActiveId().pipe(
+            switchMap(id => (id ? this.selectEntity(id) : of(null)))
+        );
     }
 
     selectAllLiveWorktypes(): Observable<WorkType[]> {
         return this.selectAll({
-            filterBy: entity => !entity.deleted
+            filterBy: entity => !entity.deleted,
         });
     }
-
 }

@@ -1,20 +1,48 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { WorksitesQuery, Worksite, WorksitesService } from '../../stores/worksites/state';
+import {
+    WorksitesQuery,
+    Worksite,
+    WorksitesService,
+} from '../../stores/worksites/state';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkType, WorkTypeQuery, WorkTypeService } from 'src/app/stores/worktypes/state';
-import { map, distinctUntilChanged, delay, tap, switchMap, finalize } from 'rxjs/operators';
-// import { HoursQuery, Hours, HoursService, TableHours } from 'src/app/auth/hours';
-// import { UserQuery } from 'src/app/auth/user';
+import {
+    WorkType,
+    WorkTypeQuery,
+    WorkTypeService,
+} from 'src/app/stores/worktypes/state';
+import {
+    map,
+    distinctUntilChanged,
+    delay,
+    tap,
+    switchMap,
+    finalize,
+} from 'rxjs/operators';
 import { formatHours } from 'src/app/helpers/helper-functions';
-import { fadeInOutTrigger, fadeInEnterTrigger, fadeInSecondaryTrigger } from 'src/app/animations/animations';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+    fadeInOutTrigger,
+    fadeInEnterTrigger,
+    fadeInSecondaryTrigger,
+} from 'src/app/animations/animations';
+import {
+    trigger,
+    state,
+    style,
+    transition,
+    animate,
+} from '@angular/animations';
 import { AuthQuery } from 'src/app/auth/state';
 import { DropdownReset } from 'src/app/helpers/interfaces/helpers';
-import { Hours, HoursQuery, HoursService, TableHours } from 'src/app/stores/hours';
+import {
+    Hours,
+    HoursQuery,
+    HoursService,
+    TableHours,
+} from 'src/app/stores/hours';
 import { UserQuery } from 'src/app/stores/users';
 
 interface FormData {
@@ -33,18 +61,24 @@ interface FormData {
         fadeInEnterTrigger,
         fadeInSecondaryTrigger,
         trigger('hoursAddedState', [
-            state('noAddition', style({
-            })),
-            state('addition', style({
-                transform: 'scale(1.12)'
-            })),
-            transition('noAddition <=> addition', animate('400ms 100ms ease-in'))
-        ])
-    ]
+            state('noAddition', style({})),
+            state(
+                'addition',
+                style({
+                    transform: 'scale(1.12)',
+                })
+            ),
+            transition(
+                'noAddition <=> addition',
+                animate('400ms 100ms ease-in')
+            ),
+        ]),
+    ],
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-
-    private hoursAddedMomentSubj = new BehaviorSubject<'reset' | 'added'>('reset');
+    private hoursAddedMomentSubj = new BehaviorSubject<'reset' | 'added'>(
+        'reset'
+    );
     hoursAddedMoment$ = this.hoursAddedMomentSubj.asObservable();
 
     private tableSelectionSubj = new BehaviorSubject<number>(null);
@@ -82,7 +116,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         private worktypeService: WorkTypeService,
         private router: Router,
         private authQuery: AuthQuery
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.initializeComponentData();
@@ -92,12 +126,16 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.worksite$ = this.worksiteQuery.selectActiveWorksite().pipe(
-            tap(active => this.dataForm.controls.worksite.setValue(active)),
-        );
-        this.worktype$ = this.worktypeQuery.selectActiveWorktype().pipe(
-            tap(active => this.dataForm.controls.worktype.setValue(active)),
-        );
+        this.worksite$ = this.worksiteQuery
+            .selectActiveWorksite()
+            .pipe(
+                tap(active => this.dataForm.controls.worksite.setValue(active))
+            );
+        this.worktype$ = this.worktypeQuery
+            .selectActiveWorktype()
+            .pipe(
+                tap(active => this.dataForm.controls.worktype.setValue(active))
+            );
     }
 
     initializeComponentData() {
@@ -118,36 +156,36 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             date: new FormControl(new Date(), Validators.required),
             worksite: new FormControl(null, Validators.required),
             worktype: new FormControl(null, Validators.required),
-            slider: new FormControl(0, [Validators.required, this.sliderValidator.bind(this)])
+            slider: new FormControl(0, [
+                Validators.required,
+                this.sliderValidator.bind(this),
+            ]),
         });
     }
 
     selectionDayHours() {
         let previousHours = 0;
-        this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay()
-            .pipe(
-                tap(res => {
-                    if (res > 0) {
-                        if (res !== previousHours) {
-                            this.hoursAddedMomentSubj.next('added');
-                        }
-                        previousHours = res;
+        this.dayHours$ = this.worksiteQuery.selectHoursForSelectedDay().pipe(
+            tap(res => {
+                if (res > 0) {
+                    if (res !== previousHours) {
+                        this.hoursAddedMomentSubj.next('added');
                     }
-                }),
-                map(el => {
-                    return formatHours(el);
-                }),
-                delay(200),
-                tap(() => this.resetHours())
-            );
+                    previousHours = res;
+                }
+            }),
+            map(el => {
+                return formatHours(el);
+            }),
+            delay(200),
+            tap(() => this.resetHours())
+        );
     }
 
     formValueChanges() {
         this.dataForm.valueChanges
-            .pipe(
-                distinctUntilChanged(),
-                delay(100)
-            ).subscribe(data => {
+            .pipe(distinctUntilChanged(), delay(100))
+            .subscribe(data => {
                 this.momentDay = moment(data.date);
                 if (data.date) {
                     const date = data.date as Date;
@@ -158,11 +196,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     }
 
     setTableHours(date: Date) {
-        this.dayTableHours$ = this.hoursQuery.selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
+        this.dayTableHours$ = this.hoursQuery
+            .selectHoursForDay(date.getTime(), this.worksiteQuery.getActiveId())
             .pipe(
                 map(elements => {
                     return this.worksiteQuery.selectTableHours(elements);
-                }),
+                })
             );
     }
 
@@ -190,8 +229,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     }
 
     setItemSelectionFromDropdown(item: Worksite | WorkType | DropdownReset) {
-        const worksite = this.worksiteQuery.getLiveWorksites().find(el => el.id === item.id);
-        const worktype = this.worktypeQuery.getAll().find(el => el.id === item.id);
+        const worksite = this.worksiteQuery
+            .getLiveWorksites()
+            .find(el => el.id === item.id);
+        const worktype = this.worktypeQuery
+            .getAll()
+            .find(el => el.id === item.id);
 
         if (worksite) {
             const selItem = item as Worksite;
@@ -253,10 +296,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             this.showErrors = false;
             const active = this.hoursQuery.getActive() as Hours;
             const id = active.id;
-            const removeSubs = this.hoursService.deleteHours(id).subscribe(() => {
-                this.hoursService.removeHours(id);
-                this.handleTableSelection({ message: 'reset' });
-            });
+            const removeSubs = this.hoursService
+                .deleteHours(id)
+                .subscribe(() => {
+                    this.hoursService.removeHours(id);
+                    this.handleTableSelection({ message: 'reset' });
+                });
             this.subscriptions.push(removeSubs);
         }
     }
@@ -307,20 +352,24 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             worksiteName: values.worksite.name,
             worktypeId: values.worktype.id,
             worktypeName: values.worktype.name,
-            clientId: this.authQuery.getValue().clientId
+            clientId: this.authQuery.getValue().clientId,
         };
 
         this.disable = true;
 
-        const postSubs = this.hoursService.postNewHours(newHours)
+        const postSubs = this.hoursService
+            .postNewHours(newHours)
             .pipe(
                 switchMap(() => {
                     this.resetSlider();
                     this.resetTableSelection();
-                    return this.hoursService.setUserHours(this.userQuery.getUserById(this.authQuery.getValue().id));
+                    return this.hoursService.setUserHours(
+                        this.userQuery.getUserById(this.authQuery.getValue().id)
+                    );
                 }),
-                finalize(() => this.disable = false)
-            ).subscribe();
+                finalize(() => (this.disable = false))
+            )
+            .subscribe();
         this.subscriptions.push(postSubs);
     }
 
@@ -332,17 +381,19 @@ export class AddHoursComponent implements OnInit, OnDestroy {
             updatedAt: new Date().toISOString(),
             updatedBy: this.authQuery.getSignedInUser().userId,
             worksiteId: values.worksite.id,
-            worktypeId: values.worktype.id
+            worktypeId: values.worktype.id,
         };
 
         const hours = this.hoursQuery.getActive() as Hours;
-        const updateSubs = this.hoursService.putHours(hours.id, updatedHours)
+        const updateSubs = this.hoursService
+            .putHours(hours.id, updatedHours)
             .pipe(
                 tap(() => {
                     this.hoursService.updateHours(hours, updatedHours);
                     this.handleTableSelection({ message: 'reset' });
                 })
-            ).subscribe();
+            )
+            .subscribe();
         this.subscriptions.push(updateSubs);
     }
 

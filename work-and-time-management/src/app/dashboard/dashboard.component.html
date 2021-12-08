@@ -1,77 +1,48 @@
-<app-header
-  class="heading"
-  [user]="user$ | async"
-  [momentDay]="momentDay"
-  [icon]="profileIconUrl"
-></app-header>
-
-<!-- TODO, day selection to add-hours for given day -->
-<ng-container *ngIf="(windowService.windowSizeObs$ | async).width as width">
-  <ng-container *ngIf="width <= 576; else wide">
-    <div class="circles">
-      <app-day-hours
-        *ngFor="let info of infos; let i = index"
-        [hoursVal]="[info, true]"
-        [index]="i"
-        (selectedDay)="daySelected($event)"
-      >
-      </app-day-hours>
-    </div>
-  </ng-container>
-  <ng-template #wide>
-    <div class="circles wide">
-      <app-day-hours
-        *ngFor="let info of infos; let i = index"
-        [hoursVal]="[info, false]"
-        [index]="i"
-      >
-      </app-day-hours>
-    </div>
-  </ng-template>
-</ng-container>
-
 <div class="cards">
-  <ng-container *ngIf="currentWorksite$ | async as current">
-    <app-card
-      @fadeInEnterWithDelay
-      (click)="navigate('add-hours', current.id)"
-      [name]="current.name"
-      [worksite]="current">
-    </app-card>
-  </ng-container>
-
-  <div class="card" (click)="navigate('worksites')">
-    <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
-  </div>
-
-  <div class="card" (click)="navigate('added-hours')">
-    <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
-  </div>
-
-  <ng-container *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin">
-    <div class="card" (click)="navigate('manage-worksites')">
-      <app-card [name]="'Manage worksites'"></app-card>
-    </div>
-  </ng-container>
-  <ng-template #noAdmin>
-    <ng-container *ngIf="(user$ | async)?.roles.includes('manager')">
-      <div class="card" (click)="navigate('manage-worksites')">
-        <app-card [name]="'Manage worksites'"></app-card>
-      </div>
+    <ng-container *ngIf="currentWorksite$ | async as current">
+        <app-card
+            @fadeInEnterWithDelay
+            (click)="navigate('add-hours', current.id)"
+            [name]="current.name"
+            [worksite]="current"
+        >
+        </app-card>
     </ng-container>
-  </ng-template>
 
-  <!-- <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
-    <div class="card" (click)="navigate('manage-worktypes')">
-      <app-card [name]="'Manage worktypes'"></app-card>
+    <div class="card" (click)="navigate('worksites')">
+        <app-card [name]="'Worksites'" [icon]="'icon-briefcase'"></app-card>
     </div>
-    <div class="card" (click)="navigate('admin/manage-users')">
-      <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+
+    <div class="card" (click)="navigate('added-hours')">
+        <app-card [name]="'Added hours'" [icon]="'icon-clock'"></app-card>
     </div>
-    <div class="card" (click)="navigate('admin-settings')">
+
+    <ng-container
+        *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin"
+    >
+        <div class="card" (click)="navigate('manage-worksites')">
+            <app-card [name]="'Manage worksites'"></app-card>
+        </div>
+    </ng-container>
+    <ng-template #noAdmin>
+        <ng-container *ngIf="(user$ | async)?.roles.includes('manager')">
+            <div class="card" (click)="navigate('manage-worksites')">
+                <app-card [name]="'Manage worksites'"></app-card>
+            </div>
+        </ng-container>
+    </ng-template>
+
+    <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
+        <div class="card" (click)="navigate('manage-worktypes')">
+            <app-card [name]="'Manage worktypes'"></app-card>
+        </div>
+        <!-- <div class="card" (click)="navigate('admin/manage-users')">
+            <app-card [name]="'Manage users'" [icon]="'icon-v-card'"></app-card>
+        </div> -->
+        <!-- <div class="card" (click)="navigate('admin-settings')">
       <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
-    </div>
-  </ng-container> -->
+    </div> -->
+    </ng-container>
 </div>
 
 <div class="footer"></div>

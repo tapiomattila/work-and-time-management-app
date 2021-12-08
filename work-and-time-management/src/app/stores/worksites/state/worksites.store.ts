@@ -1,22 +1,27 @@
-import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
+import {
+  EntityState,
+  EntityStore,
+  StoreConfig,
+  ActiveState,
+} from '@datorama/akita';
 import { Worksite } from './worksites.model';
 import { Injectable } from '@angular/core';
 
-export interface WorksitesState extends EntityState<Worksite, string> { }
+export interface WorksitesState extends EntityState<Worksite, string> {}
 
 const initialState = {
-    active: null
+  active: null,
 };
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 @StoreConfig({
-    name: 'worksites',
-    resettable: true
+  name: 'worksites',
+  resettable: true,
 })
 export class WorksiteStore extends EntityStore<WorksitesState> {
-    constructor() {
-        super(initialState);
-    }
+  constructor() {
+    super(initialState);
+  }
 }

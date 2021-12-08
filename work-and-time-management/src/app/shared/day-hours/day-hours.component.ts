@@ -53,11 +53,9 @@ export class DayHoursComponent implements OnInit {
         }
     }
 
-    constructor(
-        private hoursQuery: HoursQuery
-    ) { }
+    constructor(private hoursQuery: HoursQuery) {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     daySelected() {
         this.selectedDay.emit(this.hours);

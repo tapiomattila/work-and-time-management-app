@@ -5,15 +5,9 @@ import { SharedModule } from '../shared/shared.module';
 import { CardsModule } from '../cards/cards.module';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        SharedModule,
-        CardsModule,
-    ],
+    imports: [CommonModule, SharedModule, CardsModule],
     exports: [],
-    declarations: [
-        DashboardComponent
-    ],
+    declarations: [DashboardComponent],
     providers: [],
 })
-export class DashboardModule { }
+export class DashboardModule {}

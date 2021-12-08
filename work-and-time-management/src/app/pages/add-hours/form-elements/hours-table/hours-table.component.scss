@@ -1,36 +1,36 @@
 table {
-  width: 100%;
-  min-width: 400px;
+    width: 100%;
+    min-width: 400px;
 }
 
 table,
 td,
 th {
-  border: 1px solid #000;
-  font-weight: lighter;
-  padding: 10px;
+    border: 1px solid #000;
+    font-weight: lighter;
+    padding: 10px;
 }
 
 table {
-  border-collapse: collapse;
+    border-collapse: collapse;
 }
 
 th {
-  min-height: 20px;
-  background-color: var(--primary-color);
-  color: var(--white-color);
+    min-height: 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
 }
 
 td {
-  background-color: var(--white-color);
+    background-color: var(--white-color);
 }
 
 td {
-  &:hover {
-    cursor: pointer;
-  }
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 tr.active td {
-  background-color: #d6d9d4;
+    background-color: #d6d9d4;
 }

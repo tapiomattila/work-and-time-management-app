@@ -7,20 +7,20 @@
             </button>
 
             <span class="selected-month"> -->
-                <!-- day selector header -->
-                <!-- <button type="button" *ngIf="showSelector === showSelectorType.DAY"
+<!-- day selector header -->
+<!-- <button type="button" *ngIf="showSelector === showSelectorType.DAY"
                     (click)="toggleSelector(showSelectorType.MONTH)">
                     {{ months[currentMonth] }} {{ currentYear }}
                 </button> -->
 
-                <!-- month selector header -->
-                <!-- <button type="button" *ngIf="showSelector === showSelectorType.MONTH"
+<!-- month selector header -->
+<!-- <button type="button" *ngIf="showSelector === showSelectorType.MONTH"
                     (click)="toggleSelector(showSelectorType.YEAR)">
                     {{ currentYear }}
                 </button> -->
 
-                <!-- year selector header -->
-                <!-- <button type="button" *ngIf="showSelector === showSelectorType.YEAR">
+<!-- year selector header -->
+<!-- <button type="button" *ngIf="showSelector === showSelectorType.YEAR">
                     {{ currentYear + yearMultiplier }} - {{ currentYear + yearMultiplier + 11 }}
                 </button>
             </span>
@@ -30,43 +30,43 @@
             </button>
         </div> -->
 
-        <!-- days selector -->
-        <!-- <ng-container *ngIf="showSelector === showSelectorType.DAY">
+<!-- days selector -->
+<!-- <ng-container *ngIf="showSelector === showSelectorType.DAY">
             <div class="weekdays">
                 <span *ngFor="let day of weekdays">
                     {{ day }}
                 </span>
             </div> -->
 
-            <!-- <div class="days" *ngIf="daysInCurrentMonth"> -->
-                <!-- previous month -->
-                <!-- <span *ngFor="let previousDay of daysInPreviousMonthWeek" class="previous-days"
+<!-- <div class="days" *ngIf="daysInCurrentMonth"> -->
+<!-- previous month -->
+<!-- <span *ngFor="let previousDay of daysInPreviousMonthWeek" class="previous-days"
                     (click)="changeMonth(false)">
                     {{ previousDay }}
                 </span> -->
 
-                <!-- current and available days for current month -->
-                <!-- <span *ngFor="let date of daysInCurrentMonth" class="current-days"
+<!-- current and available days for current month -->
+<!-- <span *ngFor="let date of daysInCurrentMonth" class="current-days"
                     [class.selected-day]="date.status === 'selected'" (click)="selectDate(date.day)">
                     {{ date.day }}
                 </span> -->
 
-                <!-- next month -->
-                <!-- <span *ngFor="let nextDay of daysInNextMonthWeek" class="next-days" (click)="changeMonth(true)">
+<!-- next month -->
+<!-- <span *ngFor="let nextDay of daysInNextMonthWeek" class="next-days" (click)="changeMonth(true)">
                     {{ nextDay }}
                 </span>
             </div>
         </ng-container> -->
 
-        <!-- months selector -->
-        <!-- <div class="month-selector" *ngIf="showSelector === showSelectorType.MONTH">
+<!-- months selector -->
+<!-- <div class="month-selector" *ngIf="showSelector === showSelectorType.MONTH">
             <span *ngFor="let month of months; let i = index;" (click)="selectMonth(i)">
                 {{ month | slice:0:3 }}
             </span>
         </div> -->
 
-        <!-- years selector -->
-        <!-- <div class="month-selector" *ngIf="showSelector === showSelectorType.YEAR">
+<!-- years selector -->
+<!-- <div class="month-selector" *ngIf="showSelector === showSelectorType.YEAR">
             <span *ngFor="let x of yearUiArray; let i = index;" (click)="selectYear(currentYear + yearMultiplier + i)">
                 {{ currentYear + yearMultiplier + i }}
             </span>
@@ -74,39 +74,48 @@
     </div>
 </div> -->
 
-
-
-
-
-
-
-
-
 <div class="container">
-
     <div class="datepicker">
         <div class="month">
-            <button type="button" class="arrow-left" (click)="navigateSelectors(false)">
+            <button
+                type="button"
+                class="arrow-left"
+                (click)="navigateSelectors(false)"
+            >
                 &#8249;
             </button>
 
             <span class="selected-month">
-                <button type="button" *ngIf="showSelector === showSelectorType.DAY"
-                    (click)="toggleSelector(showSelectorType.MONTH)">
+                <button
+                    type="button"
+                    *ngIf="showSelector === showSelectorType.DAY"
+                    (click)="toggleSelector(showSelectorType.MONTH)"
+                >
                     {{ months[currentMonth] }} {{ currentYear }}
                 </button>
 
-                <button type="button" *ngIf="showSelector === showSelectorType.MONTH"
-                    (click)="toggleSelector(showSelectorType.YEAR)">
+                <button
+                    type="button"
+                    *ngIf="showSelector === showSelectorType.MONTH"
+                    (click)="toggleSelector(showSelectorType.YEAR)"
+                >
                     {{ currentYear }}
                 </button>
 
-                <button type="button" *ngIf="showSelector === showSelectorType.YEAR">
-                    {{ currentYear + yearMultiplier }} - {{ currentYear + yearMultiplier + 11 }}
+                <button
+                    type="button"
+                    *ngIf="showSelector === showSelectorType.YEAR"
+                >
+                    {{ currentYear + yearMultiplier }} -
+                    {{ currentYear + yearMultiplier + 11 }}
                 </button>
             </span>
 
-            <button type="button" class="arrow-right" (click)="navigateSelectors(true)">
+            <button
+                type="button"
+                class="arrow-right"
+                (click)="navigateSelectors(true)"
+            >
                 &#8250;
             </button>
         </div>

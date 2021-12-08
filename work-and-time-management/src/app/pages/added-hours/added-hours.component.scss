@@ -1,54 +1,47 @@
-@import "~@angular/material/theming";
+@import '~@angular/material/theming';
 
 :host {
-  //   width: 100%;
-  padding-top: 20px;
-  display: grid;
-  grid-template-columns: 2px repeat(6, 1fr) 2px;
-  grid-template-rows:
-    [heading-start] 45px
-    [heading-end header-start] 65px
-    [header-end filter-start] minmax(65px, min-content)
-    [filter-end table-start] 1fr
-    [table-end footer-start] 20px
-    [footer-end];
-  gap: 15px;
-  //   overflow: hidden;
-
-  // min-height: calc(100vh - 20px);
-
-  //   min-height: 100vh;
-  box-sizing: border-box;
+    grid-column: 1 / -1;
+    // padding-top: 20px;
+    display: grid;
+    grid-template-columns: 2px repeat(6, 1fr) 2px;
+    grid-template-rows:
+        [filter-start] minmax(65px, min-content)
+        [filter-end table-start] 1fr
+        [table-end footer-start] 20px
+        [footer-end];
+    // gap: 15px;
+    box-sizing: border-box;
 }
 
 .table-filter {
-  grid-row: filter-start / filter-end;
-  grid-column: 2 / span 6;
+    grid-row: filter-start / filter-end;
+    grid-column: 2 / span 6;
 }
 
 .table-container {
-  grid-row: table-start / table-end;
-  grid-column: 2 / span 6;
-  text-align: center;
+    grid-row: table-start / table-end;
+    grid-column: 2 / span 6;
+    text-align: center;
 
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 mat-paginator {
-  display: block;
+    display: block;
 }
 
 .footer {
-  grid-row: footer-start / footer-end;
-  grid-column: 2 / span 6;
-  min-height: 20px;
+    grid-row: footer-start / footer-end;
+    grid-column: 2 / span 6;
+    min-height: 20px;
 }
 
 table {
-  width: 100%;
-  min-width: 400px;
+    width: 100%;
+    min-width: 400px;
 }
 
 th.mat-sort-header-sorted {
-  color: black;
+    color: black;
 }
