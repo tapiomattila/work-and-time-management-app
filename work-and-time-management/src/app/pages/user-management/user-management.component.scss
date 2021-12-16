@@ -1,17 +1,12 @@
 :host {
-    padding-top: 20px;
+    grid-column: 1 / -1;
+
     display: grid;
     grid-template-columns: 2px repeat(6, 1fr) 2px;
-    grid-template-rows:
-        [heading-start] 45px
-        [heading-end header-start] 65px
-        [header-end container-start] 1fr
-        [container-end];
-    gap: 15px;
+    grid-template-rows: [container-start] 1fr [container-end];
+    row-gap: 15px;
 
-    // min-height: calc(100vh - 20px);
     box-sizing: border-box;
-
     position: relative;
     z-index: 10;
 }

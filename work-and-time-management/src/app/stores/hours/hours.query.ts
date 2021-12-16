@@ -88,7 +88,6 @@ export class HoursQuery extends QueryEntity<HoursState> {
     }
 
     selectTotalHoursByUser(userId: string) {
-        console.log('hours id', userId);
         return this.selectAll({
             filterBy: [entity => entity.userId === userId],
         }).pipe(

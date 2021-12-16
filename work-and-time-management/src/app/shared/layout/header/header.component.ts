@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import * as moment from 'moment';
-import { User } from 'src/app/stores/users';
 import { Observable } from 'rxjs';
 import { GlobalHelperService } from 'src/app/services/global-helper.service';
 import { Auth } from 'src/app/auth/state';
@@ -23,7 +22,7 @@ export class HeaderComponent implements OnInit {
     constructor(
         private globalhelper: GlobalHelperService,
         private router: Router
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.momentDay = moment();
@@ -32,6 +31,7 @@ export class HeaderComponent implements OnInit {
 
     backArrowPressed() {
         this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+        // this.location.back();
     }
 
     openMenu() {

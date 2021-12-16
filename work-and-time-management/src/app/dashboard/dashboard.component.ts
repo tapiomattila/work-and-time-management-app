@@ -3,7 +3,6 @@ import { NavigationHandlerService } from '../services/navigation-handler.service
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { Worksite, WorksitesQuery } from '../stores/worksites/state';
-import { WindowService } from '../services/window.service';
 import {
     fadeInEnterTrigger,
     fadeInEnterWithDelayTrigger,
@@ -32,7 +31,6 @@ export class DashboardComponent implements OnInit {
     constructor(
         private authQuery: AuthQuery,
         private worksiteQuery: WorksitesQuery,
-        public windowService: WindowService,
         public navigationHandlerService: NavigationHandlerService
     ) {}
 
