@@ -5,6 +5,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 // import { UsersQuery } from 'src/app/auth/admin/users';
 import { AuthQuery } from 'src/app/auth/state';
+import { User } from 'src/app/stores/users';
 // import { User, UserService } from 'src/app/auth/user';
 import {
     Worksite,
@@ -12,10 +13,10 @@ import {
     WorksitesService,
 } from '../../stores/worksites/state';
 
-// interface ComponentData {
-//   user: Partial<User>;
-//   worksites: Worksite[];
-// }
+interface ComponentData {
+    user: Partial<User>;
+    worksites: Worksite[];
+}
 
 @Component({
     selector: 'app-user-management',
@@ -28,44 +29,47 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     // userWorksites: string[] = [];
     // userIdFromRoute = '';
 
-    constructor() {
-        // private worksitesQuery: WorksitesQuery,
+    constructor(
+        private worksitesQuery: WorksitesQuery,
         // private usersQuery: UsersQuery,
         // private userService: UserService,
-        // private route: ActivatedRoute,
-        // private worksiteService: WorksitesService,
-        // private authQuery: AuthQuery
-    }
+        private route: ActivatedRoute,
+        private worksiteService: WorksitesService,
+        private authQuery: AuthQuery
+    ) { }
 
     ngOnInit() {
-        // this.populateDataObservable();
+        console.log('user management');
+
+        this.populateDataObservable();
         // this.initializeWorksiteArray();
         // this.userIdFromRoute = this.route.snapshot.paramMap.get('id');
     }
 
-    // populateDataObservable() {
-    //   const worksites$ = this.worksitesQuery.selectAllLiveWorksites();
-    //   const user$ = this.route.params.pipe(
-    //     switchMap((el: { id: string }) => {
-    //       const userById = this.usersQuery.getAll().find(elx => elx.id === el.id);
-    //       if (userById) {
-    //         return of(userById);
-    //       } else {
-    //         return this.userService.fetchUserById(el.id);
-    //       }
-    //     }),
-    //     switchMap(res => this.userService.fetchUserInfosById(res.id, this.authQuery.getValue().clientId)),
-    //   );
+    populateDataObservable() {
+        const worksites$ = this.worksitesQuery.selectAllLiveWorksites();
+        worksites$.subscribe(res => console.log('show res', res));
+        // const user$ = this.route.params.pipe(
+        //     switchMap((el: { id: string }) => {
+        //         const userById = this.usersQuery.getAll().find(elx => elx.id === el.id);
+        //         if (userById) {
+        //             return of(userById);
+        //         } else {
+        //             return this.userService.fetchUserById(el.id);
+        //         }
+        //     }),
+        //     switchMap(res => this.userService.fetchUserInfosById(res.id, this.authQuery.getValue().clientId)),
+        // );
 
-    //   this.data$ = combineQueries([worksites$, user$]).pipe(
-    //     map(([worksites, user]) => {
-    //       return {
-    //         worksites,
-    //         user
-    //       };
-    //     }),
-    //   );
-    // }
+        // this.data$ = combineQueries([worksites$, user$]).pipe(
+        //     map(([worksites, user]) => {
+        //         return {
+        //             worksites,
+        //             user
+        //         };
+        //     }),
+        // );
+    }
 
     // initializeWorksiteArray() {
     //   const initSubs = this.data$.pipe(
@@ -137,7 +141,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     //   });
     // }
 
-    ngOnDestroy() {
-        // this.subscriptions.forEach(el => el.unsubscribe());
+    // ngOnDestroy() {
+    //     // this.subscriptions.forEach(el => el.unsubscribe());
+    // }
+
+    ngOnDestroy(): void {
+
     }
 }

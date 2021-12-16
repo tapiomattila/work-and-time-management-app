@@ -16,7 +16,7 @@ import {
     providedIn: 'root',
 })
 export class HoursService {
-    constructor(private hoursStore: HoursStore, private af: AngularFirestore) {}
+    constructor(private hoursStore: HoursStore, private af: AngularFirestore) { }
 
     setActive(id: string) {
         this.hoursStore.setActive(id);
@@ -105,7 +105,7 @@ export class HoursService {
             );
     }
 
-    fetchUserHoursXX2(user$: Observable<User>) {
+    fetchUserHours(user$: Observable<User>) {
         return user$.pipe(
             switchMap((user: User) =>
                 user && user.id ? this.fetchHours(user) : of(null)
@@ -129,7 +129,7 @@ export class HoursService {
     fetchAllUsersHours(auth: Auth) {
         return this.af
             .collection(`${FireBaseCollectionsEnum.HOURS}`, ref =>
-                ref.where('_c', '==', auth.clientId)
+                ref.where('clientId', '==', auth.clientId)
             )
             .snapshotChanges()
             .pipe(

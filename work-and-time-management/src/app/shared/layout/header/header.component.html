@@ -1,9 +1,8 @@
 <app-menu-modal
     *ngIf="openMenuModal"
     [openMenuModal]="openMenuModal"
-    (closed)="closedModal($event)"
->
-</app-menu-modal>
+    (closed)="closedModal()"
+></app-menu-modal>
 
 <div class="heading-container">
     <div class="heading">
@@ -16,14 +15,13 @@
         <ng-template #profile>
             <div class="heading__profile-icon">
                 <app-profile-icon
-                    *ngIf=""
-                    [profileIconUrl]="icon"
+                    [pic]="auth?.profilePictureUrl"
                 ></app-profile-icon>
             </div>
         </ng-template>
         <div class="heading__name">
-            <ng-container *ngIf="user">
-                <p>{{ user.info.displayName }}</p>
+            <ng-container *ngIf="auth">
+                <p>{{ auth.displayName }}</p>
             </ng-container>
         </div>
         <div class="heading__settings-btn">

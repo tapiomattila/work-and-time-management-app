@@ -22,9 +22,10 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private userService: UserService,
         private manageService: ManageService
-    ) {}
+    ) { }
 
-    firebaseAuthUpdate(): Observable<boolean> {
+    // : Observable<boolean | Partial<User>[]>
+    firebaseAuthUpdate(): Observable<{}> {
         return this.afAuth.authState.pipe(
             distinctUntilChanged(),
             tap((authenticated: firebase.User) => {
@@ -32,15 +33,8 @@ export class AuthService {
                 const isAuth = !!authenticated;
 
                 if (isAuth) {
-                    const authUser: Partial<Auth> = {
-                        id: authenticated.uid,
-                        displayName: authenticated.displayName,
-                        email: authenticated.email,
-                        isAuthenticated: !!authenticated,
-                        profilePictureUrl: authenticated.photoURL,
-                    };
+                    const authUser: Partial<Auth> = this.constructAuthUser(authenticated);
                     this.userNotFoundTimer();
-                    this.checkAuthRole();
 
                     // Initial auth state update
                     this.updateAuthState(authUser);
@@ -53,32 +47,70 @@ export class AuthService {
             // fetch whitelisted auth user from users collection
             this.streamFetchUserByIdAfterWhiteListed(),
 
-            switchMap(user => {
-                if (user) {
-                    return of(user);
-                }
-                const auth = this.authQuery.getValue();
-                if (auth.isAuthenticated) {
-                    // post new user to users collection if authenticated and whitelisted user
-                    // is not found in that collection
-                    this.streamAfterAuthPostNewUser(auth);
-                }
-                return of(false);
-            }),
             tap(user => {
-                if (user) {
-                    const usx = user as User;
-                    this.userService.upsertUsersStore(usx.id, usx);
-                }
-            })
+                this.updateUserStore(user);
+            }),
+
+            this.handleAdminAllUsers(),
+            this.handleNewUser()
         );
     }
 
-    /**
-     * Checks for registered user and if not present
-     * show please register modal
-     */
-    userNotFoundTimer() {
+    signOut() {
+        this.userService.resetAllStores();
+        this.authStore.reset();
+        // this.afAuth.auth.signOut();
+    }
+
+    resetStore() {
+        this.authStore.reset();
+    }
+
+    private updateUserStore(user: User) {
+        if (user) {
+            const usx = user as User;
+            this.userService.upsertUsersStore(usx.id, usx);
+        }
+    }
+
+    private constructAuthUser(authenticated: firebase.User) {
+        // const authUser: Partial<Auth> =
+        return {
+            id: authenticated.uid,
+            displayName: authenticated.displayName,
+            email: authenticated.email,
+            isAuthenticated: !!authenticated,
+            profilePictureUrl: authenticated.photoURL,
+        };
+    }
+
+    private handleAdminAllUsers() {
+        return switchMap(() => {
+            return this.authQuery
+                .selectSignedInUser()
+                .pipe(
+                    switchMap((user: User) => {
+                        if (this.checkRoleAllowed(user, [Role.ADMIN])) {
+                            return this.userService.fetchAllUsersByClientId(
+                                user.clientId
+                            );
+                        }
+                        return of(null);
+                    }),
+                    tap((users: Partial<User>[]) => {
+                        if (users) {
+                            this.addUsersToUsersStore(users);
+                        }
+                    }),
+                );
+        });
+    }
+
+    // /**
+    //  * Checks for registered user and if not present
+    //  * show please register modal
+    //  */
+    private userNotFoundTimer() {
         const timer$ = timer(5000);
         const timerSub = timer$
             .pipe(
@@ -86,12 +118,87 @@ export class AuthService {
                 tap(user =>
                     !user ? this.manageService.setGeneralModal(true) : false
                 )
-            )
-            .subscribe();
+            ).subscribe();
         this.subscriptions.push(timerSub);
     }
 
-    private checkAuthRole() {
+    private handleNewUser() {
+        return switchMap((user: {}) => {
+            if (user) {
+                return of(user);
+            }
+            const auth = this.authQuery.getValue();
+            if (auth.isAuthenticated) {
+                this.streamAfterAuthPostNewUser(auth);
+            }
+            return of(false);
+        });
+    }
+
+
+    private updateAuthState(authState: Partial<Auth>) {
+        this.authStore.update(createAuth(authState));
+    }
+
+    private streamFetchWhiteListed() {
+        return switchMap((auth: firebase.User) =>
+            auth && auth.uid
+                ? this.userService.fetchWhiteListUser(auth.uid)
+                : of(null)
+        );
+    }
+
+    private streamFetchUserByIdAfterWhiteListed() {
+        return switchMap(
+            (user: { clientId: string; email: string; id: string }) => {
+                if (user && user.clientId) {
+                    this.updateAuthState({
+                        id: user.id,
+                        clientId: user.clientId,
+                    });
+                    return this.userService.fetchUserById(user);
+                }
+                return of(false);
+            }
+        );
+    }
+
+    private streamAfterAuthPostNewUser(auth: Auth) {
+        const newUser = {
+            userId: auth.id,
+            clientId: auth.clientId,
+            info: {
+                email: auth.email,
+                displayName: auth.displayName,
+            },
+            roles: [],
+        };
+        return this.userService.postNewUser(newUser);
+    }
+
+    private checkRoleAllowed(user: User, roles: string[]) {
+        let allowed = false;
+        roles.forEach(role => {
+            if (user?.roles.includes(role)) {
+                allowed = true;
+            }
+        });
+        return allowed;
+    }
+
+    private addUsersToUsersStore(users: Partial<User>[]) {
+        this.userService.addUsers(users);
+    }
+
+    private isAdminOrManager(user: User): boolean {
+        return (
+            user &&
+            (user.roles.includes(Role.ADMIN) ||
+                user.roles.includes(Role.MANAGER))
+        );
+    }
+
+    private checkRoleForAdminOrManager() {
         const roleSubs = this.authQuery
             .selectSignedInUser()
             .pipe(
@@ -107,71 +214,9 @@ export class AuthService {
                     if (users) {
                         this.addUsersToUsersStore(users);
                     }
-                })
+                }),
             )
             .subscribe();
         this.subscriptions.push(roleSubs);
-    }
-
-    updateAuthState(authState: Partial<Auth>) {
-        this.authStore.update(createAuth(authState));
-    }
-
-    streamFetchWhiteListed() {
-        return switchMap((auth: firebase.User) =>
-            auth && auth.uid
-                ? this.userService.fetchWhiteListUser(auth.uid)
-                : of(null)
-        );
-    }
-
-    streamFetchUserByIdAfterWhiteListed() {
-        return switchMap(
-            (user: { clientId: string; email: string; id: string }) => {
-                if (user && user.clientId) {
-                    this.updateAuthState({
-                        id: user.id,
-                        clientId: user.clientId,
-                    });
-                    return this.userService.fetchUserById(user);
-                }
-                return of(false);
-            }
-        );
-    }
-
-    streamAfterAuthPostNewUser(auth: Auth) {
-        const newUser = {
-            userId: auth.id,
-            clientId: auth.clientId,
-            info: {
-                email: auth.email,
-                displayName: auth.displayName,
-            },
-            roles: [],
-        };
-        return this.userService.postNewUser(newUser);
-    }
-
-    signOut() {
-        this.userService.resetAllStores();
-        this.authStore.reset();
-        // this.afAuth.auth.signOut();
-    }
-
-    resetStore() {
-        this.authStore.reset();
-    }
-
-    private isAdminOrManager(user: User): boolean {
-        return (
-            user &&
-            (user.roles.includes(Role.ADMIN) ||
-                user.roles.includes(Role.MANAGER))
-        );
-    }
-
-    private addUsersToUsersStore(users: Partial<User>[]) {
-        this.userService.addUsers(users);
     }
 }

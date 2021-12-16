@@ -4,7 +4,7 @@ import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { first, map } from 'rxjs/operators';
 import { UserStore } from './user.store';
 import { createUser, User } from './user.model';
-import { from, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { mapSnaps, takeSnap } from 'src/app/helpers/helper-functions';
 
 @Injectable({
@@ -61,7 +61,7 @@ export class UserService {
         );
     }
 
-    fetchAllUsersByClientId(clientId: string) {
+    fetchAllUsersByClientId(clientId: string): Observable<User[]> {
         const query = this.af.collection(FireBaseCollectionsEnum.USERS, ref =>
             ref.where('clientId', '==', clientId)
         );

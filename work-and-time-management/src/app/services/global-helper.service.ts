@@ -21,10 +21,20 @@ export class GlobalHelperService {
     }
 
     setBackButtonOnUrl(currentRoute: string) {
-        if (currentRoute === 'dashboard' || currentRoute === '') {
+        if (this.restrictedBackBtnRoutes(currentRoute)) {
             this.setBackButton(false);
         } else {
             this.setBackButton(true);
         }
+    }
+
+    private restrictedBackBtnRoutes(currentRoute: string) {
+        const restrictedBackRoutes = [
+            'welcome',
+            'login',
+            'dashboard',
+            ''
+        ];
+        return restrictedBackRoutes.includes(currentRoute);
     }
 }

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { User } from 'src/app/stores/users';
 import { Observable } from 'rxjs';
 import { GlobalHelperService } from 'src/app/services/global-helper.service';
+import { Auth } from 'src/app/auth/state';
 
 @Component({
     selector: 'app-header',
@@ -15,13 +16,7 @@ export class HeaderComponent implements OnInit {
     icon = '';
     backArrow$: Observable<boolean>;
     openMenuModal = false;
-
-    @Input()
-    set value(profileIconUrl: any) {
-        this.icon = profileIconUrl;
-    }
-
-    @Input() user: User;
+    @Input() auth: Auth;
 
     momentDay: moment.Moment;
 
@@ -43,7 +38,7 @@ export class HeaderComponent implements OnInit {
         this.openMenuModal = true;
     }
 
-    closedModal($event) {
+    closedModal() {
         this.openMenuModal = false;
     }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { fadeInEnterWithDelayTrigger } from 'src/app/animations/animations';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Worksite } from 'src/app/stores/worksites/state/worksites.model';
 import { HoursQuery } from 'src/app/stores/hours';
 
@@ -11,6 +10,7 @@ import { HoursQuery } from 'src/app/stores/hours';
 })
 export class CardComponent implements OnInit {
     hoursNum: number;
+    loading = false;
     hours$: Observable<number>;
 
     iconUrl = '../../../assets/svg/sprite.svg#icon-briefcase';
@@ -22,6 +22,11 @@ export class CardComponent implements OnInit {
         if (value) {
             this.iconUrl = `../../../assets/svg/sprite.svg#${value}`;
         }
+    }
+
+    @Input()
+    set loader(value: boolean) {
+        value ? this.loading = value : this.loading = false;
     }
 
     constructor(private hoursQuery: HoursQuery) {}

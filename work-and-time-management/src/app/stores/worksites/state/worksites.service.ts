@@ -179,7 +179,7 @@ export class WorksitesService {
     this.worksitesStore.reset();
   }
 
-  fetchUserWorksitesByClientXX2(user$: Observable<User>) {
+  fetchUserWorksitesByClient(user$: Observable<User>) {
     return user$.pipe(
       switchMap((user: User) => {
         const access =
@@ -205,17 +205,6 @@ export class WorksitesService {
         }
       })
     );
-
-    //   .subscribe();
-
-    //   const worktypeSub = this.user$.pipe(
-    //     switchMap((user: User) => user && user.id ? this.worktypeService.fetchWorkTypes(user) : of(null)),
-    //     tap(res => {
-    //       if (this.doesArrayExist(res)) {
-    //         this.worktypeService.setWorkTypes(res);
-    //       }
-    //     })
-    //   )
   }
 
   private mapSnapToWorksite(snaps) {

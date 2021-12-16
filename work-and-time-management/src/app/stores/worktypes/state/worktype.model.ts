@@ -7,7 +7,7 @@ export interface WorkType {
     updatedBy: string;
     deleted: boolean;
     rate: number;
-    _c: string;
+    clientId: string;
 }
 
 export function createWorkType(worktype: Partial<WorkType>) {

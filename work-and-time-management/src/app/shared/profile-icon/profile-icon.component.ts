@@ -6,7 +6,13 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./profile-icon.component.scss'],
 })
 export class ProfileIconComponent implements OnInit {
-    @Input() profileIconUrl = '';
+
+    profileIconUrl = '';
+
+    @Input()
+    set pic(value: string) {
+        value ? this.profileIconUrl = value : this.profileIconUrl = '';
+    }
     iconUrl = '../../../../assets/svg/sprite.svg#icon-user';
 
     constructor() {}

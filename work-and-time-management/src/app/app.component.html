@@ -6,7 +6,11 @@
 
 <ng-template #content>
     <div class="app-container">
-        <app-header [user]="user$ | async"></app-header>
+        <ng-container *ngIf="auth$ | async as auth">
+            <app-header
+                [auth]="auth"
+            ></app-header>
+        </ng-container>
         <div class="content">
             <router-outlet></router-outlet>
         </div>

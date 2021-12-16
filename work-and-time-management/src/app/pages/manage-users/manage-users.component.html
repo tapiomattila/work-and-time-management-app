@@ -2,37 +2,61 @@
 
 <div class="container">
     <div class="item-container">
-        <!-- <ng-container *ngIf="loading$ | async">
-            <div class="item-container__items" style="display: flex; justify-content: center; align-items: center;">
+        <ng-container *ngIf="loading$ | async">
+            <div
+                class="item-container__items"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
                 <app-loader></app-loader>
             </div>
-        </ng-container> -->
+        </ng-container>
 
-        <!-- <ng-container *ngIf="users$ | async as users">
+        <ng-container *ngIf="users$ | async as users">
             <div class="item-container__items">
-                <div class="item-container__item" *ngFor="let user of users; let i = index" (click)="openUser(user)">
+                <!-- (click)="openUser(user)" -->
+                <div
+                    class="item-container__item"
+                    *ngFor="let data of users; let i = index"
+                >
+                    <!-- <p>
+                        {{ data.user.info | json }}
+                    </p> -->
                     <p>
-                        <span>{{ user.user.firstName }} {{ user.user.lastName }}</span>
-                        <span class="email">{{ user.user.email }}</span>
+                        <span
+                            >{{ data.user.info.firstName }}
+                            {{ data.user.info.lastName }}</span
+                        >
+                        <span class="email">{{ data.user.info.email }}</span>
 
-                        <ng-container *ngIf="user.monthHours$ | async as total; else loading">
-                            <span style="margin-top: 6px; display: block;">Month hours: {{ total }}h</span>
+                        <ng-container
+                            *ngIf="
+                                data.monthHours$ | async as total
+                            "
+                        >
+                            <span style="margin-top: 6px; display: block"
+                                >Month hours: {{ total }}h</span
+                            >
                         </ng-container>
-                        <ng-template #loading>
-                            <span style="color: #000;">Loading</span>
-                            Add loading timer so that 0 hours is shown after certain period of time
-                        </ng-template>
-
-                        <ng-container *ngIf="user.totalHours$ | async as total; else zero">
-                            <span style="margin-top: 6px; display: block;">Total hours: {{ total }}h</span>
+                        <ng-container
+                            *ngIf="data.totalHours$ | async as total; else zero"
+                        >
+                            <span style="margin-top: 6px; display: block"
+                                >Total hours: {{ total }}h</span
+                            >
                         </ng-container>
                         <ng-template #zero>
-                            <span style="margin-top: 6px; display: block;">Total hours: 0h</span>
+                            <span style="margin-top: 6px; display: block"
+                                >Total hours: 0h</span
+                            >
                         </ng-template>
                     </p>
                 </div>
             </div>
-        </ng-container> -->
+        </ng-container>
     </div>
 </div>
 

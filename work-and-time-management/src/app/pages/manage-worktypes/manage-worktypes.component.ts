@@ -156,7 +156,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
             // viewName: formValues.viewName,
             name: formValues.name,
             rate: formValues.rate,
-            _c: this.userQuery.getValue()._c,
+            clientId: this.userQuery.getValue().clientId,
         };
 
         this.worktypeService
