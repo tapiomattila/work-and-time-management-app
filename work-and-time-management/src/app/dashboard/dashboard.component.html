@@ -1,6 +1,8 @@
 <div class="cards">
+    <app-card *ngIf="noWorksitesFound" [name]="'No worksites found'"></app-card>
     <ng-container *ngIf="currentWorksite$ | async as current; else loading">
         <app-card
+            *ngIf="!noWorksitesFound"
             (click)="navigate('add-hours', current.id)"
             [name]="current.name"
             [worksite]="current"
@@ -9,7 +11,7 @@
         </app-card>
     </ng-container>
     <ng-template #loading>
-        <app-card [loader]="true"></app-card>
+        <app-card *ngIf="loading && !noWorksitesFound" [loader]="true"></app-card>
     </ng-template>
 
     <app-card
@@ -25,39 +27,41 @@
         [icon]="'icon-clock'"
     ></app-card>
 
-    <ng-container
-        *ngIf="(user$ | async)?.roles.includes('admin'); else noAdmin"
-    >
-        <app-card
-            class="card"
-            (click)="navigate('manage-worksites')"
-            [name]="'Manage worksites'"
-        ></app-card>
-    </ng-container>
-    <ng-template #noAdmin>
-        <ng-container *ngIf="(user$ | async)?.roles.includes('manager')">
+    <ng-container *ngIf="user$ | async as user">
+        <ng-container
+            *ngIf="user && user.roles?.includes('admin'); else noAdmin"
+        >
             <app-card
                 class="card"
                 (click)="navigate('manage-worksites')"
                 [name]="'Manage worksites'"
             ></app-card>
         </ng-container>
-    </ng-template>
+        <ng-template #noAdmin>
+            <ng-container *ngIf="(user$ | async).roles?.includes('manager')">
+                <app-card
+                    class="card"
+                    (click)="navigate('manage-worksites')"
+                    [name]="'Manage worksites'"
+                ></app-card>
+            </ng-container>
+        </ng-template>
 
-    <ng-container *ngIf="(user$ | async)?.roles.includes('admin')">
-        <app-card
-            class="card"
-            (click)="navigate('manage-worktypes')"
-            [name]="'Manage worktypes'"
-        ></app-card>
-        <app-card
-            class="card"
-            (click)="navigate('admin/manage-users')"
-            [name]="'Manage users'"
-            [icon]="'icon-v-card'"
-        ></app-card>
-        <!-- <div class="card" (click)="navigate('admin-settings')">
-      <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
-    </div> -->
+        <ng-container *ngIf="user && user.roles?.includes('admin')">
+            <app-card
+                class="card"
+                (click)="navigate('manage-worktypes')"
+                [name]="'Manage worktypes'"
+            ></app-card>
+            <app-card
+                class="card"
+                (click)="navigate('admin/manage-users')"
+                [name]="'Manage users'"
+                [icon]="'icon-v-card'"
+            ></app-card>
+            <!-- <div class="card" (click)="navigate('admin-settings')">
+          <app-card [name]="'Admin settings'" [icon]="'no-icon'"></app-card>
+        </div> -->
+        </ng-container>
     </ng-container>
 </div>

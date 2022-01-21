@@ -185,8 +185,8 @@ export class WorksitesService {
         const access =
           user &&
           user.id &&
-          (user.roles.includes(Role.ADMIN) ||
-            user.roles.includes(Role.MANAGER));
+          (user.roles?.includes(Role.ADMIN) ||
+            user.roles?.includes(Role.MANAGER));
         return access ? this.fetchAllClientWorksites(user.clientId) : of(null);
       }),
       tap((worksites: Worksite[]) => {

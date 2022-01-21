@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HoursStore } from './hours.store';
 import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, first, tap, delay, switchMap } from 'rxjs/operators';
+import { map, first, tap, delay, switchMap, filter } from 'rxjs/operators';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
 import { from, Observable, of } from 'rxjs';
 import { Auth } from '../../auth/state';
@@ -16,7 +16,7 @@ import {
     providedIn: 'root',
 })
 export class HoursService {
-    constructor(private hoursStore: HoursStore, private af: AngularFirestore) { }
+    constructor(private hoursStore: HoursStore, private af: AngularFirestore) {}
 
     setActive(id: string) {
         this.hoursStore.setActive(id);

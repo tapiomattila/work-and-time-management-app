@@ -22,10 +22,9 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private userService: UserService,
         private manageService: ManageService
-    ) { }
+    ) {}
 
-    // : Observable<boolean | Partial<User>[]>
-    firebaseAuthUpdate(): Observable<{}> {
+    firebaseAuthUpdate(): Observable<Partial<User>[]> {
         return this.afAuth.authState.pipe(
             distinctUntilChanged(),
             tap((authenticated: firebase.User) => {
@@ -33,8 +32,11 @@ export class AuthService {
                 const isAuth = !!authenticated;
 
                 if (isAuth) {
-                    const authUser: Partial<Auth> = this.constructAuthUser(authenticated);
+                    const authUser: Partial<Auth> =
+                        this.constructAuthUser(authenticated);
                     this.userNotFoundTimer();
+
+                    console.log('show auth', authUser);
 
                     // Initial auth state update
                     this.updateAuthState(authUser);
@@ -48,11 +50,18 @@ export class AuthService {
             this.streamFetchUserByIdAfterWhiteListed(),
 
             tap(user => {
+                console.log('show user', user);
                 this.updateUserStore(user);
             }),
 
-            this.handleAdminAllUsers(),
-            this.handleNewUser()
+            this.handleAdminAllUsers()
+
+            // TODO:
+            // after new user is added trought google signin, then new user is added to firebase auth data
+            // after this, manually adding user to white-listed users
+            // new user with whitelisted status added.
+            // post new user to users collection with auth data
+            // this.handleNewUser()
         );
     }
 
@@ -74,35 +83,34 @@ export class AuthService {
     }
 
     private constructAuthUser(authenticated: firebase.User) {
-        // const authUser: Partial<Auth> =
-        return {
+        const authUser: Partial<Auth> = {
             id: authenticated.uid,
             displayName: authenticated.displayName,
             email: authenticated.email,
             isAuthenticated: !!authenticated,
             profilePictureUrl: authenticated.photoURL,
         };
+
+        return authUser;
     }
 
     private handleAdminAllUsers() {
         return switchMap(() => {
-            return this.authQuery
-                .selectSignedInUser()
-                .pipe(
-                    switchMap((user: User) => {
-                        if (this.checkRoleAllowed(user, [Role.ADMIN])) {
-                            return this.userService.fetchAllUsersByClientId(
-                                user.clientId
-                            );
-                        }
-                        return of(null);
-                    }),
-                    tap((users: Partial<User>[]) => {
-                        if (users) {
-                            this.addUsersToUsersStore(users);
-                        }
-                    }),
-                );
+            return this.authQuery.selectSignedInUser().pipe(
+                switchMap((user: User) => {
+                    if (this.checkRoleAllowed(user, [Role.ADMIN])) {
+                        return this.userService.fetchAllUsersByClientId(
+                            user.clientId
+                        );
+                    }
+                    return of(null);
+                }),
+                tap((users: Partial<User>[]) => {
+                    if (users) {
+                        this.addUsersToUsersStore(users);
+                    }
+                })
+            );
         });
     }
 
@@ -115,26 +123,25 @@ export class AuthService {
         const timerSub = timer$
             .pipe(
                 switchMap(() => this.authQuery.selectSignedInUser()),
-                tap(user =>
-                    !user ? this.manageService.setGeneralModal(true) : false
-                )
-            ).subscribe();
+                tap(user => {
+                    return !user
+                        ? this.manageService.setGeneralModal(true)
+                        : false;
+                })
+            )
+            .subscribe();
         this.subscriptions.push(timerSub);
     }
 
-    private handleNewUser() {
-        return switchMap((user: {}) => {
-            if (user) {
-                return of(user);
-            }
-            const auth = this.authQuery.getValue();
-            if (auth.isAuthenticated) {
-                this.streamAfterAuthPostNewUser(auth);
-            }
-            return of(false);
-        });
-    }
-
+    // private handleNewUser() {
+    //     // return switchMap(() => this.authQuery.select()
+    //     //     .pipe(
+    //     //         tap(res => console.log('show res in swicth', res)),
+    //     //         switchMap(auth => this.streamAfterAuthPostNewUser(auth))
+    //     //     )
+    //     // );
+    //     return of(null);
+    // }
 
     private updateAuthState(authState: Partial<Auth>) {
         this.authStore.update(createAuth(authState));
@@ -173,13 +180,14 @@ export class AuthService {
             },
             roles: [],
         };
-        return this.userService.postNewUser(newUser);
+        return of(null);
+        // return this.userService.postNewUser(newUser);
     }
 
     private checkRoleAllowed(user: User, roles: string[]) {
         let allowed = false;
         roles.forEach(role => {
-            if (user?.roles.includes(role)) {
+            if (user?.roles?.includes(role)) {
                 allowed = true;
             }
         });
@@ -214,7 +222,7 @@ export class AuthService {
                     if (users) {
                         this.addUsersToUsersStore(users);
                     }
-                }),
+                })
             )
             .subscribe();
         this.subscriptions.push(roleSubs);

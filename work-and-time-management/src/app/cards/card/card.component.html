@@ -2,7 +2,9 @@
     <div class="card__ribbon"></div>
     <ng-container *ngIf="loading; else content">
         <div class="card__content">
-            <h2 class="card__name">loading...</h2>
+            <h2 class="card__name">
+                <app-loader></app-loader>
+            </h2>
             <div class="card__icon">
                 <svg class="dev-icon">
                     <use [attr.xlink:href]="iconUrl"></use>

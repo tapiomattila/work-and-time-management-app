@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import { formatHours } from 'src/app/helpers/helper-functions';
 import { Worksite } from './worksites.model';
 import { Hours, HoursQuery } from '../../hours';
+import { AuthQuery } from 'src/app/auth/state';
 // import { TableHours } from '../../../auth/hours/hours.model';
 
 @Injectable({
@@ -31,7 +32,8 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   constructor(
     protected store: WorksiteStore,
     private hoursQuery: HoursQuery,
-    private worktypeQuery: WorkTypeQuery
+    private worktypeQuery: WorkTypeQuery,
+    private authQuery: AuthQuery
   ) {
     super(store);
   }
@@ -78,6 +80,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
   selectLastUpdatedWorksite() {
     const stampsArr = [];
     return this.hoursQuery.hours$.pipe(
+      map(hours => hours.filter(el => el.userId === this.authQuery.getSignedInUser().userId)),
       map(hours => {
         return hours.map(el => {
           const date = new Date(el.createdAt);
@@ -105,7 +108,7 @@ export class WorksitesQuery extends QueryEntity<WorksitesState> {
           ? this.selectWorksiteById(worksiteId)
           : of(null);
       }),
-      map(worksites => (worksites ? worksites[0] : null))
+      map(worksites => worksites ? worksites[0] : null)
     );
   }
 

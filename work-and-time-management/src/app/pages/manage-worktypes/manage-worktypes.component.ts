@@ -8,10 +8,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import { UserQuery } from 'src/app/auth/user';
 import { ManageService } from '../manage.service';
 import { fadeInEnterTrigger } from 'src/app/animations/animations';
 import { UserQuery } from 'src/app/stores/users';
+import { AuthQuery } from 'src/app/auth/state';
 
 @Component({
     selector: 'app-manage-worktypes',
@@ -33,6 +33,7 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private worktypeService: WorkTypeService,
         private userQuery: UserQuery,
+        private authQuery: AuthQuery,
         public manageService: ManageService
     ) {}
 
@@ -146,17 +147,15 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
     }
 
     postNewWorktype(formValues: Partial<WorkType>) {
-        const user = this.userQuery.getValue();
-
+        const signedInUser = this.authQuery.getSignedInUser();
         const newWorktype: Partial<WorkType> = {
             createdAt: new Date().toISOString(),
-            createdBy: user.id,
+            createdBy: signedInUser.userId,
             updatedAt: new Date().toISOString(),
-            updatedBy: user.id,
-            // viewName: formValues.viewName,
+            updatedBy: signedInUser.userId,
             name: formValues.name,
             rate: formValues.rate,
-            clientId: this.userQuery.getValue().clientId,
+            clientId: signedInUser.clientId,
         };
 
         this.worktypeService
@@ -174,11 +173,9 @@ export class ManageWorktypesComponent implements OnInit, OnDestroy {
     }
 
     updateWorktype(formValues: Partial<WorkType>, activeWorktype: WorkType) {
-        const user = this.userQuery.getValue();
         const updatedWorktype: Partial<WorkType> = {
             updatedAt: new Date().toISOString(),
-            updatedBy: user.id,
-            // viewName: formValues.viewName,
+            updatedBy: this.authQuery.getSignedInUser().userId,
             name: formValues.name,
             rate: formValues.rate,
         };

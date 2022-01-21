@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { UserStore } from './user.store';
 import { createUser, User } from './user.model';
 import { from, Observable, of } from 'rxjs';

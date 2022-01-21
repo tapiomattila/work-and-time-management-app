@@ -26,7 +26,7 @@ export class CardComponent implements OnInit {
 
     @Input()
     set loader(value: boolean) {
-        value ? this.loading = value : this.loading = false;
+        value ? (this.loading = value) : (this.loading = false);
     }
 
     constructor(private hoursQuery: HoursQuery) {}

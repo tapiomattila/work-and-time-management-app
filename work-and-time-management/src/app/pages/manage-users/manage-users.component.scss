@@ -1,7 +1,6 @@
 :host {
     grid-column: 1 / -1;
 
-    padding-top: 20px;
     display: grid;
     grid-template-columns: 2px repeat(6, 1fr) 2px;
     grid-template-rows: [container-start] 1fr [container-end];
@@ -57,7 +56,8 @@
 
         transition: 0.3s all;
 
-        box-shadow: 2px 0 2px rgba(0, 0, 0, 0.25);
+        // box-shadow: 2px 0 2px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 0px 7px 0px rgb(0, 0, 0, .25);
 
         &:hover {
             box-shadow: 4px 0px 14px rgba(0, 0, 0, 0.1);

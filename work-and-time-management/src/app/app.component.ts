@@ -42,6 +42,12 @@ export class AppComponent implements OnInit, OnDestroy {
         this.backButtonUrlMonitor();
     }
 
+    // TODO
+    // - check what is wrong on manager signin permissions
+    // - modal to component create with no additional route
+    // - loader for current worksites
+    //
+
     fetchData() {
         const accessWorksitesSub = this.worksiteService
             .fetchUserWorksitesByClient(this.user$)
