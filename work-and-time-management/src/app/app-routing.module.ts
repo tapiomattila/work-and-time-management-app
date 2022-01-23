@@ -9,7 +9,6 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
-import { AdminSettingsComponent } from './pages/admin-settings/admin-settings.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { WorksiteUsersComponent } from './pages/manage-worksites/worksite-users/worksite-users.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
@@ -47,11 +46,6 @@ const routes: Routes = [
     path: 'added-hours',
     component: AddedHoursComponent,
     data: { animation: { page: 'addedHoursPage' } },
-  },
-  {
-    path: 'admin-settings',
-    component: AdminSettingsComponent,
-    data: { animation: { page: 'adminSettingsPage' } },
   },
   {
     path: 'admin/manage-users',

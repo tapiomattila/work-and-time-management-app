@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { GlobalHelperService } from 'src/app/services/global-helper.service';
 import { Auth } from 'src/app/auth/state';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-header',
@@ -21,7 +22,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private globalhelper: GlobalHelperService,
-        private router: Router
+        private router: Router,
+        private location: Location
     ) { }
 
     ngOnInit() {
@@ -30,8 +32,17 @@ export class HeaderComponent implements OnInit {
     }
 
     backArrowPressed() {
-        this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-        // this.location.back();
+        const url = window.location.href;
+        const arr = [
+            RouterRoutesEnum.MANAGE_WORKSITES,
+            RouterRoutesEnum.MANAGE_WORKTYPES
+        ];
+        const exceptions = arr.some(el => url.includes(el));
+        if (exceptions) {
+            this.router.navigate([RouterRoutesEnum.DASHBOARD]);
+        } else {
+            this.location.back();
+        }
     }
 
     openMenu() {

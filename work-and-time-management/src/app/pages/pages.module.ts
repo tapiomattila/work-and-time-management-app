@@ -8,7 +8,6 @@ import { SplashComponent } from './auth/splash/splash.component';
 import { AddedHoursComponent } from './added-hours/added-hours.component';
 import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './manage-worktypes/manage-worktypes.component';
-import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { WorksiteUsersComponent } from './manage-worksites/worksite-users/worksite-users.component';
 import { UsersElementComponent } from './manage-worksites/worksite-users/users-element/users-element.component';
@@ -25,7 +24,6 @@ import { UserManagementComponent } from './user-management/user-management.compo
         SplashComponent,
         ManageWorksitesComponent,
         ManageWorktypesComponent,
-        AdminSettingsComponent,
         ManageUsersComponent,
         WorksiteUsersComponent,
         UsersElementComponent,

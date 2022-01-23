@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { RouterRoutesEnum } from '../enumerations/global.enums';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalHelperService {
@@ -30,9 +31,9 @@ export class GlobalHelperService {
 
     private restrictedBackBtnRoutes(currentRoute: string) {
         const restrictedBackRoutes = [
-            'welcome',
-            'login',
-            'dashboard',
+            RouterRoutesEnum.WELCOME,
+            RouterRoutesEnum.LOGIN,
+            RouterRoutesEnum.DASHBOARD,
             ''
         ];
         return restrictedBackRoutes.includes(currentRoute);

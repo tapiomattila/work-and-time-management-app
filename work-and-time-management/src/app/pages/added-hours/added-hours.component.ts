@@ -72,27 +72,17 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    routeToHours(item: any) {
+        // console.log(item);
+        // this.router.navigate(['add-hours', item.worksiteId]);
+    }
+
     ngAfterViewInit() {
         setTimeout(() => {
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
         }, 1000);
     }
-
-    // formatHours(hours: number) {
-    //     const frac = hours % 1;
-
-    //     if (frac === 0) {
-    //         return `${hours.toString()}h`;
-    //     }
-
-    //     const full = hours - frac;
-    //     return `${full}h ${frac * 60}min`;
-    // }
-
-    // backArrowPressed() {
-    //     this.router.navigate([RouterRoutesEnum.DASHBOARD]);
-    // }
 
     doFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -43,10 +43,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // TODO
-    // - check what is wrong on manager signin permissions
-    // - modal to component create with no additional route
-    // - loader for current worksites
-    //
+    // - hours list hour selection to add hours for the given hour
+    // - hours listing by worksite
+    // - analytics about the worksites
 
     fetchData() {
         const accessWorksitesSub = this.worksiteService

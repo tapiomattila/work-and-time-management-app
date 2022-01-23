@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import {
     WorksitesQuery,
     Worksite,
@@ -105,6 +105,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     dayTableHours$: Observable<object[]>;
     activeHours$: Observable<Hours>;
 
+    inputDate: Date | undefined;
+
     constructor(
         private worksiteQuery: WorksitesQuery,
         private worksiteService: WorksitesService,
@@ -147,7 +149,11 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         this.worksiteQuery.setAddHoursDateSelection(new Date().getTime());
         this.selectionDayHours();
         this.formValueChanges();
-        this.setTableHours(new Date());
+
+        // const date = this.inputDate || new Date();
+        // console.log('initialize date', date);
+        // this.setTableHours(date);
+
         this.activeHours$ = this.hoursQuery.selectActiveHours();
     }
 

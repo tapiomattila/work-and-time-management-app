@@ -50,7 +50,6 @@ export class AuthService {
             this.streamFetchUserByIdAfterWhiteListed(),
 
             tap(user => {
-                console.log('show user', user);
                 this.updateUserStore(user);
             }),
 

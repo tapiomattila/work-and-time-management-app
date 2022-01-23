@@ -63,6 +63,10 @@ export class HoursQuery extends QueryEntity<HoursState> {
         }
     }
 
+    getHourById(id: string) {
+        return this.getAll().find(el => el.id === id);
+    }
+
     selectActiveHours() {
         return this.selectActiveId().pipe(
             switchMap(id => (id ? this.selectEntity(id) : of(null)))

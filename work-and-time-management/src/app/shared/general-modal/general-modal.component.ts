@@ -7,7 +7,9 @@ import { ManageService } from 'src/app/pages/manage.service';
     styleUrls: ['./general-modal.component.scss'],
 })
 export class GeneralModalComponent implements OnInit {
-    constructor(private manageService: ManageService) {}
+    constructor(
+        private manageService: ManageService,
+        ) {}
 
     ngOnInit() {}
 
