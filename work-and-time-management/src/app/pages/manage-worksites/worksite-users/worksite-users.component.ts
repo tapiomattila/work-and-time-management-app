@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { combineQueries } from '@datorama/akita';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
-import { AuthQuery } from 'src/app/auth/state';
-import { ManageService } from '../../manage.service';
+import { AuthQuery } from 'src/app/core/auth';
+import { ManageService } from '../../../core/services/manage.service';
 import {
     Worksite,
     WorksitesQuery,

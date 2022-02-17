@@ -1,43 +1,45 @@
+@import './scss/abstract/mixins';
+
 :host {
-    display: flex;
-    justify-content: center;
-    min-height: calc(100vh - 20px);
-    box-sizing: border-box;
-    margin-bottom: 20px;
+    @include flexCenter;
+    min-height: 100vh;
+    width: 100vw;
+
+    background-image: url('../assets/img/work.jpg');
+    background-size: cover;
 }
 
 .app-container {
-    margin-top: 10px;
-    padding-top: 20px;
-    width: 100vw;
-    max-width: 650px;
-    box-sizing: border-box;
-    max-width: 650px;
-    transition: 0.5s all;
+    min-width: 60rem;
+    max-width: 120rem;
+    // min-height: 97vh;
+    min-height: 50vh;
+    // min-height: 50vh;
+    // min-height: 100vh;
 
-    padding: 10px;
-    box-shadow: 1px 4px 11px 4px rgb(0, 0, 0, 0.2);
+    // border: 3px solid var(--primary-color);
+    // border: 1px solid var(--disabled-color);
+    border-radius: var(--size-s);
+    padding: var(--p-l);
+
+    border-top: var(--container-border-top);
+    backdrop-filter: var(--blur);
+    background: var(--container-color);
+    box-shadow: var(--box-shadow-container);
 }
 
 .content {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 15px;
-}
-
-.cards {
-    display: grid;
-    gap: 10px;
+    gap: var(--gap-s);
 }
 
 .register-modal-content {
     grid-column: 2 / 3;
 
-    display: grid;
-    grid-template-columns: 20px 1fr 20px;
+    @include gridFractionWide;
     grid-template-rows: 20px 1fr 40px 20px;
-    gap: 10px;
-
+    gap: var(--gap-s);
     align-content: center;
 
     h4 {
@@ -54,16 +56,8 @@
     }
 }
 
-.loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
-    min-height: 100vh;
-}
-
 .modal-btn {
-    color: #fff;
+    color: var(--white-color);
     text-transform: uppercase;
-    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow-heavy);
 }

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
 import { WorksitesComponent } from './pages/worksites/worksites.component';
-import { AddHoursComponent } from './pages/add-hours/add-hours.component';
+import { AddHoursComponent } from './features/add-hours/add-hours/add-hours.component';
 import { SplashComponent } from './pages/auth/splash/splash.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { AddedHoursComponent } from './pages/added-hours/added-hours.component';
-import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites.component';
+import { ManageWorksitesComponent } from './pages/manage-worksites/manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './pages/manage-worktypes/manage-worktypes.component';
-import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
+import { ManageUsersComponent } from './features/manage-users/manage-users.component';
 import { WorksiteUsersComponent } from './pages/manage-worksites/worksite-users/worksite-users.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 

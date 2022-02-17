@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import { WorksitesQuery } from '../../stores/worksites/state';
 import { Router } from '@angular/router';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { RouterRoutesEnum } from 'src/app/core/enums/global.enums';
 // import { HoursQuery, TableHours } from 'src/app/auth/hours';
 import { map, tap } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { fadeInEnterTrigger } from 'src/app/core/animations/animations';
 import { HoursQuery, TableHours } from 'src/app/stores/hours';
 import * as moment from 'moment';
 
@@ -73,7 +73,6 @@ export class AddedHoursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     routeToHours(item: any) {
-        // console.log(item);
         // this.router.navigate(['add-hours', item.worksiteId]);
     }
 

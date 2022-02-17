@@ -1,6 +1,9 @@
-* {
+*,
+*::after,
+*::before {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html {
@@ -10,8 +13,6 @@ html {
 body {
     min-height: 100vh;
     background-color: var(--base-bg-color);
-    // background-image: url("../../../../assets/img/sunrise-city.jpg");
-    // background-size: cover;
 
     ::selection {
         background: var(--primary-color);

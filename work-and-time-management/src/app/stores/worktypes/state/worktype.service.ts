@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay, switchMap } from 'rxjs/operators';
-import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { FireBaseCollectionsEnum } from 'src/app/core/enums/global.enums';
 import { WorktypeStore } from './worktype.store';
 import { WorkType, createWorkType } from './worktype.model';
 import { from, Observable, of } from 'rxjs';
-import { Auth } from 'src/app/auth/state';
+import { Auth } from 'src/app/core/auth';
 import { User } from '../../users';
-import { doesArrayExist } from 'src/app/helpers/helper-functions';
+import { doesArrayExist } from 'src/app/core/helpers/helper-functions';
 
 @Injectable({
     providedIn: 'root',

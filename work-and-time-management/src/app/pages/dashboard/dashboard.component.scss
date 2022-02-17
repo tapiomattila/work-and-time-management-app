@@ -1,0 +1,10 @@
+:host {
+    grid-column: 1 / -1;
+}
+
+app-card {
+    display: block;
+    &:hover {
+        cursor: pointer;
+    }
+}

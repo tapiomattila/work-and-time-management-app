@@ -1,0 +1,36 @@
+.users {
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr min-content;
+        grid-template-rows: minmax(30px, min-content);
+        border: 1px solid transparent;
+        align-items: center;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: 0.3s all;
+        z-index: 100;
+
+        span {
+            cursor: pointer;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-bottom: 1px solid var(--primary-color-dark);
+        }
+
+        label {
+            grid-column: 1 / 2;
+
+            .span-el {
+                .bold-span {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        input {
+            grid-column: 2 / 3;
+        }
+    }
+}

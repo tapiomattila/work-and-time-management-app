@@ -27,6 +27,12 @@ export class HoursQuery extends QueryEntity<HoursState> {
         );
     }
 
+    selectWorksiteHoursWithInfo(worksiteId: string) {
+        return this.selectAll({
+            filterBy: [el => el.worksiteId === worksiteId],
+        });
+    }
+
     selectHoursForDay(millis: number, activeWorksiteId: string) {
         const dayMillis1 = new Date(millis);
         return this.selectAll({

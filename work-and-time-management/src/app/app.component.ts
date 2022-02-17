@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { NavigationHandlerService } from './services/navigation-handler.service';
+import { NavigationHandlerService } from './core/services/navigation-handler.service';
 import { WorksitesService } from './stores/worksites/state';
-import { Auth, AuthQuery, AuthService } from './auth/state';
+import { Auth, AuthQuery, AuthService } from './core/auth';
 import { WorkTypeService } from './stores/worktypes/state';
-import { ManageService } from './pages/manage.service';
+import { ManageService } from './core/services/manage.service';
 import { HoursService } from './stores/hours';
 import { User } from './stores/users';
 import { RouterEvent } from '@angular/router';
-import { GlobalHelperService } from './services/global-helper.service';
+import { GlobalHelperService } from './core/services/global-helper.service';
 
 @Component({
     selector: 'app-root',

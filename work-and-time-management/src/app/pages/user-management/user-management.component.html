@@ -1,10 +1,8 @@
-<!-- <app-header [title]="'Manage user'"></app-header> -->
-
 <div class="container">
     <ng-container *ngIf="data$ | async as data">
         <div class="main-content">
-            <div class="name-container">
-                <h4>{{ data.user?.info.firstName }} {{ data.user?.info.lastName }}</h4>
+            <div class="name">
+                <h2>{{ data.user?.info.firstName }} {{ data.user?.info.lastName }}</h2>
             </div>
             <div class="main-content__items">
                 <div

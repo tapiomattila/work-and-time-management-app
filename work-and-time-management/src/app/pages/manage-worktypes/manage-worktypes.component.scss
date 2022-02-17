@@ -1,22 +1,11 @@
+@import '../../scss/abstract/mixins';
+
 :host {
     grid-column: 1 / -1;
-    // padding-top: 20px;
-    display: grid;
-    grid-template-columns: 2px repeat(6, 1fr) 2px;
-    grid-template-rows:
-        [container-start] 1fr
-        [container-end];
-    row-gap: 15px;
-
-    box-sizing: border-box;
-
-    position: relative;
-    z-index: 10;
 }
 
 .main-content {
-    display: grid;
-    grid-template-columns: 5px 1fr 5px;
+    @include gridFractionSmall;
     grid-template-rows: min-content 1fr;
 
     &__item {
@@ -30,7 +19,7 @@
             grid-row: 2 / 3;
 
             span {
-                margin-left: 10px;
+                margin-left: var(--m-s);
                 font-weight: bold;
                 font-size: 120%;
                 color: var(--primary-color);
@@ -42,16 +31,16 @@
             grid-row: 1 / 3;
 
             justify-self: flex-end;
-            margin-right: 20px;
+            margin-right: var(--m-m);
         }
     }
 }
 
 svg {
-    height: 28px;
-    width: 28px;
+    height: var(--size-s);
+    width: var(--size-s);
 
     path {
-        fill: #359a94;
+        fill: var(--primary-color);
     }
 }

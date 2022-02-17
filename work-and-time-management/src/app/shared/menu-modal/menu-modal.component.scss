@@ -1,18 +1,18 @@
+@import '../../scss/abstract/mixins';
+
 .menu-modal {
     position: absolute;
-    z-index: 51;
+    z-index: var(--layer-7);
     top: 39px;
     right: 37px;
     min-height: 260px;
     width: 60%;
     min-width: 240px;
     max-width: 410px;
-    background-color: #fff;
+    @include whiteBg;
     border: 2px solid var(--primary-color);
-    border-radius: 5px;
-    color: #444;
-
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.25);
+    color: var(--dark-color);
+    box-shadow: var(--box-shadow-heavy);
 
     display: grid;
     grid-template-rows: 48px 1fr;
@@ -29,7 +29,7 @@
                 justify-content: center;
                 list-style: none;
                 line-height: 2.7rem;
-                border-bottom: 1px solid #333;
+                border-bottom: 1px solid var(--dark-color);
 
                 &:hover {
                     border-bottom: 1px solid var(--primary-color);
@@ -46,12 +46,8 @@
 
     &.active {
         width: 100vw;
-        z-index: 50;
-        position: fixed;
-        top: 0;
-        left: 0;
+        z-index: var(--layer-6);
+        @include fixedBlur;
         min-height: 100vh;
-
-        backdrop-filter: blur(5px);
     }
 }

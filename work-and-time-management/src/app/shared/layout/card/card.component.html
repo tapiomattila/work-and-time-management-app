@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card--ribbon"></div>
+    <ng-container *ngIf="loading; else content">
+        <div class="card__content">
+            <h2 class="card__content--name">
+                <app-loader></app-loader>
+            </h2>
+            <div class="card__content--icon">
+                <svg class="dev-icon">
+                    <use [attr.xlink:href]="iconUrl"></use>
+                </svg>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #content>
+        <div class="card__content">
+            <p
+                class="card__content--name current-worksite"
+                [ngClass]="{ largeFont: !hoursNum }"
+            >
+                {{ name }}
+            </p>
+            <ng-container *ngIf="hours$ | async as hours; else noHours">
+                <p class="card__content--hours">{{ hours }} <span>h</span></p>
+            </ng-container>
+            <ng-template #noHours>
+                <div class="card__content--icon">
+                    <svg class="dev-icon">
+                        <use [attr.xlink:href]="iconUrl"></use>
+                    </svg>
+                </div>
+            </ng-template>
+        </div>
+    </ng-template>
+</div>

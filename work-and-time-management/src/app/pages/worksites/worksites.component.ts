@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { WindowService } from 'src/app/services/window.service';
+import { WindowService } from 'src/app/core/services/window.service';
 import {
     fadeInEnterWithDelayTrigger,
     fadeInEnterTrigger,
-} from 'src/app/animations/animations';
+} from 'src/app/core/animations/animations';
 import { WorksitesQuery } from 'src/app/stores/worksites/state/worksites.query';
 import { Observable, of } from 'rxjs';
 import { Worksite } from 'src/app/stores/worksites/state/worksites.model';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
-import { NavigationHandlerService } from 'src/app/services/navigation-handler.service';
-import { AuthQuery } from 'src/app/auth/state';
+import { RouterRoutesEnum } from 'src/app/core/enums/global.enums';
+import { NavigationHandlerService } from 'src/app/core/services/navigation-handler.service';
+import { AuthQuery } from 'src/app/core/auth';
 import { map, switchMap } from 'rxjs/operators';
 
 @Component({

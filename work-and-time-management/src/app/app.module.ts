@@ -12,13 +12,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardModule } from './pages/dashboard/dashboard.module';
 
 import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import { CardsModule } from './cards/cards.module';
+import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
 
 @NgModule({
     declarations: [AppComponent, PagenotfoundComponent],
@@ -30,7 +29,6 @@ import { CardsModule } from './cards/cards.module';
         DashboardModule,
         SharedModule,
         PagesModule,
-        CardsModule,
 
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule.enablePersistence(),

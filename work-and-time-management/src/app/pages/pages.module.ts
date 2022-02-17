@@ -1,34 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
-import { CardsModule } from '../cards/cards.module';
 import { WorksitesComponent } from './worksites/worksites.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SplashComponent } from './auth/splash/splash.component';
 import { AddedHoursComponent } from './added-hours/added-hours.component';
-import { ManageWorksitesComponent } from './manage-worksites/manage-worksites.component';
 import { ManageWorktypesComponent } from './manage-worktypes/manage-worktypes.component';
-import { ManageUsersComponent } from './manage-users/manage-users.component';
-import { WorksiteUsersComponent } from './manage-worksites/worksite-users/worksite-users.component';
-import { UsersElementComponent } from './manage-worksites/worksite-users/users-element/users-element.component';
-import { AddHoursModule } from './add-hours/add-hours.module';
+import { AddHoursModule } from './../features/add-hours/add-hours.module';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { AuthModule } from './auth/auth.module';
+import { ManageUsersModule } from '../features/manage-users/manage-users.module';
+import { ManageWorksitesModule } from './manage-worksites/manage-worksites.module';
 
 @NgModule({
-    imports: [CommonModule, SharedModule, CardsModule, AddHoursModule],
+    imports: [
+        CommonModule,
+        SharedModule,
+        AddHoursModule,
+        AuthModule,
+        ManageUsersModule,
+        ManageWorksitesModule
+    ],
     exports: [],
     declarations: [
         WorksitesComponent,
         AddedHoursComponent,
-        LoginComponent,
-        SplashComponent,
-        ManageWorksitesComponent,
         ManageWorktypesComponent,
-        ManageUsersComponent,
-        WorksiteUsersComponent,
-        UsersElementComponent,
         UserManagementComponent,
     ],
     providers: [],
 })
-export class PagesModule {}
+export class PagesModule { }

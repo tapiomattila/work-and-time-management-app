@@ -6,12 +6,12 @@ import {
 } from 'src/app/stores/worktypes/state';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { RouterRoutesEnum } from 'src/app/core/enums/global.enums';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ManageService } from '../manage.service';
-import { fadeInEnterTrigger } from 'src/app/animations/animations';
+import { ManageService } from '../../core/services/manage.service';
+import { fadeInEnterTrigger } from 'src/app/core/animations/animations';
 import { UserQuery } from 'src/app/stores/users';
-import { AuthQuery } from 'src/app/auth/state';
+import { AuthQuery } from 'src/app/core/auth';
 
 @Component({
     selector: 'app-manage-worktypes',

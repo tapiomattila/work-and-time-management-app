@@ -1,25 +1,26 @@
+@import '../../scss/abstract/mixins';
+
 :host {
     display: block;
     text-align: center;
 }
 
 .circle {
-    border: 3px solid #359a94;
-    height: 45.5px;
-    width: 45.5px;
+    border: 3px solid var(--primary-color);
+    height: var(--size-m);
+    width: var(--size-m);
     border-radius: 50%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--white-color);
+
+    @include flexCenter;
 }
 
 .circle-plus {
-    color: #359a94;
-    font-size: 3.6rem;
+    color: var(--primary-color);
+    font-size: var(--font-size-xxl);
     align-self: flex-start;
 }
 
 .date {
-    margin-top: 5px;
+    margin-top: var(--m-xs);
 }

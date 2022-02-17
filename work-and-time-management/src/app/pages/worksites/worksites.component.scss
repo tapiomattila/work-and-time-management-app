@@ -1,34 +1,5 @@
+@import '../../scss/abstract/mixins';
+
 :host {
     grid-column: 1 / -1;
-}
-
-.cards {
-    grid-column: 2 / span 6;
-    display: grid;
-    gap: 10px;
-}
-
-.date {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.footer {
-    grid-column: 1 / -1;
-    height: 20px;
-}
-
-svg {
-    height: 65px;
-    width: 65px;
-}
-
-.header {
-    background: #fff;
-    height: 65px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
 }

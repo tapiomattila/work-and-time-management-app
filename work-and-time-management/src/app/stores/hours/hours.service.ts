@@ -3,14 +3,14 @@ import { HoursStore } from './hours.store';
 import { Hours, createHours } from './hours.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, first, tap, delay, switchMap, filter } from 'rxjs/operators';
-import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { FireBaseCollectionsEnum } from 'src/app/core/enums/global.enums';
 import { from, Observable, of } from 'rxjs';
-import { Auth } from '../../auth/state';
+import { Auth } from '../../core/auth';
 import { User } from '../users';
 import {
     doesArrayExist,
     mapSnapsWithId,
-} from 'src/app/helpers/helper-functions';
+} from 'src/app/core/helpers/helper-functions';
 
 @Injectable({
     providedIn: 'root',

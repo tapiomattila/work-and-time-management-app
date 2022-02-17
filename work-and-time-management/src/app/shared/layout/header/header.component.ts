@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { RouterRoutesEnum } from 'src/app/core/enums/global.enums';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { GlobalHelperService } from 'src/app/services/global-helper.service';
-import { Auth } from 'src/app/auth/state';
+import { GlobalHelperService } from 'src/app/core/services/global-helper.service';
+import { Auth } from 'src/app/core/auth';
 import { Location } from '@angular/common';
 
 @Component({

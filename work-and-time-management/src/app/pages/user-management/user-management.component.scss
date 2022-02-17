@@ -1,31 +1,21 @@
+@import '../../scss/abstract/mixins';
+
 :host {
     grid-column: 1 / -1;
-
-    display: grid;
-    grid-template-columns: 2px repeat(6, 1fr) 2px;
-    grid-template-rows: [container-start] 1fr [container-end];
-    row-gap: 15px;
-
-    box-sizing: border-box;
-    position: relative;
-    z-index: 10;
 }
 
-.name-container {
+.name {
     grid-column: 2 / 3;
-    height: 40px;
+    height: var(--size-m);
 
-    h4 {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
+    h2 {
+        @include flexCenter;
     }
 }
 
 .main-content__item {
     &:hover {
-        box-shadow: 4px 0 4px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--box-shadow-heavy);
         transform: none;
         cursor: pointer;
     }
@@ -33,7 +23,7 @@
 
 .text {
     &__display {
-        margin-right: 10px;
+        margin-right:var(--m-s);
         display: flex;
         justify-content: space-between;
         align-items: center;

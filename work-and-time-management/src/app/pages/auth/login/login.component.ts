@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { RouterRoutesEnum } from 'src/app/enumerations/global.enums';
+import { RouterRoutesEnum } from 'src/app/core/enums/global.enums';
 
 import * as firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';

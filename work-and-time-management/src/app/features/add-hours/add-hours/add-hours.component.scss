@@ -1,0 +1,127 @@
+@import '~@angular/material/theming';
+
+:host {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 2px repeat(6, 1fr) 2px;
+    grid-template-rows:
+        [header-start] var(--size-l)
+        [header-end address-start] minmax(var(--size-l), min-content)
+        [address-end date-start] minmax(var(--size-l), min-content)
+        [date-end form-start] min-content
+        [form-end table-start] min-content
+        [table-end footer-start] 1fr
+        [footer-end];
+    row-gap: var(--gap-m);
+}
+
+.date {
+    grid-row: header-start / header-end;
+    grid-column: 1 / -1;
+
+    text-transform: uppercase;
+    text-indent: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing-s);
+
+    background-color: var(--white-color);
+    border-radius: var(--border-r-s);
+    font-size: var(--font-size-l);
+    // @include flexCenter;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.address {
+    grid-row: address-start / address-end;
+    grid-column: 2 / span 6;
+
+    border-radius: 5px;
+    padding: 8px;
+    background-color: var(--white-color);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+.marked-hours {
+    grid-row: date-start / date-end;
+    grid-column: 2 / span 6;
+
+    padding: 8px;
+    border-radius: 5px;
+    background-color: var(--white-color);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+
+    &__hours {
+        font-size: var(--font-size-xl);
+        justify-self: center;
+        color: var(--primary-color-dark);
+        text-shadow: var(--box-shadow-medium);
+        line-height: 2.9rem;
+    }
+}
+
+.form {
+    grid-row: form-start / form-end;
+    grid-column: 2 / span 6;
+
+    &__submit {
+        box-shadow: var(--box-shadow-heavy);
+        height: var(--size-m);
+        width: 35%;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        border: none;
+    }
+
+    &__remove {
+        box-shadow: var(--box-shadow-heavy);
+        height: var(--size-m);
+        color: var(--white-color);
+        background-color: #d24b4b;
+        border: 5px solid #c45a5a;
+    }
+}
+
+.table-container {
+    grid-row: table-start / table-end;
+    grid-column: 2 / span 6;
+    text-align: center;
+
+    overflow-x: auto;
+}
+
+.footer {
+    grid-row: footer-start / footer-end;
+    grid-column: 2 / span 6;
+    min-height: var(--footer-height);
+}
+
+.button-add {
+    transition: 0.5s all;
+    &:focus {
+        outline: none;
+    }
+    &.test {
+        transform: translateX(-10px);
+    }
+}
+
+button {
+    &:focus {
+        outline: none;
+    }
+
+    transition: 0.5s all;
+
+    &:disabled {
+        border: 2px solid var(--primary-color-dark);
+        background-color: var(--disabled-color);
+        cursor: not-allowed;
+    }
+}

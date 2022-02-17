@@ -13,10 +13,10 @@ import { of, Observable, BehaviorSubject, from } from 'rxjs';
 // import { Hours } from 'src/app/auth/hours';
 import { WorkTypeQuery } from 'src/app/stores/worktypes/state';
 import * as moment from 'moment';
-import { formatHours } from 'src/app/helpers/helper-functions';
+import { formatHours } from 'src/app/core/helpers/helper-functions';
 import { Worksite } from './worksites.model';
 import { Hours, HoursQuery } from '../../hours';
-import { AuthQuery } from 'src/app/auth/state';
+import { AuthQuery } from 'src/app/core/auth';
 // import { TableHours } from '../../../auth/hours/hours.model';
 
 @Injectable({

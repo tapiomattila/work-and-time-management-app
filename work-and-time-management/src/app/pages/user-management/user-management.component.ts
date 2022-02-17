@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineQueries } from '@datorama/akita';
 import { Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Auth, AuthQuery } from 'src/app/auth/state';
+import { Auth, AuthQuery } from 'src/app/core/auth';
 import { User, UserQuery, UserService } from 'src/app/stores/users';
 import {
     Worksite,

@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+    min-width: 400px;
+}
+
+table,
+td,
+th {
+    border: 1px solid var(--deep-dark-color);
+    font-weight: lighter;
+    padding: var(--p-s);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    min-height: var(--size-s);
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+td {
+    background-color: var(--white-color);
+}
+
+td {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+tr.active td {
+    background-color: var(--base-bg-color);
+}

@@ -1,0 +1,9 @@
+.footer {
+    grid-column: 1 / -1;
+    height: var(--footer-height);
+}
+
+svg {
+    height: var(--svg-m);
+    width: var(--svg-m);
+}

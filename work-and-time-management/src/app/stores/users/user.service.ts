@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FireBaseCollectionsEnum } from 'src/app/enumerations/global.enums';
+import { FireBaseCollectionsEnum } from 'src/app/core/enums/global.enums';
 import { first, map, tap } from 'rxjs/operators';
 import { UserStore } from './user.store';
 import { createUser, User } from './user.model';
 import { from, Observable, of } from 'rxjs';
-import { mapSnaps, takeSnap } from 'src/app/helpers/helper-functions';
+import { mapSnaps, takeSnap } from 'src/app/core/helpers/helper-functions';
 
 @Injectable({
     providedIn: 'root',

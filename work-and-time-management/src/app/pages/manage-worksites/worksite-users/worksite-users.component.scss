@@ -1,21 +1,15 @@
+@import '../../../scss/abstract/mixins';
+
 :host {
     grid-column: 1 / -1;
-
-    // padding-top: 20px;
-    display: grid;
-    grid-template-columns: 2px repeat(6, 1fr) 2px;
-    grid-template-rows:
-        [container-start] 1fr
-        [container-end];
-    row-gap: 15px;
-    box-sizing: border-box;
-
-    position: relative;
-    z-index: 10;
 }
 
 .main-content__item--text {
     font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 12px;
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--m-s);
+}
+
+.flex-center {
+    @include flexCenter;
 }

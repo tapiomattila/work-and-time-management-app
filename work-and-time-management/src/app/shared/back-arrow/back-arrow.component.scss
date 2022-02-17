@@ -1,14 +1,14 @@
+@import '../../scss/abstract/mixins';
 .back-arrow {
-    width: 45px;
-    height: 45px;
-    background-color: #fff;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: var(--size-m);
+    height: var(--size-m);
+    // background-color: var(--white-color);
+    // border-radius: var(--border-r-s);
+    @include whiteBg;
+    @include flexCenter;
 
     &__triangle {
-        background-color: #359a94;
+        background-color: var(--primary-color);
         width: 85%;
         height: 73%;
 

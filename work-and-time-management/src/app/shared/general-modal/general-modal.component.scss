@@ -1,30 +1,16 @@
+@import '../../scss/abstract/mixins';
+
 .container-wrapper {
     box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100vw;
-    height: 100vh;
+    @include absfullSize;
 }
 
 .container {
-    box-shadow: 1px 7px 10px 3px rgba(0, 0, 0, 0.5);
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 90vw;
-    max-width: 450px;
-
-    min-height: 200px;
-
-    background: #fff;
+    box-shadow: var(--box-shadow-heavy);
+    @include absCenter;
+    @include modalSize;
+    @include whiteBg;
     border: 2px solid var(--primary-color);
-    border-radius: 5px;
 }
 
 .blur {
@@ -33,6 +19,6 @@
     backdrop-filter: none;
 
     &.active {
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(var(--size-xs));
     }
 }

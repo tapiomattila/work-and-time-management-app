@@ -4,7 +4,7 @@
     (closed)="closedModal()"
 ></app-menu-modal>
 
-<div class="heading-container">
+<div class="container">
     <div class="heading">
         <div class="heading__back-arrow">
             <app-back-arrow
@@ -32,9 +32,9 @@
             />
         </div>
     </div>
-    <div class="header" [ngClass]="{ small: true }">
+    <!-- <div class="header" [ngClass]="{ small: true }">
         <ng-container *ngIf="momentDay">
             <p>{{ momentDay.format('DD.MM.YYYY dddd') }}</p>
         </ng-container>
-    </div>
+    </div> -->
 </div>

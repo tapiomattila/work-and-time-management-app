@@ -1,0 +1,31 @@
+@import '../../scss/abstract/mixins';
+
+:host {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, 50%);
+
+    @include flexCenter;
+    flex-direction: column;
+}
+
+button {
+    border: none;
+    border: 3px solid navy;
+    color: navy;
+    font-size: var(--font-size-m);
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    @include flexCenter;
+    border-radius: var(--border-r-s);
+    padding: 5px 10px;
+    background-color: transparent;
+    margin: var(--m-s);
+
+    &:hover {
+        color: lightblue;
+        border: 3px solid lightblue;
+    }
+}

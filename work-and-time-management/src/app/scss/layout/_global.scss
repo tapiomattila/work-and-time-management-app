@@ -1,14 +1,14 @@
+@import '../../scss/abstract/mixins';
+
 /////////////
 // GENERAL BUTTON
 /////////////
 button {
     border: none;
-    border-radius: 5px;
-    border: 2px solid #ccc;
+    border-radius: var(--border-r-s);
+    border: 2px solid var(--base-bg-color);
     padding: 8px 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexCenter;
 }
 
 button {
@@ -27,17 +27,16 @@ button {
 
 .button {
     color: var(--white-color);
-    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow-heavy);
 }
 
 .container {
     grid-row: container-start / container-end;
     grid-column: 2 / span 6;
 
-    display: grid;
-    grid-template-columns: 5px 1fr 5px;
+    @include gridFractionSmall;
     grid-template-rows: min-content 1fr min-content min-content 1px;
-    gap: 10px;
+    gap: var(--gap-s);
 
     .button {
         &__work {
@@ -61,11 +60,11 @@ button {
         min-height: 50px;
         background-color: var(--primary-color);
         color: var(--white-color);
-        box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--box-shadow-heavy);
         border: none;
         font-family: 'Bitter', serif;
         line-height: 22px;
-        font-size: 1.8rem;
+        font-size: var(--font-size-l);
         cursor: pointer;
     }
 }
@@ -74,12 +73,11 @@ button {
     grid-column: 1 / -1;
     grid-row: 1 / 3;
 
-    background: #fff;
-    border-radius: 5px;
-    padding: 10px;
+    background: var(--white-color);
+    border-radius: var(--border-r-s);
+    padding: var(--p-s);
 
-    display: grid;
-    grid-template-columns: 5px 1fr 5px;
+    @include gridFractionSmall;
     grid-template-rows: min-content 1fr;
 
     &__header {
@@ -90,10 +88,10 @@ button {
         font-style: normal;
         font-weight: 700;
         letter-spacing: 2px;
-        font-size: 21px;
+        font-size: var(--font-size-xl);
         line-height: 25px;
         text-align: center;
-        padding-bottom: 5px;
+        padding-bottom: var(--p-xs);
     }
 
     &__items {
@@ -102,26 +100,23 @@ button {
     }
 
     &__item {
-        padding: 10px;
+        padding: var(--p-s);
 
         border-bottom: 1px solid var(--primary-color);
-        margin: 10px 0;
+        margin: var(--m-s) 0;
 
         font-weight: normal;
-        font-size: 18px;
+        font-size: var(--font-size-l);
         line-height: 22px;
 
         display: grid;
         grid-template-columns: 1fr max-content min-content;
-
         align-items: center;
-
         transition: 0.3s all;
-
-        box-shadow: 2px 0 2px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--box-shadow-medium);
 
         &:hover {
-            box-shadow: 4px 0px 14px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow-light);
             transform: translateY(1px);
             cursor: pointer;
         }
@@ -154,61 +149,6 @@ button {
 }
 
 /////////////
-// GENERAL CARD
-/////////////
-.card {
-    display: grid;
-    grid-template-rows: 20px minmax(min-content, 100px);
-    background-color: var(--white-color);
-    border-radius: 5px;
-    box-shadow: var(--box-shadow);
-
-    &__ribbon {
-        background-color: var(--primary-color);
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
-
-    &__content {
-        display: grid;
-        grid-template-columns: 4fr 3fr;
-
-        justify-items: center;
-        align-items: center;
-    }
-
-    &__name {
-        justify-self: flex-start;
-        margin-left: 10px;
-        grid-column: 1 / 2;
-        font-size: 2.1rem;
-        text-transform: uppercase;
-
-        &.current-worksite {
-            font-size: 1.8rem;
-        }
-
-        &.current-worksite {
-            text-transform: initial;
-        }
-
-        &.largeFont {
-            font-size: 2.1rem;
-            text-transform: uppercase;
-        }
-    }
-
-    &__hours {
-        grid-column: 2 / 3;
-        font-size: 3.6rem;
-    }
-
-    &__icon {
-        fill: var(--icon-fill);
-    }
-}
-
-/////////////
 // GENERAL CIRCLE
 /////////////
 .circles {
@@ -224,25 +164,23 @@ button {
 
     .circle {
         border: 3px solid var(--primary-color);
-        height: 45.5px;
-        width: 45.5px;
+        height: var(--size-m);
+        width: var(--size-m);
         border-radius: 50%;
         background-color: var(--white-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flexCenter;
 
         &.active-circle {
-            border: 3px solid #fff;
+            border: 3px solid var(--white-color);
             font-weight: 700;
-            font-size: 1.8rem;
+            font-size: var(--font-size-l);
             padding: 2px;
         }
     }
 
     .circle-plus {
-        color: #359a94;
-        font-size: 3.6rem;
+        color: var(--primary-color);
+        font-size: var(--font-size-xxl);
         align-self: flex-start;
     }
 }
@@ -250,14 +188,12 @@ button {
 /////////////
 // GENERAL HEADER
 /////////////
-.header {
-    background-color: var(--white-color);
-    border-radius: 5px;
-    font-size: 1.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+// .header {
+//     background-color: var(--white-color);
+//     border-radius: var(--border-r-s);
+//     font-size: var(--font-size-l);
+//     @include flexCenter;
+// }
 
 /////////////
 // GENERAL HEADING
@@ -265,20 +201,17 @@ button {
 .heading {
     display: grid;
     grid-template-columns: 55px 1fr 45px;
-    height: 45px;
+    height: var(--size-m);
 
     &__profile-icon {
         width: 45px;
-        height: 45px;
+        height: var(--size-m);
         background-color: var(--primary-color);
         border-radius: 50%;
         overflow: hidden;
-
         text-align: center;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flexCenter;
 
         img {
             width: auto;
@@ -289,16 +222,14 @@ button {
     &__name {
         margin: 0 10px;
         background-color: var(--white-color);
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.8rem;
+        border-radius: var(--border-r-s);
+        @include flexCenter;
+        font-size: var(--font-size-l);
     }
 
     &__settings-btn {
         width: 35px;
-        height: 45px;
+        height: var(--size-m);
         justify-self: flex-end;
 
         img {
@@ -322,7 +253,7 @@ button {
         background: var(--primary-color);
         width: 30px;
         height: 3px;
-        border-radius: 10px;
+        border-radius: var(--m-s);
         transform: rotate(45deg);
     }
 
@@ -334,14 +265,14 @@ button {
         background: var(--primary-color);
         width: 30px;
         height: 3px;
-        border-radius: 10px;
+        border-radius: var(--m-s);
         transform: rotate(135deg);
     }
 }
 
 .close__x:hover .line1,
 .close__x:hover .line2 {
-    background: #28726d;
+    background: var(--primary-color);
 }
 
 ///////////////////////////////
@@ -349,13 +280,9 @@ button {
 
 button {
     min-height: 35px;
-    // width: 35%;
     width: auto;
     background-color: var(--primary-color);
-    // color: var(--white-color);
-    // box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.25);
     border: none;
-
     cursor: pointer;
 }
 
@@ -363,18 +290,18 @@ button {
 // INPUT PLACEHOLDERS
 
 ::-webkit-input-placeholder {
-    color: #ccc;
-    font-size: 14px;
+    color: var(--base-bg-color);
+    font-size: var(--font-size-m);
 }
 
 :-ms-input-placeholder {
-    color: #ccc;
-    font-size: 14px;
+    color: var(--base-bg-color);
+    font-size: var(--font-size-m);
 }
 
 ::placeholder {
-    color: #ccc;
-    font-size: 14px;
+    color: var(--base-bg-color);
+    font-size: var(--font-size-m);
 }
 
 ////////////////////
@@ -382,4 +309,9 @@ button {
 app-header {
     grid-row: heading-start / header-end;
     grid-column: 2 / span 6;
+}
+
+.footer {
+    grid-column: 1 / -1;
+    height: var(--footer-height);
 }

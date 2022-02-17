@@ -1,32 +1,22 @@
 :host {
     width: 100%;
-    border: 1px solid red;
 }
-// .container {
-//     min-width: 100px;
-//     width: 100%;
-//     border: 1px solid red;
-// //   width: max-content;
-// //   margin: 20vh auto 0;
-// }
 
 .datepicker {
-    //   margin: 1rem;
-    //   padding: 1rem;
-    //   width: 300px;
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid var(--base-bg-color); // #ccc
 }
 
 .month {
     display: grid;
     grid-template-columns: 24px auto 24px;
-    height: 50px;
-    gap: 6px;
+    height: var(--size-m);
+    gap: var(--gap-xs);
 
     .arrow-left,
     .arrow-right,
     .selected-month {
+        // mixin
         text-align: center;
         align-self: center;
         cursor: pointer;
@@ -36,26 +26,28 @@
         button {
             text-transform: capitalize;
             cursor: pointer;
-            padding: 8px 0;
+            padding: var(--p-xs) 0;
             width: 200px;
             margin: 0 auto;
             background-color: transparent;
+            // mixin
             border: none;
             outline: none;
 
             &:hover {
-                background-color: #eeeeee;
+                background-color:  var(--disabled-color); // #eee
             }
         }
 
         .arrow-left,
         .arrow-right {
-            border: none;
             background: none;
+            // mixin
+            border: none;
             outline: none;
             cursor: pointer;
             &:hover {
-                background-color: #eee;
+                background-color: var(--disabled-color); // #eee
             }
         }
     }
@@ -66,6 +58,7 @@
         height: 24px;
 
         span {
+            // mixin
             text-align: center;
             align-self: center;
             font-weight: bold;
@@ -80,10 +73,10 @@
         .previous-days,
         .current-days,
         .next-days {
-            padding: 4px;
+            padding: var(--p-xs);
             text-align: center;
             align-self: center;
-            font-size: 0.8rem;
+            font-size: var(--font-size-xs);
             border: 1px solid transparent;
         }
 
@@ -95,13 +88,13 @@
         .current-days {
             cursor: pointer;
             &:hover {
-                background-color: #cccccc;
+                background-color: var(--base-bg-color);
             }
         }
 
         .selected-day {
-            border: 1px solid #cccccc;
-            background-color: #eeeeee;
+            border: 1px solid var(--base-bg-color);
+            background-color: var(--disabled-color); // #eee
         }
 
         .month-selector {
@@ -109,14 +102,15 @@
             grid-template-columns: repeat(4, 1fr);
 
             span {
-                padding: 24px 0;
-                text-transform: uppercase;
-                letter-spacing: 2px;
+                padding: var(--size-s) 0;
+                letter-spacing: var(--letter-spacing-s);
                 cursor: pointer;
+                // mixin
+                text-transform: uppercase;
                 text-align: center;
 
                 &:hover {
-                    background-color: #eeeeee;
+                    background-color: var(--disabled-color); // #eee
                 }
             }
         }

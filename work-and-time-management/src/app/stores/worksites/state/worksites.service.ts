@@ -6,11 +6,11 @@ import { map, first, tap, delay, switchMap } from 'rxjs/operators';
 import {
   FireBaseCollectionsEnum,
   Role,
-} from 'src/app/enumerations/global.enums';
+} from 'src/app/core/enums/global.enums';
 import { Observable, from, of } from 'rxjs';
-import { Auth } from 'src/app/auth/state';
+import { Auth } from 'src/app/core/auth';
 import { User } from '../../users';
-import { mapSnaps } from 'src/app/helpers/helper-functions';
+import { mapSnaps } from 'src/app/core/helpers/helper-functions';
 
 @Injectable({
   providedIn: 'root',

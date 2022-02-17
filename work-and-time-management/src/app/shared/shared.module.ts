@@ -12,6 +12,7 @@ import { MenuModalComponent } from './menu-modal/menu-modal.component';
 import { GeneralModalComponent } from './general-modal/general-modal.component';
 import { DirectivesModule } from './directives/directives.module';
 import { ProfileIconComponent } from './profile-icon/profile-icon.component';
+import { CardComponent } from './layout/card/card.component';
 
 @NgModule({
     imports: [
@@ -35,6 +36,7 @@ import { ProfileIconComponent } from './profile-icon/profile-icon.component';
         MenuModalComponent,
         GeneralModalComponent,
         ProfileIconComponent,
+        CardComponent
     ],
     declarations: [
         BackArrowComponent,
@@ -46,6 +48,7 @@ import { ProfileIconComponent } from './profile-icon/profile-icon.component';
         MenuModalComponent,
         GeneralModalComponent,
         ProfileIconComponent,
+        CardComponent
     ],
     providers: [],
 })

@@ -1,23 +1,14 @@
+@import '../../scss/abstract/mixins';
+
 ::ng-deep .editForm {
-    z-index: 100;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 90vw;
-    max-width: 450px;
-
-    min-height: 200px;
-    background-color: #fff;
+    z-index: var(--layer-7);
+    @include absCenter;
+    @include modalSize;
+    @include whiteBg;
     border: 2px solid var(--primary-color);
-    border-radius: 5px;
 
-    display: grid;
-    grid-template-columns: 20px 1fr 20px;
+    @include gridFractionWide;
     grid-template-rows: 8px 50px 1fr;
-
     transition: 0.2s width;
 
     @media only screen and (min-width: 576px) {
@@ -26,13 +17,10 @@
 
     .header {
         position: relative;
-
         grid-column: 2 / 3;
         grid-row: 2 / 3;
 
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include flexCenterBetween;
 
         .editForm__close {
             height: 100%;
@@ -42,14 +30,14 @@
     }
 
     .form {
-        margin: 20px 0;
+        margin: var(--m-m) 0;
 
         grid-column: 2 / 3;
         grid-row: 3 / 4;
 
         &__inputs {
             & > * {
-                margin-top: 10px;
+                margin-top: var(--m-s);
             }
 
             label {
@@ -59,52 +47,46 @@
                 font-family: Bitter;
                 font-style: normal;
                 font-weight: normal;
-                font-size: 14px;
-                line-height: 17px;
-
-                color: #000000;
+                font-size: var(--font-size-m);
+                line-height: var(--letter-spacing-s);
+                color: var(--deep-dark-color);
 
                 span {
-                    margin-left: 10px;
-                    margin-bottom: 8px;
+                    margin-left: var(--m-s);
+                    margin-bottom: var(--m-xs);
                 }
 
                 input {
                     border: none;
                     outline: none;
-                    border: 2px solid #1f524f;
+                    border: 2px solid var(primary-color-dark);
                     box-sizing: border-box;
                     text-indent: 10px;
-                    color: #000;
-                    font-size: 18px;
-                    height: 45px;
-                    border-radius: 5px;
+                    color: var(--deep-dark-color);
+                    font-size: var(--font-size-l);
+                    height: var(--size-m);
+                    border-radius: var(--border-r-s);
                 }
             }
         }
 
         button.submit {
-            width: 45%;
-            max-width: 230px;
-            margin-top: 12px;
-            color: #fff;
+            @include btnSize;
+            color: var(--white-color);
 
             &.disabled {
-                background-color: #bdbdbd;
+                background-color: var(--disabled-color);
             }
         }
 
         button.delete {
-            width: 45%;
-            max-width: 230px;
-            margin-top: 12px;
-
-            border: 3px solid rgb(71, 13, 13);
+            @include btnSize;
+            border: 3px solid var(--error-color);
             background-color: transparent;
-            color: rgb(71, 13, 13);
+            color: var(--error-color);
 
             &.disabled {
-                background-color: #bdbdbd;
+                background-color: var(--disabled-color);
             }
         }
     }
@@ -116,12 +98,8 @@
 
     &.active {
         width: 100vw;
-        z-index: 50;
-        position: fixed;
-        top: 0;
-        left: 0;
         min-height: 100vh;
-
-        backdrop-filter: blur(5px);
+        z-index: var(--layer-6);
+        @include fixedBlur;
     }
 }

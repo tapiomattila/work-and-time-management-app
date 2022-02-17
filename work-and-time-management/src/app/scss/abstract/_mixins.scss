@@ -1,0 +1,77 @@
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin gridCenter {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+@mixin absfullSize {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+@mixin absCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin modalSize {
+    width: 90vw;
+    max-width: 450px;
+    min-height: 200px;
+}
+
+@mixin btnSize {
+    width: 45%;
+    max-width: 230px;
+    margin-top: var(--m-s);
+}
+
+@mixin whiteBg {
+    background-color: var(--white-color);
+    border-radius: var(--border-r-s);
+}
+
+@mixin flexCenterBetween {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin fixedBlur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(var(--size-xs));
+}
+
+@mixin btnOutlineNone {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin gridFractionWide {
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+}
+
+@mixin gridFractionSmall {
+    display: grid;
+    grid-template-columns: 5px 1fr 5px;
+}
+
+@mixin redUpBorder {
+    border: 2px solid red;
+    text-transform: uppercase;
+}
