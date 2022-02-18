@@ -25,7 +25,6 @@
         @include gridCenter;
         grid-template-columns: 4fr 3fr;
 
-
         &--name {
             justify-self: flex-start;
             margin-left: var(--m-s);
